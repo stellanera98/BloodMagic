@@ -38,7 +38,7 @@ neoForge {
     }
 
     mods {
-        "${mod_id}" {
+        "mod" {
             sourceSet(sourceSets.main)
         }
         "data" {
@@ -73,8 +73,9 @@ neoForge {
         }
 
         configureEach {
+            loadedMods = [ mods.mod ]
             systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
+            logLevel = org.slf4j.event.Level.INFO
         }
     }
 }
