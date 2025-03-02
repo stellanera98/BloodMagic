@@ -26,4 +26,8 @@ public class BlockGroups {
     public static List<ResourceKey<Block>> BLOODSTONE = List.of(
             BMBlocks.BLOODSTONE.block().getKey(), BMBlocks.BLOODSTONE_BRICK.block().getKey()
     );
+
+    public static List<ResourceKey<Block>> CRYSTAL_CLUSTER = List.of(
+            BMBlocks.CRYSTAL_CLUSTER.block().getKey(), BMBlocks.CRYSTAL_BRICK.block().getKey()
+    );
 }

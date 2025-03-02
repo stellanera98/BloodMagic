@@ -36,24 +36,26 @@ public class BMBlockTagProvider extends BlockTagsProvider {
         this.tag(BMTags.Blocks.T5_CAP)
                 .add(Blocks.DIAMOND_BLOCK);
 
-        this.tag(BMTags.Blocks.T6_CAP)
-                .add(Blocks.AMETHYST_BLOCK);
+        this.tag(BMTags.Blocks.T6_CAP);
 
         this.tag(BMTags.Blocks.PILLAR);
 
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get());
+
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addAll(BlockGroups.BLOODSTONE)
+                .addAll(BlockGroups.CRYSTAL_CLUSTER)
                 .addAll(BlockGroups.RUNE_T1)
                 .addAll(BlockGroups.RUNE_T2);
 
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .addAll(BlockGroups.BLOODSTONE)
+                .addAll(BlockGroups.CRYSTAL_CLUSTER)
                 .addAll(BlockGroups.RUNE_T1);
 
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL)

@@ -17,6 +17,10 @@ public class BMLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("itemGroup." + BloodMagic.MODID + ".main", "Blood Magic");
+        add("itemGroup." + BloodMagic.MODID + ".upgrades", "Blood Magic Upgrade Tomes");
+        add("itemGroup." + BloodMagic.MODID + ".anointments", "Blood Magic Anointments");
+
         add(BMFluids.LIFE_ESSENCE_TYPE.get(), "Life Essence");
         add(BMFluids.LIFE_ESSENCE_BUCKET.get(), "Life Essence Bucket");
         add(BMFluids.LIFE_ESSENCE_BLOCK.get(), "Life Essence");
@@ -34,6 +38,11 @@ public class BMLanguageProvider extends LanguageProvider {
         addTooltip("save_for_decoration", "Save for decoration");
         add(BMBlocks.BLOODSTONE, "Bloodstone");
         add(BMBlocks.BLOODSTONE_BRICK, "Bloodstone Brick");
+
+        add(BMBlocks.CRYSTAL_CLUSTER, "Crystal Cluster");
+        add(BMBlocks.CRYSTAL_BRICK, "Crystal Cluster Brick");
+
+        add(BMBlocks.BLOOD_ALTAR, "Blood Altar");
 
         add(BMBlocks.RUNE_BLANK, "Blank Rune");
 
@@ -58,6 +67,8 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.RUNE_2_SPEED, "Reinforced Speed Rune");
         add(BMBlocks.RUNE_2_ACCELERATION, "Reinforced Acceleration Rune");
         add(BMBlocks.RUNE_2_EFFICIENCY, "Reinforced Efficiency Rune");
+
+        add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
     }
 
     public void add(FluidType type, String name) {

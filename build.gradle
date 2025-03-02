@@ -42,7 +42,7 @@ neoForge {
             sourceSet(sourceSets.main)
         }
         "data" {
-            sourceSet(sourceSets.main) // needed since datagen isnt a valid mod file
+            sourceSet(sourceSets.main)
             sourceSet(sourceSets.datagen)
         }
     }
@@ -73,7 +73,6 @@ neoForge {
         }
 
         configureEach {
-            loadedMods = [ mods.mod ]
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.INFO
         }

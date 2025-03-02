@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:polished_granite"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "R": {
+      "item": "minecraft:polished_deepslate"
+    }
+  },
+  "pattern": [
+    "RBR",
+    "G G",
+    "RRR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bloodmagic:blood_tank"
+  }
+}

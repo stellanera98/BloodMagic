@@ -48,7 +48,6 @@ public class HellfireForgeBlock extends Block implements EntityBlock {
         Vec3 relative = hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
         BloodMagic.LOGGER.info("{}, {}, {}", relative.x, relative.y, relative.z);
 
-        relative.cl
 
         return ItemInteractionResult.FAIL;
     }

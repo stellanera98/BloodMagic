@@ -1,0 +1,28 @@
+{
+  "type": "bloodmagic:fluid_tiered",
+  "category": "misc",
+  "pattern": {
+    "key": {
+      "B": {
+        "item": "minecraft:polished_granite"
+      },
+      "R": {
+        "item": "minecraft:polished_deepslate"
+      },
+      "T": {
+        "item": "bloodmagic:blood_tank"
+      }
+    },
+    "pattern": [
+      "RBR",
+      "T T",
+      "RRR"
+    ]
+  },
+  "primary": 3,
+  "result": {
+    "count": 1,
+    "id": "bloodmagic:blood_tank"
+  },
+  "secondary": 5
+}

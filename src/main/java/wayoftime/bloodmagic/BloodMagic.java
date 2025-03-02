@@ -12,6 +12,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import org.slf4j.Logger;
 import wayoftime.bloodmagic.block.BMBlocks;
 import wayoftime.bloodmagic.blockentity.BMTiles;
+import wayoftime.bloodmagic.creativetab.BMCreativeTab;
 import wayoftime.bloodmagic.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.datamap.BMDataMaps;
 import wayoftime.bloodmagic.fluid.BMFluids;
@@ -32,6 +33,7 @@ public class BloodMagic {
         BMRecipes.register(modBus);
         BMDataMaps.register(modBus);
         BMRegistries.register(modBus);
+        BMCreativeTab.register(modBus);
 
         modBus.addListener(BloodMagic::addPacks);
     }

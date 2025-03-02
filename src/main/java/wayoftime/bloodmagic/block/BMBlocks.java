@@ -2,7 +2,6 @@ package wayoftime.bloodmagic.block;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemLore;
@@ -58,11 +57,11 @@ public class BMBlocks {
     public static final BlockWithItemHolder<Block, BlockItem> RUNE_2_CHARGING = BASIC_REG.register("rune_2_charging", RUNE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
     public static final BlockWithItemHolder<Block, BlockItem> RUNE_2_EFFICIENCY = BASIC_REG.register("rune_2_efficiency", RUNE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
 
-    private static final BlockBehaviour.Properties BLOODSTONE_PROPERTIES = BlockBehaviour.Properties.of().strength(2.0F, 5.0F).requiresCorrectToolForDrops();
-    public static final BlockWithItemHolder<Block, BlockItem> BLOODSTONE = BASIC_REG.register("bloodstone", BLOODSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
-
-    public static final BlockWithItemHolder<Block, BlockItem> BLOODSTONE_BRICK = BASIC_REG.register("bloodstone_brick", BLOODSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
-    //public static final BlockWithItemHolder<Block, BlockItem> POLISHED_BLOODSTONE = BASIC_REG.register("bloodstone_polished", BLOODSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
+    private static final BlockBehaviour.Properties CAPSTONE_PROPERTIES = BlockBehaviour.Properties.of().strength(2.0F, 5.0F).requiresCorrectToolForDrops();
+    public static final BlockWithItemHolder<Block, BlockItem> BLOODSTONE = BASIC_REG.register("bloodstone", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
+    public static final BlockWithItemHolder<Block, BlockItem> BLOODSTONE_BRICK = BASIC_REG.register("bloodstone_brick", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
+    public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_CLUSTER = BASIC_REG.register("crystal_cluster", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
+    public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_BRICK = BASIC_REG.register("crystal_brick", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
 
     public static void register(IEventBus modBus) {
         BASIC_BLOCKS.register(modBus);
