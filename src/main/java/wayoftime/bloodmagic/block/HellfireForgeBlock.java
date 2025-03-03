@@ -1,8 +1,10 @@
 package wayoftime.bloodmagic.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -36,18 +38,58 @@ public class HellfireForgeBlock extends Block implements EntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.isClientSide) {
-            return ItemInteractionResult.FAIL;
-        }
-
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof HellfireForgeTile forge)) {
             return ItemInteractionResult.FAIL;
         }
 
-        Vec3 relative = hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-        BloodMagic.LOGGER.info("{}, {}, {}", relative.x, relative.y, relative.z);
+        ItemStack forgeStack = forge.inv.getStackInSlot(HellfireForgeTile.OUTPUT_SLOT);
 
+        if (player.isShiftKeyDown() && !forgeStack.isEmpty() && stack.isEmpty()) {
+            player.setItemInHand(hand, forgeStack.copy());
+            forge.inv.setStackInSlot(HellfireForgeTile.OUTPUT_SLOT, ItemStack.EMPTY);
+            forge.setChanged();
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+
+        Direction side = hitResult.getDirection();
+        int slot = switch (side) {
+            case UP -> {
+                Vec3 relative = hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+                double x = relative.x - 0.5D;
+                double z = relative.z - 0.5D;
+                if (Math.abs(x) < 3/16D && Math.abs(z) < 3/16D) {
+                    yield HellfireForgeTile.GEM_SLOT;
+                }
+                double max = Math.max(Math.abs(x), Math.abs(z));
+                if (max == Math.abs(x)) {
+                    yield x < 0 ? HellfireForgeTile.WEST : HellfireForgeTile.EAST;
+                } else {
+                    yield z < 0 ? HellfireForgeTile.NORTH : HellfireForgeTile.SOUTH;
+                }
+            }
+
+            case DOWN -> HellfireForgeTile.OUTPUT_SLOT;
+            case EAST -> HellfireForgeTile.EAST;
+            case WEST -> HellfireForgeTile.WEST;
+            case SOUTH -> HellfireForgeTile.SOUTH;
+            case NORTH -> HellfireForgeTile.NORTH;
+        };
+
+        BloodMagic.LOGGER.info("got: {} which is {}", slot, Direction.from2DDataValue(slot));
+
+        forgeStack = forge.inv.getStackInSlot(slot);
+        if (forgeStack.isEmpty() && !stack.isEmpty()) {
+            forge.inv.setStackInSlot(slot, stack.copy());
+            player.setItemInHand(hand, ItemStack.EMPTY);
+            forge.setChanged();
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        } else if (!forgeStack.isEmpty() && stack.isEmpty()) {
+            forge.inv.setStackInSlot(slot, ItemStack.EMPTY);
+            player.setItemInHand(hand, forgeStack.copy());
+            forge.setChanged();
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
 
         return ItemInteractionResult.FAIL;
     }

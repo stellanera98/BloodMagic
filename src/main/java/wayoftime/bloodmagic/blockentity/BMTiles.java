@@ -12,6 +12,7 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.block.BMBlocks;
 import wayoftime.bloodmagic.blockentity.render.BloodAltarRenderer;
 import wayoftime.bloodmagic.blockentity.render.BloodTankRenderer;
+import wayoftime.bloodmagic.blockentity.render.HellfireForgeRenderer;
 
 import java.util.Set;
 
@@ -40,14 +41,20 @@ public class BMTiles {
         );
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
-                HELLFIRE_FORGE_TYPE.get(),
+                BLOOD_ALTAR_TYPE.get(),
                 (tile, side) -> tile.inv
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                HELLFIRE_FORGE_TYPE.get(),
+                HellfireForgeTile::getInventory
         );
     }
 
     private static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BLOOD_TANK_TYPE.get(), BloodTankRenderer::new);
         event.registerBlockEntityRenderer(BLOOD_ALTAR_TYPE.get(), BloodAltarRenderer::new);
+        event.registerBlockEntityRenderer(HELLFIRE_FORGE_TYPE.get(), HellfireForgeRenderer::new);
     }
 
     public static void register(IEventBus modBus) {
