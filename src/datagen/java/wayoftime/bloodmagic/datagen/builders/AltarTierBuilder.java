@@ -5,10 +5,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.registry.AltarComponent;
-import wayoftime.bloodmagic.registry.AltarTier;
-import wayoftime.bloodmagic.registry.BMRegistries;
-import wayoftime.bloodmagic.tag.BMTags;
+import wayoftime.bloodmagic.common.registry.AltarComponent;
+import wayoftime.bloodmagic.common.registry.AltarTier;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.ArrayList;
 import java.util.List;

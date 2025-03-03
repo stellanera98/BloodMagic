@@ -10,14 +10,14 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import org.slf4j.Logger;
-import wayoftime.bloodmagic.block.BMBlocks;
-import wayoftime.bloodmagic.blockentity.BMTiles;
-import wayoftime.bloodmagic.creativetab.BMCreativeTab;
-import wayoftime.bloodmagic.datacomponent.BMDataComponents;
-import wayoftime.bloodmagic.datamap.BMDataMaps;
-import wayoftime.bloodmagic.fluid.BMFluids;
-import wayoftime.bloodmagic.recipe.BMRecipes;
-import wayoftime.bloodmagic.registry.BMRegistries;
+import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.blockentity.BMTiles;
+import wayoftime.bloodmagic.common.creativetab.BMCreativeTab;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datamap.BMDataMaps;
+import wayoftime.bloodmagic.common.fluid.BMFluids;
+import wayoftime.bloodmagic.common.recipe.BMRecipes;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
 
 
 @Mod(BloodMagic.MODID)

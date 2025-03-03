@@ -14,12 +14,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.datamap.BMDataMaps;
-import wayoftime.bloodmagic.datamap.BloodRune;
-import wayoftime.bloodmagic.registry.AltarComponent;
-import wayoftime.bloodmagic.registry.AltarTier;
-import wayoftime.bloodmagic.registry.BMRegistries;
-import wayoftime.bloodmagic.tag.BMTags;
+import wayoftime.bloodmagic.common.datamap.BMDataMaps;
+import wayoftime.bloodmagic.common.datamap.BloodRune;
+import wayoftime.bloodmagic.common.registry.AltarComponent;
+import wayoftime.bloodmagic.common.registry.AltarTier;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.HashMap;
 import java.util.List;

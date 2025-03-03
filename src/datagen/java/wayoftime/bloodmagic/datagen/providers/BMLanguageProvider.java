@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.block.BMBlocks;
-import wayoftime.bloodmagic.fluid.BMFluids;
+import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.util.helper.BlockWithItemHolder;
 
 public class BMLanguageProvider extends LanguageProvider {

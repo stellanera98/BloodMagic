@@ -5,8 +5,8 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.registry.AltarTier;
-import wayoftime.bloodmagic.registry.BMRegistries;
+import wayoftime.bloodmagic.common.registry.AltarTier;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.datagen.builders.AltarTierBuilder;
 import wayoftime.bloodmagic.datagen.builders.AltarTierBuilder.Keys;
 

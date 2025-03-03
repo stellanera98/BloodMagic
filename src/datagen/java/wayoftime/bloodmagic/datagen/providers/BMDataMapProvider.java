@@ -3,9 +3,9 @@ package wayoftime.bloodmagic.datagen.providers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DataMapProvider;
-import wayoftime.bloodmagic.block.BMBlocks;
-import wayoftime.bloodmagic.datamap.BMDataMaps;
-import wayoftime.bloodmagic.datamap.BloodRune;
+import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.datamap.BMDataMaps;
+import wayoftime.bloodmagic.common.datamap.BloodRune;
 import wayoftime.bloodmagic.util.RuneType;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class BMDataMapProvider extends DataMapProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         this.builder(BMDataMaps.BLOOD_RUNES)
                 .add(BMBlocks.RUNE_ACCELERATION.block(), List.of(new BloodRune(RuneType.ACCELERATION, 1)), false)
                 .add(BMBlocks.RUNE_SPEED.block(), List.of(new BloodRune(RuneType.SPEED, 1)), false)

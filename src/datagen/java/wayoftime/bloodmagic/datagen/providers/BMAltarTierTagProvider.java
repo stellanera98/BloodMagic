@@ -5,10 +5,10 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.registry.AltarTier;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.datagen.builders.AltarTierBuilder.Keys;
-import wayoftime.bloodmagic.registry.AltarTier;
-import wayoftime.bloodmagic.registry.BMRegistries;
-import wayoftime.bloodmagic.tag.BMTags;
 
 import java.util.concurrent.CompletableFuture;
 

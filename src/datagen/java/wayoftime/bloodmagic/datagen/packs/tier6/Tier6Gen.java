@@ -8,19 +8,16 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.Datagen;
+import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.datagen.BlockGroups;
 import wayoftime.bloodmagic.datagen.providers.*;
-import wayoftime.bloodmagic.tag.BMTags;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)

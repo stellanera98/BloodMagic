@@ -9,7 +9,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import wayoftime.bloodmagic.block.BMBlocks;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 
 import java.util.ArrayList;
 import java.util.List;

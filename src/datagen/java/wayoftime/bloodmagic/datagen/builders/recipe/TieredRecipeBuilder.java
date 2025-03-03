@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
-import wayoftime.bloodmagic.recipe.tiered.EnergyTieredRecipe;
-import wayoftime.bloodmagic.recipe.tiered.FluidTieredRecipe;
+import wayoftime.bloodmagic.common.recipe.tiered.EnergyTieredRecipe;
+import wayoftime.bloodmagic.common.recipe.tiered.FluidTieredRecipe;
 
 import java.util.LinkedHashMap;
 import java.util.List;

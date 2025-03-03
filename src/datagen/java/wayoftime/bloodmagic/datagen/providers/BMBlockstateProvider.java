@@ -2,10 +2,9 @@ package wayoftime.bloodmagic.datagen.providers;
 
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.block.BMBlocks;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 
 public class BMBlockstateProvider extends BlockStateProvider {
     public BMBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper) {

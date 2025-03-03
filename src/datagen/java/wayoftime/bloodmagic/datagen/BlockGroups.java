@@ -2,7 +2,7 @@ package wayoftime.bloodmagic.datagen;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
-import wayoftime.bloodmagic.block.BMBlocks;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 
 import java.util.List;
 

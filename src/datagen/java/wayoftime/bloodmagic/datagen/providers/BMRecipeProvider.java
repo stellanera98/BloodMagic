@@ -9,7 +9,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.block.BMBlocks;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.datagen.builders.recipe.TieredRecipeBuilder;
 
 import java.util.concurrent.CompletableFuture;
