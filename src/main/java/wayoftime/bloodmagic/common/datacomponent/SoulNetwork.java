@@ -15,9 +15,10 @@ public class SoulNetwork {
     private int currentEssence;
     private BMSavedData parent;
 
-    public static SoulNetwork newEmpty(UUID playerId) {
+    public static SoulNetwork newEmpty(UUID playerId, BMSavedData parent) {
         SoulNetwork soulNetwork = new SoulNetwork();
         soulNetwork.playerId = playerId;
+        soulNetwork.parent = parent;
         return soulNetwork;
     }
 
@@ -25,36 +26,26 @@ public class SoulNetwork {
         return this.playerId;
     }
 
-    public BMSavedData getParent() {
-        return parent;
-    }
-
-    public SoulNetwork setParent(BMSavedData parent) {
-        this.parent = parent;
-        markDirty();
-        return this;
-    }
-
     public int getCurrentEssence() {
         return currentEssence;
     }
 
-    private SoulNetwork setCurrentEssence(int currentEssence) {
+    private void setCurrentEssence(int currentEssence) {
         this.currentEssence = currentEssence;
         markDirty();
-        return this;
     }
 
     private void markDirty() {
-        if (getParent() != null)
-            getParent().setDirty();
+        if (parent != null)
+            parent.setDirty();
     }
 
-    public static SoulNetwork fromNBT(CompoundTag tag) {
+    public static SoulNetwork fromNBT(CompoundTag tag, BMSavedData parent) {
         SoulNetwork soulNetwork = new SoulNetwork();
 
         soulNetwork.playerId = tag.getUUID("playerId");
         soulNetwork.currentEssence = tag.getInt("currentEssence");
+        soulNetwork.parent = parent;
 
         return soulNetwork;
     }

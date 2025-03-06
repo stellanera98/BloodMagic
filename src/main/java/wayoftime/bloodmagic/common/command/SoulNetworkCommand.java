@@ -15,7 +15,7 @@ import wayoftime.bloodmagic.util.SoulTicket;
 
 public class SoulNetworkCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        LiteralCommandNode<CommandSourceStack> literalCommandNode = dispatcher.register(
+        dispatcher.register(
                 Commands.literal("bm-network")
                         .requires(source -> source.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(
@@ -25,8 +25,11 @@ public class SoulNetworkCommand {
                                                         .executes(context -> showNetwork(context, EntityArgument.getPlayer(context, "target")))
                                         )
                                         .then(
-                                                Commands.literal("set")
+                                                Commands.literal("reset")
                                                         .executes(context -> setNetwork(context, EntityArgument.getPlayer(context, "target"), 0))
+                                        )
+                                        .then(
+                                                Commands.literal("set")
                                                         .then(
                                                                 Commands.argument("amount", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
                                                                         .executes(context -> setNetwork(context, EntityArgument.getPlayer(context, "target"), IntegerArgumentType.getInteger(context, "amount")))

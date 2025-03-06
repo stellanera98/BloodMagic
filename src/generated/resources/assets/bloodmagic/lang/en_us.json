@@ -31,6 +31,12 @@
   "block.bloodmagic.rune_speed": "Speed Rune",
   "fluid.bloodmagic.doubt_fluid": "Liquid Doubt",
   "fluid.bloodmagic.life_essence_fluid": "Life Essence",
+  "item.bloodmagic.blood_orb_apprentice": "Apprentice Blood Orb",
+  "item.bloodmagic.blood_orb_archmage": "Archmage Blood Orb",
+  "item.bloodmagic.blood_orb_magician": "Mage Blood Orb",
+  "item.bloodmagic.blood_orb_master": "Master Blood Orb",
+  "item.bloodmagic.blood_orb_transcendent": "Transcendent Blood Orb",
+  "item.bloodmagic.blood_orb_weak": "Weak Blood Orb",
   "item.bloodmagic.doubt_bucket": "Doubt Bucket",
   "item.bloodmagic.life_essence_bucket": "Life Essence Bucket",
   "itemGroup.bloodmagic.anointments": "Blood Magic Anointments",
@@ -38,7 +44,9 @@
   "itemGroup.bloodmagic.upgrades": "Blood Magic Upgrade Tomes",
   "tooltip.bloodmagic.container_tier": "Tier: %d",
   "tooltip.bloodmagic.container_tier_missing": "Tier missing!",
+  "tooltip.bloodmagic.currentOwner": "Current Owner: %s",
   "tooltip.bloodmagic.fluid_content": "%s: %d",
   "tooltip.bloodmagic.fluid_content_empty": "Empty",
+  "tooltip.bloodmagic.noOwner": "Not Bound Yet",
   "tooltip.bloodmagic.save_for_decoration": "Save for decoration"
 }

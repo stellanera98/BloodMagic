@@ -115,6 +115,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
         super.loadAdditional(tag, registries);
         CompoundTag stats = tag.getCompound("upgrades");
         tickRate = stats.getInt("tickrate");
+        ticks = stats.getInt("ticks");
         capacityMod = stats.getFloat("capacity");
         consumptionMod = stats.getFloat("consumption");
         efficiencyMod = stats.getFloat("efficiency");
@@ -142,6 +143,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
         super.saveAdditional(tag, registries);
         CompoundTag stats = new CompoundTag();
         stats.putInt("tickrate", tickRate);
+        stats.putInt("ticks", ticks % 2048);
         stats.putFloat("capacity", capacityMod);
         stats.putFloat("consumption", consumptionMod);
         stats.putFloat("efficiency", efficiencyMod);

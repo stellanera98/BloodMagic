@@ -5,7 +5,9 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
+import wayoftime.bloodmagic.common.datamap.BloodOrb;
 import wayoftime.bloodmagic.common.datamap.BloodRune;
+import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.util.RuneType;
 
 import java.util.List;
@@ -40,5 +42,13 @@ public class BMDataMapProvider extends DataMapProvider {
                 .add(BMBlocks.RUNE_2_CHARGING.block(), List.of(new BloodRune(RuneType.CHARGING, 2)), false)
                 .add(BMBlocks.RUNE_2_DISLOCATION.block(), List.of(new BloodRune(RuneType.DISPLACEMENT, 2)), false)
                 .add(BMBlocks.RUNE_2_EFFICIENCY.block(), List.of(new BloodRune(RuneType.EFFICIENCY, 2)), false);
+
+        this.builder(BMDataMaps.BLOOD_ORBS)
+                .add(BMItems.ORB_WEAK, new BloodOrb(0, 5_000, 2), false)
+                .add(BMItems.ORB_APPRENTICE, new BloodOrb(1, 25_000, 5), false)
+                .add(BMItems.ORB_MAGICIAN, new BloodOrb(2, 150_000, 15), false)
+                .add(BMItems.ORB_MASTER, new BloodOrb(3, 1_000_000, 25), false)
+                .add(BMItems.ORB_ARCHMAGE, new BloodOrb(4, 5_000_000, 50), false)
+                .add(BMItems.ORB_TRANSCENDENT, new BloodOrb(5, 10_000_000, 50), false);
     }
 }

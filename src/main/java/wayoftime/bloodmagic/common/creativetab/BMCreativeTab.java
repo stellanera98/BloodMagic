@@ -10,6 +10,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
+import wayoftime.bloodmagic.common.item.BMItems;
+
+import java.util.function.Supplier;
 
 public class BMCreativeTab {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, BloodMagic.MODID);
@@ -19,9 +22,10 @@ public class BMCreativeTab {
                     .title(Component.translatable("itemGroup." + BloodMagic.MODID + ".main"))
                     .icon(() -> new ItemStack(BMBlocks.BLOOD_ALTAR.asItem()))
                     .displayItems((params, output) -> {
-                        BMBlocks.BLOCK_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BMFluids.BUCKETS.getEntries().forEach(bucket -> output.accept(bucket.get()));
-                        BMBlocks.BASIC_BLOCK_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        BMBlocks.BLOCK_ITEMS.getEntries().stream().map(Supplier::get).forEach(output::accept);
+                        BMFluids.BUCKETS.getEntries().stream().map(Supplier::get).forEach(output::accept);
+                        BMBlocks.BASIC_BLOCK_ITEMS.getEntries().stream().map(Supplier::get).forEach(output::accept);
+                        BMItems.BASICITEMS.getEntries().stream().map(Supplier::get).forEach(output::accept);
                     })
                     .build()
     );

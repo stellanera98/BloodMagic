@@ -21,9 +21,6 @@ public class BMDataComponents {
 
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Binding>> BINDING = COMPONENT_TYPES.registerComponentType("binding_type", builder -> builder.persistent(Binding.BASIC_CODEC).networkSynchronized(Binding.STREAM_CODEC));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> ORB_TIER = COMPONENT_TYPES.registerComponentType("orb_tier", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ORB_CAPACITY = COMPONENT_TYPES.registerComponentType("orb_capacity", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ORB_FILL_RATE = COMPONENT_TYPES.registerComponentType("orb_fill_rate", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 
     public static void register(IEventBus modBus) {
         COMPONENT_TYPES.register(modBus);

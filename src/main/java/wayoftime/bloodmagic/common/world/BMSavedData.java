@@ -19,7 +19,7 @@ public class BMSavedData extends SavedData {
 
     public SoulNetwork getNetwork(UUID playerId) {
         if (!soulNetworks.containsKey(playerId))
-            soulNetworks.put(playerId, SoulNetwork.newEmpty(playerId).setParent(this));
+            soulNetworks.put(playerId, SoulNetwork.newEmpty(playerId, this));
 
         return soulNetworks.get(playerId);
     }
@@ -42,8 +42,7 @@ public class BMSavedData extends SavedData {
 
         for (int i = 0; i < networkData.size(); i++) {
             CompoundTag data = networkData.getCompound(i);
-            SoulNetwork network = SoulNetwork.fromNBT(data);
-            network.setParent(savedData);
+            SoulNetwork network = SoulNetwork.fromNBT(data, savedData);
             savedData.soulNetworks.put(network.getPlayerId(), network);
         }
 

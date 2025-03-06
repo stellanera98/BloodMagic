@@ -8,6 +8,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
+import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.util.helper.BlockWithItemHolder;
 
 public class BMLanguageProvider extends LanguageProvider {
@@ -69,6 +70,15 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.RUNE_2_EFFICIENCY, "Reinforced Efficiency Rune");
 
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
+
+        addTooltip("currentOwner", "Current Owner: %s");
+        addTooltip("noOwner", "Not Bound Yet");
+        add(BMItems.ORB_WEAK.get(), "Weak Blood Orb");
+        add(BMItems.ORB_APPRENTICE.get(), "Apprentice Blood Orb");
+        add(BMItems.ORB_MAGICIAN.get(), "Mage Blood Orb");
+        add(BMItems.ORB_MASTER.get(), "Master Blood Orb");
+        add(BMItems.ORB_ARCHMAGE.get(), "Archmage Blood Orb");
+        add(BMItems.ORB_TRANSCENDENT.get(), "Transcendent Blood Orb");
     }
 
     public void add(FluidType type, String name) {

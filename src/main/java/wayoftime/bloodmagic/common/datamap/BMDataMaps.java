@@ -3,6 +3,7 @@ package wayoftime.bloodmagic.common.datamap;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
@@ -18,8 +19,15 @@ public class BMDataMaps {
             Codec.list(BloodRune.CODEC)
     ).build();
 
+    public static final DataMapType<Item, BloodOrb> BLOOD_ORBS = DataMapType.builder(
+            ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "blood_orb"),
+            Registries.ITEM,
+            BloodOrb.CODEC
+    ).build();
+
     private static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
         event.register(BLOOD_RUNES);
+        event.register(BLOOD_ORBS);
     }
 
     public static void register(IEventBus modBus) {
