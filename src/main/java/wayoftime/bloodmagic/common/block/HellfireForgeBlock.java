@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.HellfireForgeTile;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.util.helper.BlockEntityHelper;
 
 public class HellfireForgeBlock extends Block implements EntityBlock {
@@ -56,7 +57,7 @@ public class HellfireForgeBlock extends Block implements EntityBlock {
                 Vec3 relative = hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
                 double x = relative.x - 0.5D;
                 double z = relative.z - 0.5D;
-                if (Math.abs(x) < 3/16D && Math.abs(z) < 3/16D) {
+                if (Math.abs(x) < 3/16D && Math.abs(z) < 3/16D && (stack.isEmpty() || forge.inv.isItemValid(HellfireForgeTile.GEM_SLOT, stack))) {
                     yield HellfireForgeTile.GEM_SLOT;
                 }
                 double max = Math.max(Math.abs(x), Math.abs(z));

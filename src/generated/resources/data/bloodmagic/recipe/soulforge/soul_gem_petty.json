@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagic:soul_forge",
+  "drain": 1.0,
+  "inputs": [
+    {
+      "tag": "c:gems/lapis"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "tag": "c:glass_blocks"
+    },
+    {
+      "tag": "c:ingots/gold"
+    }
+  ],
+  "minDrain": 1.0,
+  "output": {
+    "count": 1,
+    "id": "bloodmagic:soul_gem_petty"
+  }
+}

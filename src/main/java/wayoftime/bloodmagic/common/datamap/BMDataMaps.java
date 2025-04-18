@@ -25,9 +25,16 @@ public class BMDataMaps {
             BloodOrb.CODEC
     ).build();
 
+    public static final DataMapType<Item, Double> SOUL_GEM_AMOUNTS = DataMapType.builder(
+            ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "soul_gem_amounts"),
+            Registries.ITEM,
+            Codec.DOUBLE
+    ).synced(Codec.DOUBLE, true).build();
+
     private static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
         event.register(BLOOD_RUNES);
         event.register(BLOOD_ORBS);
+        event.register(SOUL_GEM_AMOUNTS);
     }
 
     public static void register(IEventBus modBus) {

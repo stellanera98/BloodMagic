@@ -5,10 +5,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.util.DemonWillType;
 import wayoftime.bloodmagic.util.helper.BlockWithItemHolder;
 
 public class BMLanguageProvider extends LanguageProvider {
@@ -70,6 +72,23 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.RUNE_2_EFFICIENCY, "Reinforced Efficiency Rune");
 
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
+        add(BMItems.RAW_WILL.get(), "Raw Will");
+
+        add(BMItems.SOUL_GEM_PETTY.get(), "Petty Tartaric Gem");
+        add(BMItems.SOUL_GEM_LESSER.get(), "Lesser Tartaric Gem");
+        add(BMItems.SOUL_GEM_COMMON.get(), "Common Tartaric Gem");
+        add(BMItems.SOUL_GEM_GREATER.get(), "Greater Tartaric Gem");
+        add(BMItems.SOUL_GEM_GRAND.get(), "Grand Tartaric Gem");
+        addGemDesc(BMItems.SOUL_GEM_PETTY, "a little");
+        addGemDesc(BMItems.SOUL_GEM_LESSER, "some");
+        addGemDesc(BMItems.SOUL_GEM_COMMON, "more");
+        addGemDesc(BMItems.SOUL_GEM_GREATER, "a greater amount of");
+        addGemDesc(BMItems.SOUL_GEM_GRAND, "a large amount of");
+
+        addTooltip("will", "Will Quality: %s");
+        for (DemonWillType type : DemonWillType.values()) {
+            addTooltip("current_type." + type.toLower(), String.format("Contains: %s Will", type.toCapitalized()));
+        }
 
         addTooltip("currentOwner", "Current Owner: %s");
         addTooltip("noOwner", "Not Bound Yet");
@@ -79,10 +98,16 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMItems.ORB_MASTER.get(), "Master Blood Orb");
         add(BMItems.ORB_ARCHMAGE.get(), "Archmage Blood Orb");
         add(BMItems.ORB_TRANSCENDENT.get(), "Transcendent Blood Orb");
+
+        add(BMItems.SACRIFICIAL_DAGGER.get(), "Sacrificial Dagger");
     }
 
     public void add(FluidType type, String name) {
         add(type.getDescriptionId(), name);
+    }
+
+    public void addGemDesc(DeferredHolder holder, String desc) {
+        addTooltip("soul_gem." + holder.getId().getPath(), String.format("A gem used to contain %s will.", desc));
     }
 
     public void add(BlockWithItemHolder<? extends Block, ? extends BlockItem> block, String name) {
@@ -90,6 +115,6 @@ public class BMLanguageProvider extends LanguageProvider {
     }
 
     public void addTooltip(String name, String value) {
-        add("tooltip.bloodmagic."+name, value);
+        add("tooltip.bloodmagic." + name, value);
     }
 }

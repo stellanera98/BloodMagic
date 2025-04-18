@@ -50,5 +50,12 @@ public class BMDataMapProvider extends DataMapProvider {
                 .add(BMItems.ORB_MASTER, new BloodOrb(3, 1_000_000, 25), false)
                 .add(BMItems.ORB_ARCHMAGE, new BloodOrb(4, 5_000_000, 50), false)
                 .add(BMItems.ORB_TRANSCENDENT, new BloodOrb(5, 10_000_000, 50), false);
+
+        this.builder(BMDataMaps.SOUL_GEM_AMOUNTS)
+                .add(BMItems.SOUL_GEM_PETTY, 64D, false)
+                .add(BMItems.SOUL_GEM_LESSER, 256D, false)
+                .add(BMItems.SOUL_GEM_COMMON, 1024D, false)
+                .add(BMItems.SOUL_GEM_GREATER, 4096D, false)
+                .add(BMItems.SOUL_GEM_GRAND, 16384D, false);
     }
 }

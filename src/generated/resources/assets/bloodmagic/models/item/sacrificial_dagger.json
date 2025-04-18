@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "model": "bloodmagic:item/variant/sacrificial_dagger_normal",
+      "predicate": {
+        "bloodmagic:incense": 0.0
+      }
+    },
+    {
+      "model": "bloodmagic:item/variant/sacrificial_dagger_charged",
+      "predicate": {
+        "bloodmagic:incense": 1.0
+      }
+    }
+  ]
+}

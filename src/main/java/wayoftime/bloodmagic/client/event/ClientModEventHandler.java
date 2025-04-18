@@ -1,0 +1,25 @@
+package wayoftime.bloodmagic.client.event;
+
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.util.DemonWillType;
+
+@EventBusSubscriber(modid = BloodMagic.MODID, bus = EventBusSubscriber.Bus.MOD)
+public class ClientModEventHandler {
+
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            BMItems.WILLITEMS.getEntries().forEach(item -> {
+                ItemProperties.register(item.get(), BloodMagic.TYPE_PROPERTY, (stack, level, player, seed) -> stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, DemonWillType.DEFAULT).ordinal());
+            });
+
+            ItemProperties.register(BMItems.SACRIFICIAL_DAGGER.get(), BloodMagic.INCENSE_PROPERTY, (stack, level, player, seed) -> stack.getOrDefault(BMDataComponents.INCENSE, false) ? 1 : 0);
+        });
+    }
+}

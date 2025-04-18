@@ -28,6 +28,9 @@ public class BloodMagic {
     public static final String MODID = "bloodmagic";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final ResourceLocation TYPE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "type");
+    public static final ResourceLocation INCENSE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "incense");
+
     public BloodMagic(IEventBus modBus) {
         BMDataComponents.register(modBus);
         BMFluids.register(modBus);

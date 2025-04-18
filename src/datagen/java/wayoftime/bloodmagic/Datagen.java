@@ -28,7 +28,11 @@ public class Datagen {
         generator.addProvider(event.includeClient(), new BMItemModelProvider(output, existingFileHelper));
 
         generator.addProvider(event.includeServer(), new BMRecipeProvider(output, registries));
-        generator.addProvider(event.includeServer(), new BMBlockTagProvider(output, registries, existingFileHelper));
+
+        BMBlockTagProvider blockTagsProvider = new BMBlockTagProvider(output, registries, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new BMItemTagProvider(output, registries, blockTagsProvider.contentsGetter(), existingFileHelper));
+
         generator.addProvider(event.includeServer(), new BMLootTableProvider(output, registries));
         generator.addProvider(event.includeServer(), new BMDataMapProvider(output, registries));
 

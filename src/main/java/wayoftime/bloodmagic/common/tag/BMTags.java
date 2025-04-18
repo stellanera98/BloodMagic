@@ -1,8 +1,10 @@
 package wayoftime.bloodmagic.common.tag;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.registry.AltarTier;
@@ -26,5 +28,7 @@ public class BMTags {
         public static final TagKey<AltarTier> VALID_TIERS = TagKey.create(BMRegistries.ALTAR_TIER_KEY, bm("valid_tiers"));
     }
 
-    public static class Items {}
+    public static class Items {
+        public static final TagKey<Item> SOUL_GEM = TagKey.create(Registries.ITEM, bm("soul_gems"));
+    }
 }

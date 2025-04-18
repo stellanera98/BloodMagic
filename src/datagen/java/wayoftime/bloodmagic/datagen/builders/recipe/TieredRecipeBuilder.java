@@ -5,9 +5,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -16,30 +14,24 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.recipe.tiered.EnergyTieredRecipe;
 import wayoftime.bloodmagic.common.recipe.tiered.FluidTieredRecipe;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TieredRecipeBuilder implements RecipeBuilder {
-    protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-    protected String group;
-    protected final ItemStack result;
-    protected final RecipeCategory category;
-
+public class TieredRecipeBuilder extends BaseRecipeBuilder {
     protected final List<String> rows = Lists.newArrayList();
     protected final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
+    protected final RecipeCategory category;
 
     protected final boolean isFluid;
     protected int primary;
     protected int secondary;
 
     public TieredRecipeBuilder(RecipeCategory category, ItemStack result, boolean isFluid) {
+        super(result);
         this.category = category;
-        this.result = result;
         this.isFluid = isFluid;
     }
 
@@ -90,45 +82,15 @@ public class TieredRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public TieredRecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
-        this.criteria.put(name, criterion);
-        return this;
-    }
-
-    @Override
-    public TieredRecipeBuilder group(@Nullable String groupName) {
-        this.group = groupName;
-        return this;
-    }
-
-    @Override
-    public Item getResult() {
-        return result.getItem();
-    }
-
-    @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput output, ResourceLocation id) {
         ShapedRecipePattern shapedrecipepattern = ShapedRecipePattern.of(key, rows);
-        Advancement.Builder advancement$builder = recipeOutput.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-                .rewards(AdvancementRewards.Builder.recipe(id))
-                .requirements(AdvancementRequirements.Strategy.OR);
-        this.criteria.forEach(advancement$builder::addCriterion);
+        Advancement.Builder advBuilder = getBuilder(output, id);
         Recipe recipe;
         if (isFluid) {
-            saveFluid(recipeOutput, id, shapedrecipepattern, advancement$builder);
+            recipe = new FluidTieredRecipe(CraftingBookCategory.valueOf(this.category.name()), shapedrecipepattern, primary, secondary, result);
         } else {
-            saveEnergy(recipeOutput, id, shapedrecipepattern, advancement$builder);
+            recipe = new EnergyTieredRecipe(CraftingBookCategory.valueOf(this.category.name()), shapedrecipepattern, primary, secondary, result);
         }
-    }
-
-    private void saveFluid(RecipeOutput output, ResourceLocation id, ShapedRecipePattern shapedPattern, Advancement.Builder advancementBuilder) {
-        FluidTieredRecipe recipe = new FluidTieredRecipe(CraftingBookCategory.valueOf(this.category.name()), shapedPattern, primary, secondary, result);
-        output.accept(id, recipe, advancementBuilder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
-    }
-
-    private void saveEnergy(RecipeOutput output, ResourceLocation id, ShapedRecipePattern shapedPattern, Advancement.Builder advancementBuilder) {
-        EnergyTieredRecipe recipe = new EnergyTieredRecipe(CraftingBookCategory.valueOf(this.category.name()), shapedPattern, primary, secondary, result);
-        output.accept(id, recipe, advancementBuilder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
+        output.accept(id, recipe, advBuilder.build(advancementId(id, this.category.getFolderName())));
     }
 }
