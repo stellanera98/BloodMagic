@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.datagen.builders.recipe.AltarRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.SoulForgeRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.TieredRecipeBuilder;
 
@@ -86,6 +87,14 @@ public class BMRecipeProvider extends RecipeProvider {
                 .requires(BMItems.ORB_MASTER.get()) // T4 slate
                 .requires(Tags.Items.GEMS_AMETHYST) // Demon Will Crystal
                 .requires(BMItems.RAW_WILL.get()) // Weak Blood Shard
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_WEAK.get())
+                .minTier(1)
+                .bloodNeeded(2000)
+                .consumption(5)
+                .drain(1)
+                .from(Tags.Items.GEMS_DIAMOND)
                 .save(output);
     }
 

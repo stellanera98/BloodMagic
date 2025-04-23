@@ -8,6 +8,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipe;
+import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipeSerializer;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeRecipe;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeSerializer;
 import wayoftime.bloodmagic.common.recipe.tiered.EnergyTieredRecipe;
@@ -24,6 +26,9 @@ public class BMRecipes {
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<SoulForgeRecipe>> SOUL_FORGE_TYPE = TYPES.register(SoulForgeRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, SoulForgeRecipe.RECIPE_TYPE_NAME)));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SoulForgeRecipe>> SOUL_FORGE_SERIALIZER = SERIALIZERS.register("soul_forge", SoulForgeSerializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<BloodAltarRecipe>> BLOOD_ALTAR_TYPE = TYPES.register(BloodAltarRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, BloodAltarRecipe.RECIPE_TYPE_NAME)));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BloodAltarRecipe>> BLOOD_ALTAR_SERIALIZER = SERIALIZERS.register("blood_altar", BloodAltarRecipeSerializer::new);
 
     public static void register(IEventBus modBus) {
         SERIALIZERS.register(modBus);

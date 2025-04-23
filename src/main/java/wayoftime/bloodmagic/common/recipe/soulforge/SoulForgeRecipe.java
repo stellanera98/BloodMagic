@@ -65,7 +65,7 @@ public class SoulForgeRecipe implements Recipe<SoulForgeInput> {
         if (will < minWill) {
             return ItemStack.EMPTY;
         }
-        ItemStack outStack = resultItem;
+        ItemStack outStack = resultItem.copy();
         if (outStack.is(BMTags.Items.SOUL_GEM) && input.getGemIndex() != HellfireForgeTile.GEM_SLOT) {
             outStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will - usedWill);
             outStack.set(BMDataComponents.DEMON_WILL_TYPE, gemStack.get(BMDataComponents.DEMON_WILL_TYPE));
@@ -81,7 +81,7 @@ public class SoulForgeRecipe implements Recipe<SoulForgeInput> {
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return resultItem;
+        return resultItem.copy();
     }
 
     @Override

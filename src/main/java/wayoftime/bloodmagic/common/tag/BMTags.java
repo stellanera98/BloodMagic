@@ -30,5 +30,6 @@ public class BMTags {
 
     public static class Items {
         public static final TagKey<Item> SOUL_GEM = TagKey.create(Registries.ITEM, bm("soul_gems"));
+        public static final TagKey<Item> ALTAR_FILL_BLACKLIST = TagKey.create(Registries.ITEM, bm("altar_fill_blacklist"));
     }
 }

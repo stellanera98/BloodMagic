@@ -24,6 +24,8 @@ public class BMLanguageProvider extends LanguageProvider {
         add("itemGroup." + BloodMagic.MODID + ".upgrades", "Blood Magic Upgrade Tomes");
         add("itemGroup." + BloodMagic.MODID + ".anointments", "Blood Magic Anointments");
 
+        add("death.bloodmagic.sacrifice_damage", "%1$s died from exsanguination");
+
         add(BMFluids.LIFE_ESSENCE_TYPE.get(), "Life Essence");
         add(BMFluids.LIFE_ESSENCE_BUCKET.get(), "Life Essence Bucket");
         add(BMFluids.LIFE_ESSENCE_BLOCK.get(), "Life Essence");

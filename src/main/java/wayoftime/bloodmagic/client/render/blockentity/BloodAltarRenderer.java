@@ -19,6 +19,7 @@ import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.util.helper.RenderHelper;
@@ -32,7 +33,10 @@ public class BloodAltarRenderer implements BlockEntityRenderer<BloodAltarTile> {
         ItemStack inputStack = tileAltar.inv.getStackInSlot(0);
         this.renderItem(inputStack, tileAltar.getLevel(), poseStack, bufferSource, packedLight, packedOverlay);
 
-        float level = ((float) tileAltar.mainTank / (float) tileAltar.getMainCapacity());
+        float level = (float) tileAltar.mainTank / (float) tileAltar.getMainCapacity();
+        if (level == 0) {
+            return;
+        }
         this.renderFluid(level, poseStack, bufferSource, packedLight, packedOverlay);
     }
 
@@ -52,36 +56,34 @@ public class BloodAltarRenderer implements BlockEntityRenderer<BloodAltarTile> {
         }
     }
 
-    private void renderFluid(float fluidLevel, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    private void renderFluid(float fluidLevel, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         Minecraft minecraft = Minecraft.getInstance();
         IClientFluidTypeExtensions fluidClientInfo = IClientFluidTypeExtensions.of(BMFluids.LIFE_ESSENCE_TYPE.get());
         RenderType blockRenderType = ItemBlockRenderTypes.getRenderLayer(BMFluids.LIFE_ESSENCE_SOURCE.get().defaultFluidState());
-        TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidClientInfo.getStillTexture());
-        int color = fluidClientInfo.getTintColor();
+        TextureAtlasSprite texture = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidClientInfo.getStillTexture());
+        int tintColour = fluidClientInfo.getTintColor();
 
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU1();
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV1();
-
-        poseStack.pushPose();
-        PoseStack.Pose pose = poseStack.last();
-        Matrix4f matrix = pose.pose();
-        Vector3f norm = new Vector3f();
-        pose.transformNormal(0, 1, 0, norm);
-
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(blockRenderType, false));
+        VertexConsumer buf = bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(blockRenderType, false));
         float minHeight = 8F/16F;
         float maxHeight = 12F/16F;
         float start = 3F/16F;
         float end = 13F/16F;
         float height = minHeight + fluidLevel * (maxHeight - minHeight);
 
-        RenderHelper.addVertex(vertexConsumer, matrix, end, height, start, u0, v0, color, packedLight, packedOverlay, norm);
-        RenderHelper.addVertex(vertexConsumer, matrix, start, height, start, u1, v0, color, packedLight, packedOverlay, norm);
-        RenderHelper.addVertex(vertexConsumer, matrix, end, height, end, u0, v1, color, packedLight, packedOverlay, norm);
-        RenderHelper.addVertex(vertexConsumer, matrix, start, height, end, u1, v1, color, packedLight, packedOverlay, norm);
+        Vector3f norm = new Vector3f();
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
 
-        poseStack.popPose();
+        float u0 = texture.getU0();
+        float u1 = texture.getU1();
+
+        float v0 = texture.getV0();
+        float v1 = texture.getV1();
+
+        pose.transformNormal(0, 1, 0, norm);
+        RenderHelper.addVertex(buf, matrix, end, height, end, u0, v0, tintColour, light, overlay, norm);
+        RenderHelper.addVertex(buf, matrix, end, height, start, u0, v1, tintColour, light, overlay, norm);
+        RenderHelper.addVertex(buf, matrix, start, height, start, u1, v1, tintColour, light, overlay, norm);
+        RenderHelper.addVertex(buf, matrix, start, height, end, u1, v0, tintColour, light, overlay, norm);
     }
 }

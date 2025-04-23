@@ -103,4 +103,5 @@ public class BloodTankTile extends BlockEntity {
         components.set(BMDataComponents.CONTAINER_TIER, this.tier);
         components.set(BMDataComponents.FLUID_CONTENT, SimpleFluidContent.copyOf(this.tank.getFluid()));
     }
+
 }

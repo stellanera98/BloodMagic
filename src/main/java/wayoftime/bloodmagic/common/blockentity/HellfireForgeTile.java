@@ -3,10 +3,12 @@ package wayoftime.bloodmagic.common.blockentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -14,12 +16,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.event.BloodMagicCraftedEvent;
 import wayoftime.bloodmagic.common.item.SoulGemItem;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeInput;
@@ -70,6 +74,9 @@ public class HellfireForgeTile extends BlockEntity {
     public static final int GEM_SLOT = 4;
     public static final int OUTPUT_SLOT = 5;
 
+    public static final int MAX_PROGRESS = 200;
+    protected int progress = 0;
+
     public HellfireForgeTile(BlockPos pos, BlockState blockState) {
         super(BMTiles.HELLFIRE_FORGE_TYPE.get(), pos, blockState);
     }
@@ -77,7 +84,7 @@ public class HellfireForgeTile extends BlockEntity {
     public static void tick(Level level, BlockPos pos, BlockState state, HellfireForgeTile hellfireForgeTile) {
         SoulForgeInput input = hellfireForgeTile.getInput();
         Optional<RecipeHolder<SoulForgeRecipe>> recipeOptional = level.getRecipeManager().getRecipeFor(BMRecipes.SOUL_FORGE_TYPE.get(), input, level);
-        if (!recipeOptional.isPresent()) {
+        if (recipeOptional.isEmpty()) {
             return;
         }
         SoulForgeRecipe recipe = recipeOptional.get().value();
@@ -92,10 +99,20 @@ public class HellfireForgeTile extends BlockEntity {
             return;
         }
 
-        ItemStack gemStack = hellfireForgeTile.inv.getStackInSlot(input.getGemIndex());
-        double will = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
-        will -= recipe.usedWill;
-        gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will);
+        hellfireForgeTile.progress++;
+        if (!(hellfireForgeTile.progress >= MAX_PROGRESS)) {
+            ((ServerLevel) level).sendParticles(ParticleTypes.SNOWFLAKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
+            return;
+        }
+        BloodMagicCraftedEvent.Forge event = new BloodMagicCraftedEvent.Forge(output, input.asArray());
+        NeoForge.EVENT_BUS.post(event);
+
+        ItemStack gemStack = hellfireForgeTile.inv.getStackInSlot(GEM_SLOT);
+        if (!gemStack.isEmpty()) {
+            double will = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
+            will -= recipe.usedWill;
+            gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will);
+        }
 
         for (int i = SOUTH; i < GEM_SLOT; i++) {
             ItemStack item = hellfireForgeTile.inv.getStackInSlot(i);
@@ -108,8 +125,9 @@ public class HellfireForgeTile extends BlockEntity {
                 hellfireForgeTile.inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
-        hellfireForgeTile.inv.setStackInSlot(OUTPUT_SLOT, output);
-        level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+        hellfireForgeTile.inv.setStackInSlot(OUTPUT_SLOT, event.getOutput());
+
+        hellfireForgeTile.setChanged();
     }
 
     public SoulForgeInput getInput() {

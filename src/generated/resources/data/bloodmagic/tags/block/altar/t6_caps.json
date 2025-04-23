@@ -1,3 +1,6 @@
 {
-  "values": []
+  "values": [
+    "bloodmagic:crystal_cluster",
+    "bloodmagic:crystal_brick"
+  ]
 }

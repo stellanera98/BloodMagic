@@ -30,6 +30,10 @@ public class SoulForgeInput implements RecipeInput {
         return this.gemIndex;
     }
 
+    public ItemStack[] asArray() {
+        return new ItemStack[]{inputStacks.get(0), inputStacks.get(1), inputStacks.get(2), inputStacks.get(3)};
+    }
+
     @Override
     public int size() {
         return inputStacks.size();

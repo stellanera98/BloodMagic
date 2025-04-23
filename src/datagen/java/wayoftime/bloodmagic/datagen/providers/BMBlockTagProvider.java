@@ -34,11 +34,12 @@ public class BMBlockTagProvider extends BlockTagsProvider {
                 .addAll(BlockGroups.BLOODSTONE);
 
         this.tag(BMTags.Blocks.T5_CAP)
-                .add(Blocks.DIAMOND_BLOCK);
+                .add(Blocks.DIAMOND_BLOCK); // TODO: Make Demonite a thing and use it here
 
-        this.tag(BMTags.Blocks.T6_CAP);
+        this.tag(BMTags.Blocks.T6_CAP)
+                .addAll(BlockGroups.CRYSTAL_CLUSTER);
 
-        this.tag(BMTags.Blocks.PILLAR);
+        this.tag(BMTags.Blocks.PILLAR); // means all solid blocks are viable
 
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)

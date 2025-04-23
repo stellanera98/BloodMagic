@@ -20,5 +20,7 @@ public class BMItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(BMTags.Items.SOUL_GEM)
                 .addAll(ItemGroups.SOUL_GEMS);
+
+        tag(BMTags.Items.ALTAR_FILL_BLACKLIST);
     }
 }

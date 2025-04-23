@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagic:blood_altar",
+  "bloodNeeded": 2000,
+  "craftSpeed": 5,
+  "drainSpeed": 1,
+  "input": {
+    "tag": "c:gems/diamond"
+  },
+  "minTier": 1,
+  "output": {
+    "count": 1,
+    "id": "bloodmagic:blood_orb_weak"
+  }
+}

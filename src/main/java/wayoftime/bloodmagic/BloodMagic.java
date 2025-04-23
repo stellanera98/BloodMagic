@@ -7,14 +7,19 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.command.BMCommands;
 import wayoftime.bloodmagic.common.creativetab.BMCreativeTab;
+import wayoftime.bloodmagic.common.dataattachment.BMDataAttachments;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
@@ -28,11 +33,21 @@ public class BloodMagic {
     public static final String MODID = "bloodmagic";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final ServerConfig SERVER_CONFIG;
+    public static final ModConfigSpec SERVER_CONFIG_SPEC;
+
+    static {
+        Pair<ServerConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(ServerConfig::new);
+        SERVER_CONFIG = pair.getLeft();
+        SERVER_CONFIG_SPEC = pair.getRight();
+    }
+
     public static final ResourceLocation TYPE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "type");
     public static final ResourceLocation INCENSE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "incense");
 
-    public BloodMagic(IEventBus modBus) {
+    public BloodMagic(IEventBus modBus, ModContainer container) {
         BMDataComponents.register(modBus);
+        BMDataAttachments.register(modBus);
         BMFluids.register(modBus);
         BMBlocks.register(modBus);
         BMItems.register(modBus);
@@ -44,10 +59,12 @@ public class BloodMagic {
 
         NeoForge.EVENT_BUS.addListener(BMCommands::register);
         modBus.addListener(BloodMagic::addPacks);
+
+        container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
     }
 
     private static void addPacks(AddPackFindersEvent event) {
-        event.addPackFinders(bm("packs/tier6"), PackType.SERVER_DATA, Component.translatable("packname.tier6"), PackSource.FEATURE, false, Pack.Position.TOP);
+        //event.addPackFinders(bm("packs/tier6"), PackType.SERVER_DATA, Component.translatable("packname.tier6"), PackSource.FEATURE, false, Pack.Position.TOP);
     }
 
     public static ResourceLocation bm(String path) {

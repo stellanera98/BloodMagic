@@ -13,6 +13,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.Datagen;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.datagen.BlockGroups;
@@ -20,11 +21,12 @@ import wayoftime.bloodmagic.datagen.providers.*;
 
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+//@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class Tier6Gen {
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
+        BloodMagic.LOGGER.warn("why are you running?");
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> registries = event.getLookupProvider();

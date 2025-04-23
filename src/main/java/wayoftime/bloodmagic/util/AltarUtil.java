@@ -8,12 +8,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.datamap.BloodRune;
 import wayoftime.bloodmagic.common.registry.AltarComponent;
@@ -24,6 +27,25 @@ import wayoftime.bloodmagic.common.tag.BMTags;
 import java.util.*;
 
 public class AltarUtil {
+    public static BlockPos findAltar(Level level, BlockPos pos, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    BlockPos testPos = pos.offset(x, y, z);
+                    BlockState testState = level.getBlockState(testPos);
+                    if (testState.is(BMBlocks.BLOOD_ALTAR.block())) {
+                        return testPos;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static DamageSource sacrificeDamage(Player causer) {
+        return new DamageSource(causer.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BMRegistries.SACRIFICE_DAMAGE_KEY), null, causer, causer.position());
+    }
+
     public static List<List<AltarComponent>> TIERS = null;
 
     public static int getTier(Level level, BlockPos altarPos) {

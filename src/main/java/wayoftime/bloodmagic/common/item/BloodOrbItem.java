@@ -1,7 +1,5 @@
 package wayoftime.bloodmagic.common.item;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,13 +9,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.util.SoulTicket;
-import wayoftime.bloodmagic.util.SoulNetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 public class BloodOrbItem extends Item {
 

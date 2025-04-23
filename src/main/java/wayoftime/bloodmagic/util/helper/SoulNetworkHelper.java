@@ -1,4 +1,4 @@
-package wayoftime.bloodmagic.util;
+package wayoftime.bloodmagic.util.helper;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.SavedData.Factory;

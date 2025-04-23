@@ -77,6 +77,6 @@ public class SoulForgeRecipeBuilder extends BaseRecipeBuilder {
     public void save(RecipeOutput output, ResourceLocation id) {
         Advancement.Builder advBuilder = getBuilder(output, id);
         SoulForgeRecipe recipe = new SoulForgeRecipe(minWill, drainedWill, ingredients, result, willType);
-        output.accept(id.withPrefix("soulforge/"), recipe, advBuilder.build(advancementId(id, "soulforge")));
+        output.accept(id.withPrefix("soul_forge/"), recipe, advBuilder.build(advancementId(id, "soulforge")));
     }
 }
