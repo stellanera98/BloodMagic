@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipe;
 
 public class AltarRecipeBuilder extends BaseRecipeBuilder {
@@ -45,7 +46,7 @@ public class AltarRecipeBuilder extends BaseRecipeBuilder {
         return this;
     }
 
-    public AltarRecipeBuilder from(ItemStack input) {
+    public AltarRecipeBuilder from(ItemLike input) {
         return from(Ingredient.of(input));
     }
 

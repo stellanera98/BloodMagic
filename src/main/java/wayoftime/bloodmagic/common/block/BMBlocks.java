@@ -28,7 +28,7 @@ public class BMBlocks {
 
     public static final BlockWithItemHolder<BloodTankBlock, BlockItem> BLOOD_TANK = BLOCK_REG.register("blood_tank", BloodTankBlock::new, block -> new BlockItem(block, new Item.Properties().stacksTo(1).component(BMDataComponents.CONTAINER_TIER, 1)));
     public static final BlockWithItemHolder<BloodAltarBlock, BlockItem> BLOOD_ALTAR = BLOCK_REG.register("blood_altar", BloodAltarBlock::new);
-    public static final BlockWithItemHolder<HellfireForgeBlock, BlockItem> HELLFIRE_FORGE = BLOCK_REG.register("hellfire_forge", HellfireForgeBlock::new);
+    public static final BlockWithItemHolder<HellfireForgeBlock, BlockItem> HELLFIRE_FORGE = BLOCK_REG.register("soul_forge", HellfireForgeBlock::new);
 
     private static final BlockBehaviour.Properties RUNE_PROPERTIES = BlockBehaviour.Properties.of().strength(2.0F, 5.0F).requiresCorrectToolForDrops();
     private static final ItemLore SAVE_DECORATION = new ItemLore(List.of(BlockEntityHelper.translatableHover("tooltip.bloodmagic.save_for_decoration").withStyle(ChatFormatting.ITALIC)));
@@ -62,6 +62,7 @@ public class BMBlocks {
     public static final BlockWithItemHolder<Block, BlockItem> BLOODSTONE_BRICK = BASIC_REG.register("bloodstone_brick", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
     public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_CLUSTER = BASIC_REG.register("crystal_cluster", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
     public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_BRICK = BASIC_REG.register("crystal_brick", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
+    public static final BlockWithItemHolder<Block, BlockItem> HELLFORGED_BLOCK = BASIC_REG.register("hellforged_block", CAPSTONE_PROPERTIES, DECORATION_ITEM_PROPERTIES);
 
     public static void register(IEventBus modBus) {
         BASIC_BLOCKS.register(modBus);

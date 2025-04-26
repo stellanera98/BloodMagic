@@ -12,6 +12,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import wayoftime.bloodmagic.util.helper.BlockEntityHelper;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,11 +30,12 @@ public record Binding(UUID uuid, String name) {
             Binding::new
     );
 
+    private static final UUID NONE = UUID.nameUUIDFromBytes("NOPLAYER: EMPTY NONAME".getBytes(StandardCharsets.UTF_8));
     public boolean isEmpty() {
-        return this == EMPTY || (this.uuid == null && Objects.equals(this.name, ""));
+        return this == EMPTY || (this.uuid == NONE && this.name.isEmpty());
     }
 
-    public static final Binding EMPTY = new Binding(null, "");
+    public static final Binding EMPTY = new Binding(NONE, "");
 
     public Component getHoverText() {
         return BlockEntityHelper.translatableHover("tooltip.bloodmagic.currentOwner", this.name);

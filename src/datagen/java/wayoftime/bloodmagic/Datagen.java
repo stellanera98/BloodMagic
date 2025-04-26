@@ -27,8 +27,6 @@ public class Datagen {
         generator.addProvider(event.includeClient(), new BMBlockstateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new BMItemModelProvider(output, existingFileHelper));
 
-        generator.addProvider(event.includeServer(), new BMRecipeProvider(output, registries));
-
         BMBlockTagProvider blockTagsProvider = new BMBlockTagProvider(output, registries, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new BMItemTagProvider(output, registries, blockTagsProvider.contentsGetter(), existingFileHelper));
@@ -39,5 +37,7 @@ public class Datagen {
         BMDatapackProvider packProvider = new BMDatapackProvider(output, registries);
         generator.addProvider(event.includeServer(), packProvider);
         generator.addProvider(event.includeServer(), new BMAltarTierTagProvider(output, packProvider.getRegistryProvider(), existingFileHelper));
+
+        generator.addProvider(event.includeServer(), new BMRecipeProvider(output, registries));
     }
 }

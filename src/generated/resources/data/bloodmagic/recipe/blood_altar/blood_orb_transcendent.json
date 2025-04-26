@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagic:blood_altar",
+  "bloodNeeded": 200000,
+  "craftSpeed": 100,
+  "drainSpeed": 200,
+  "input": {
+    "tag": "bloodmagic:crystal_cluster"
+  },
+  "minTier": 5,
+  "output": {
+    "count": 1,
+    "id": "bloodmagic:blood_orb_transcendent"
+  }
+}

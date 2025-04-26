@@ -23,9 +23,11 @@ import wayoftime.bloodmagic.common.dataattachment.BMDataAttachments;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
+import wayoftime.bloodmagic.common.ingredient.BMIngredients;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.structure.BMMultiblock;
 
 
 @Mod(BloodMagic.MODID)
@@ -42,8 +44,8 @@ public class BloodMagic {
         SERVER_CONFIG_SPEC = pair.getRight();
     }
 
-    public static final ResourceLocation TYPE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "type");
-    public static final ResourceLocation INCENSE_PROPERTY = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "incense");
+    public static final ResourceLocation TYPE_PROPERTY = bm("type");
+    public static final ResourceLocation INCENSE_PROPERTY = bm("incense");
 
     public BloodMagic(IEventBus modBus, ModContainer container) {
         BMDataComponents.register(modBus);
@@ -56,7 +58,10 @@ public class BloodMagic {
         BMDataMaps.register(modBus);
         BMRegistries.register(modBus);
         BMCreativeTab.register(modBus);
+        BMIngredients.register(modBus);
 
+
+        BMMultiblock.register(NeoForge.EVENT_BUS);
         NeoForge.EVENT_BUS.addListener(BMCommands::register);
         modBus.addListener(BloodMagic::addPacks);
 

@@ -26,7 +26,5 @@ public class BMRegistries {
 
     public static void register(IEventBus modBus) {
         modBus.addListener(BMRegistries::registerRegistries);
-        NeoForge.EVENT_BUS.addListener(AltarUtil::onDataPackLoaded);
-        NeoForge.EVENT_BUS.addListener(AltarUtil::onServerShutdown);
     }
 }

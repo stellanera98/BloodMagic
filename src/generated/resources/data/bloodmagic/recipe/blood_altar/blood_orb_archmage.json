@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagic:blood_altar",
+  "bloodNeeded": 80000,
+  "craftSpeed": 50,
+  "drainSpeed": 100,
+  "input": {
+    "tag": "c:storage_blocks/hellforged"
+  },
+  "minTier": 4,
+  "output": {
+    "count": 1,
+    "id": "bloodmagic:blood_orb_archmage"
+  }
+}

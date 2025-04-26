@@ -1,0 +1,39 @@
+{
+  "name": "Tiers of Slates",
+  "icon": "bloodmagic:blankslate",
+  "category": "bloodmagic:altar",
+  "extra_recipe_mappings": {
+    "bloodmagic:slate_blank": 1,
+    "bloodmagic:slate_reinforced": 1,
+    "bloodmagic:slate_imbued": 2,
+    "bloodmagic:slate_demonic": 2,
+    "bloodmagic:slate_ethereal": 3
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(l:bloodmagic:altar/blood_altar)Blood Altar$(/l)'s main use is the production of $(item)Slates$(). Each tier of slate requires the previous tier and a more powerful altar than the last."
+    },
+    {
+      "type": "bloodmagic:2x_crafting_altar",
+      "a.heading": "Blank Slate",
+      "a.recipe": "bloodmagic:altar/slate_blank",
+      "b.heading": "Reinforced Slate",
+      "b.recipe": "bloodmagic:altar/slate_reinforced"
+    },
+    {
+      "type": "bloodmagic:2x_crafting_altar",
+      "a.heading": "Imbued Slate",
+      "a.recipe": "bloodmagic:altar/slate_imbued",
+      "b.heading": "Demonic Slate",
+      "b.recipe": "bloodmagic:altar/slate_demonic"
+    },
+    {
+      "type": "bloodmagic:crafting_altar",
+      "heading": "Ethereal Slate",
+      "recipe": "bloodmagic:altar/slate_ethereal"
+    }
+  ]
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagic:blood_altar",
+  "bloodNeeded": 2000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": {
+    "item": "bloodmagic:slate_blank"
+  },
+  "minTier": 1,
+  "output": {
+    "count": 1,
+    "id": "bloodmagic:slate_reinforced"
+  }
+}

@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.registry.AltarComponent;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -36,6 +37,8 @@ public class AltarTierBuilder {
         public static final ResourceLocation TRANSCENDENT = bm("transcendent");
     }
 
+    private static final TagOrElementLocation ALTAR = new TagOrElementLocation(BMBlocks.BLOOD_ALTAR.block().getId(), false);
+
     private static final TagOrElementLocation PILLAR = new TagOrElementLocation(BMTags.Blocks.PILLAR.location(), true);
     private static final TagOrElementLocation RUNE = new TagOrElementLocation(BMTags.Blocks.BLOODRUNE.location(), true);
     private static final TagOrElementLocation T3_CAP = new TagOrElementLocation(BMTags.Blocks.T3_CAP.location(), true);
@@ -43,10 +46,12 @@ public class AltarTierBuilder {
     private static final TagOrElementLocation T5_CAP = new TagOrElementLocation(BMTags.Blocks.T5_CAP.location(), true);
     private static final TagOrElementLocation T6_CAP = new TagOrElementLocation(BMTags.Blocks.T6_CAP.location(), true);
 
-    public static List<AltarComponent> WEAK = List.of();
+    public static List<AltarComponent> WEAK = List.of(new AltarComponent(new BlockPos(0, 0, 0), ALTAR, false));
 
     public static List<AltarComponent> APPRENTICE = new ArrayList<>();
     static {
+        APPRENTICE.addAll(WEAK);
+
         APPRENTICE.add(new AltarComponent(new BlockPos(1, -1, 0), RUNE, true));
         APPRENTICE.add(new AltarComponent(new BlockPos(0, -1, 1), RUNE, true));
         APPRENTICE.add(new AltarComponent(new BlockPos(-1, -1, 0), RUNE, true));
@@ -60,6 +65,8 @@ public class AltarTierBuilder {
 
     public static List<AltarComponent> MAGE = new ArrayList<>();
     static {
+        MAGE.addAll(WEAK);
+
         MAGE.add(new AltarComponent(new BlockPos(1, -1, 1), RUNE, true));
         MAGE.add(new AltarComponent(new BlockPos(1, -1, 0), RUNE, true));
         MAGE.add(new AltarComponent(new BlockPos(1, -1, -1), RUNE, true));

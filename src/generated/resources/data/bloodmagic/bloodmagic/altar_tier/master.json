@@ -2,6 +2,15 @@
   "components": [
     {
       "pos": [
+        0,
+        0,
+        0
+      ],
+      "upgrade": false,
+      "valid": "bloodmagic:blood_altar"
+    },
+    {
+      "pos": [
         1,
         -1,
         1

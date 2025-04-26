@@ -2,18 +2,16 @@ package wayoftime.bloodmagic.datagen.providers;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.ingredient.BloodOrbIngredient;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.datagen.builders.recipe.AltarRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.SoulForgeRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.TieredRecipeBuilder;
@@ -53,6 +51,52 @@ public class BMRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_blood_tank", has(BMBlocks.BLOOD_TANK))
                 .save(output, bm("blood_tank_tiered"));
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BMBlocks.HELLFIRE_FORGE)
+                .pattern("i i")
+                .pattern("sSs")
+                .pattern("sIs")
+                .define('i', Tags.Items.INGOTS_IRON)
+                .define('I', Tags.Items.STORAGE_BLOCKS_IRON)
+                .define('s', Tags.Items.STONES)
+                .define('S', BMItems.SLATE_BLANK.get())
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .unlockedBy("has_blank_slate", has(BMItems.SLATE_BLANK.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BMBlocks.RUNE_BLANK)
+                .pattern("sSs")
+                .pattern("sos")
+                .pattern("sss")
+                .define('s', Tags.Items.STONES)
+                .define('S', BMItems.SLATE_BLANK.get())
+                .define('o', new BloodOrbIngredient(0).toVanilla()) //BMItems.ORB_WEAK.get())
+                .unlockedBy("has_weak_orb", has(BMItems.ORB_WEAK.get()))
+                .unlockedBy("has_blank_slate", has(BMItems.SLATE_BLANK.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BMItems.SACRIFICIAL_DAGGER.get())
+                .pattern("ggg")
+                .pattern(" Gg")
+                .pattern("i g")
+                .define('g', Tags.Items.GLASS_BLOCKS)
+                .define('G', Tags.Items.INGOTS_GOLD)
+                .define('i', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
+                .unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BMBlocks.BLOOD_ALTAR)
+                .pattern("s s")
+                .pattern("sfs")
+                .pattern("ggg")
+                .define('s', Tags.Items.STONES)
+                .define('g', Tags.Items.INGOTS_GOLD)
+                .define('f', Blocks.FURNACE)
+                .unlockedBy("has_furnace", has(Blocks.FURNACE))
+                .unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
+                .save(output);
+
         SoulForgeRecipeBuilder.build(BMItems.SOUL_GEM_PETTY.get())
                 .minWill(1)
                 .drain(1)
@@ -90,12 +134,99 @@ public class BMRecipeProvider extends RecipeProvider {
                 .save(output);
 
         AltarRecipeBuilder.build(BMItems.ORB_WEAK.get())
+                .minTier(0)
+                .bloodNeeded(2000)
+                .consumption(5)
+                .drain(5)
+                .from(Tags.Items.GEMS_DIAMOND)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_APPRENTICE.get())
+                .minTier(1)
+                .bloodNeeded(5000)
+                .consumption(5)
+                .drain(5)
+                .from(Tags.Items.STORAGE_BLOCKS_REDSTONE)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_MAGICIAN.get())
+                .minTier(2)
+                .bloodNeeded(25000)
+                .consumption(20)
+                .drain(20)
+                .from(Tags.Items.STORAGE_BLOCKS_GOLD)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_MASTER.get())
+                .minTier(3)
+                .bloodNeeded(40000)
+                .consumption(30)
+                .drain(30)
+                .from(BMItems.BLOOD_SHARD_WEAK.get())
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_ARCHMAGE.get())
+                .minTier(4)
+                .bloodNeeded(80000)
+                .consumption(50)
+                .drain(100)
+                .from(BMTags.Items.STORAGE_BLOCKS_HELLFORGED)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.ORB_TRANSCENDENT.get())
+                .minTier(5)
+                .bloodNeeded(200000)
+                .consumption(100)
+                .drain(200)
+                .from(BMTags.Items.CRYSTAL_CLUSTER)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.SLATE_BLANK.get())
+                .minTier(0)
+                .bloodNeeded(1000)
+                .consumption(5)
+                .drain(5)
+                .from(Tags.Items.STONES)
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.SLATE_REINFORCED.get())
                 .minTier(1)
                 .bloodNeeded(2000)
                 .consumption(5)
-                .drain(1)
-                .from(Tags.Items.GEMS_DIAMOND)
+                .drain(5)
+                .from(BMItems.SLATE_BLANK.get())
                 .save(output);
+
+        AltarRecipeBuilder.build(BMItems.SLATE_IMBUED.get())
+                .minTier(2)
+                .bloodNeeded(5000)
+                .consumption(15)
+                .drain(10)
+                .from(BMItems.SLATE_REINFORCED.get())
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.SLATE_DEMONIC.get())
+                .minTier(3)
+                .bloodNeeded(15000)
+                .consumption(20)
+                .drain(20)
+                .from(BMItems.SLATE_IMBUED.get())
+                .save(output);
+
+        AltarRecipeBuilder.build(BMItems.SLATE_ETHEREAL.get())
+                .minTier(4)
+                .bloodNeeded(30000)
+                .consumption(40)
+                .drain(100)
+                .from(BMItems.SLATE_DEMONIC.get())
+                .save(output);
+
+        pack9(BMBlocks.HELLFORGED_BLOCK, BMItems.INGOT_HELLFORGED.get());
+    }
+
+    private static void pack9(ItemLike packed, ItemLike unpacked) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, unpacked, 9).requires(packed);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, packed).requires(unpacked, 9);
     }
 
     private static ResourceLocation bm(String path) {

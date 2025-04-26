@@ -24,6 +24,7 @@ import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.event.BloodMagicCraftedEvent;
+import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.item.SoulGemItem;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeInput;
@@ -111,7 +112,11 @@ public class HellfireForgeTile extends BlockEntity {
         if (!gemStack.isEmpty()) {
             double will = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
             will -= recipe.usedWill;
-            gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will);
+            if (will == 0 && gemStack.is(BMItems.RAW_WILL)) {
+                hellfireForgeTile.inv.setStackInSlot(GEM_SLOT, ItemStack.EMPTY);
+            } else {
+                gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will);
+            }
         }
 
         for (int i = SOUTH; i < GEM_SLOT; i++) {

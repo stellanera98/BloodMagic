@@ -5,7 +5,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 
 public class BMItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(BloodMagic.MODID);
@@ -18,6 +17,15 @@ public class BMItems {
     public static final DeferredHolder<Item, BloodOrbItem> ORB_MASTER = BASICITEMS.register("blood_orb_master", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_ARCHMAGE = BASICITEMS.register("blood_orb_archmage", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_TRANSCENDENT = BASICITEMS.register("blood_orb_transcendent", BloodOrbItem::new);
+
+    public static final DeferredHolder<Item, Item> SLATE_BLANK = BASICITEMS.register("slate_blank", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SLATE_REINFORCED = BASICITEMS.register("slate_reinforced", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SLATE_IMBUED = BASICITEMS.register("slate_imbued", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SLATE_DEMONIC = BASICITEMS.register("slate_demonic", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SLATE_ETHEREAL = BASICITEMS.register("slate_ethereal", () -> new Item(new Item.Properties()));
+
+    public static final DeferredHolder<Item, Item> BLOOD_SHARD_WEAK = BASICITEMS.register("blood_shard_weak", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> INGOT_HELLFORGED = BASICITEMS.register("ingot_hellforged", () -> new Item(new Item.Properties()));
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
 

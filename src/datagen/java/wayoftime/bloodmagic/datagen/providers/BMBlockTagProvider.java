@@ -34,19 +34,21 @@ public class BMBlockTagProvider extends BlockTagsProvider {
                 .addAll(BlockGroups.BLOODSTONE);
 
         this.tag(BMTags.Blocks.T5_CAP)
-                .add(Blocks.DIAMOND_BLOCK); // TODO: Make Demonite a thing and use it here
+                .add(BMBlocks.HELLFORGED_BLOCK.block().get());
 
         this.tag(BMTags.Blocks.T6_CAP)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER);
 
         this.tag(BMTags.Blocks.PILLAR); // means all solid blocks are viable
 
+        this.tag(BMTags.Blocks.STORAGE_BLOCKS_HELLFORGED)
+                .add(BMBlocks.HELLFORGED_BLOCK.block().get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get());
+                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get(), BMBlocks.HELLFORGED_BLOCK.block().get());
 
         this.tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get());
+                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get(), BMBlocks.HELLFORGED_BLOCK.block().get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addAll(BlockGroups.BLOODSTONE)

@@ -6,6 +6,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.datagen.ItemGroups;
 
@@ -21,6 +22,10 @@ public class BMItemTagProvider extends ItemTagsProvider {
         tag(BMTags.Items.SOUL_GEM)
                 .addAll(ItemGroups.SOUL_GEMS);
 
-        tag(BMTags.Items.ALTAR_FILL_BLACKLIST);
+        tag(BMTags.Items.CRYSTAL_CLUSTER)
+                .add(BMBlocks.CRYSTAL_CLUSTER.item().getKey())
+                .add(BMBlocks.CRYSTAL_BRICK.item().getKey());
+
+        copy(BMTags.Blocks.STORAGE_BLOCKS_HELLFORGED, BMTags.Items.STORAGE_BLOCKS_HELLFORGED);
     }
 }

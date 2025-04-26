@@ -222,7 +222,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
 
         ItemStack inputStack = inv.getStackInSlot(0);
         Binding inputBinding = inputStack.get(BMDataComponents.BINDING);
-        Optional<RecipeHolder<BloodAltarRecipe>> optionalHolder = level.getRecipeManager().getRecipeFor(BMRecipes.BLOOD_ALTAR_TYPE.get(), new BloodAltarInput(inputStack, tier+1), level);
+        Optional<RecipeHolder<BloodAltarRecipe>> optionalHolder = level.getRecipeManager().getRecipeFor(BMRecipes.BLOOD_ALTAR_TYPE.get(), new BloodAltarInput(inputStack, tier), level);
         if (!(inputBinding == null || inputBinding.isEmpty())) {
             canFill = true;
             isActive = true;
