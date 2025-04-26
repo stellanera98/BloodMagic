@@ -3,11 +3,9 @@ package wayoftime.bloodmagic.compat.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -53,6 +51,8 @@ public class JeiPlugin implements IModPlugin {
 
         registration.addRecipes(AltarRecipeCategory.TYPE, getRecipes(karen, BMRecipes.BLOOD_ALTAR_TYPE.get()));
         registration.addRecipes(SoulForgeCategory.TYPE, getRecipes(karen, BMRecipes.SOUL_FORGE_TYPE.get()));
+
+        registration.addItemStackInfo(new ItemStack(BMBlocks.BLOOD_TANK), Component.translatable("jei.bloodmagic.info.blood_tank"));
     }
 
     private static final IIngredientSubtypeInterpreter<ItemStack> WILL_TYPE = (stack, context) -> {

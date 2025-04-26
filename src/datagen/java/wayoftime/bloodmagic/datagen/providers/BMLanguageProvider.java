@@ -112,6 +112,8 @@ public class BMLanguageProvider extends LanguageProvider {
         addJei("soul_forge", "category", "Hellfire Forge");
         addJei("soul_forge", "min_will", "Minimum: %s Will");
         addJei("soul_forge", "drain_will", "Drained: %s Will");
+
+        addJei("info", "blood_tank", "To upgrade your Blood Tanks Tier place two same-tier Tanks instead of the glass blocks in the Tier 1 Tank recipe. The contents are added together if they are the same, if not the left (or the non-empty ones) contents win");
     }
 
     public void addJei(String category, String thing, String value) {

@@ -6,13 +6,13 @@
       "item": "bloodmagic:soul_gem_common"
     },
     {
-      "item": "bloodmagic:blood_orb_master"
+      "item": "bloodmagic:slate_demonic"
     },
     {
       "tag": "c:gems/amethyst"
     },
     {
-      "item": "bloodmagic:raw_will"
+      "item": "bloodmagic:blood_shard_weak"
     }
   ],
   "minDrain": 1000.0,

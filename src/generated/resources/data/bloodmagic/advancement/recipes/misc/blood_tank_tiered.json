@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:polished_deepslate"
+            "items": "bloodmagic:rune_blank"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:polished_granite"
+            "items": "bloodmagic:bloodstone"
           }
         ]
       },

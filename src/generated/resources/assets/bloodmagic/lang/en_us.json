@@ -55,6 +55,7 @@
   "jei.bloodmagic.altar.drain": "Drain: %s LP/t",
   "jei.bloodmagic.altar.lp": "LP: %d",
   "jei.bloodmagic.altar.tier": "Tier %d",
+  "jei.bloodmagic.info.blood_tank": "To upgrade your Blood Tanks Tier place two same-tier Tanks instead of the glass blocks in the Tier 1 Tank recipe. The contents are added together if they are the same, if not the left (or the non-empty ones) contents win",
   "jei.bloodmagic.soul_forge.category": "Hellfire Forge",
   "jei.bloodmagic.soul_forge.drain_will": "Drained: %s Will",
   "jei.bloodmagic.soul_forge.min_will": "Minimum: %s Will",

@@ -31,11 +31,11 @@ public class BMRecipeProvider extends RecipeProvider {
                 .pattern("RBR")
                 .pattern("G G")
                 .pattern("RRR")
-                .define('R', Blocks.POLISHED_DEEPSLATE)
-                .define('B', Blocks.POLISHED_GRANITE)
+                .define('R', BMBlocks.RUNE_BLANK)
+                .define('B', BMBlocks.BLOODSTONE)
                 .define('G', Blocks.GLASS)
-                .unlockedBy("has_bloodstone", has(Blocks.POLISHED_GRANITE))
-                .unlockedBy("has_blank_rune", has(Blocks.POLISHED_DEEPSLATE))
+                .unlockedBy("has_blank_rune", has(BMBlocks.RUNE_BLANK))
+                .unlockedBy("has_bloodstone", has(BMBlocks.BLOODSTONE))
                 .unlockedBy("has_glass", has(Blocks.GLASS))
                 .save(output,bm("initial_blood_tank"));
 
@@ -43,13 +43,13 @@ public class BMRecipeProvider extends RecipeProvider {
                 .pattern("RBR")
                 .pattern("T T")
                 .pattern("RRR")
-                .define('R', Blocks.POLISHED_DEEPSLATE)
-                .define('B', Blocks.POLISHED_GRANITE)
+                .define('R', BMBlocks.RUNE_BLANK)
+                .define('B', BMBlocks.BLOODSTONE)
                 .define('T', BMBlocks.BLOOD_TANK)
                 .primary(3)
                 .secondary(5)
-                .unlockedBy("has_bloodstone", has(Blocks.POLISHED_GRANITE))
-                .unlockedBy("has_blank_rune", has(Blocks.POLISHED_DEEPSLATE))
+                .unlockedBy("has_bloodstone", has(BMBlocks.BLOODSTONE))
+                .unlockedBy("has_blank_rune", has(BMBlocks.RUNE_BLANK))
                 .unlockedBy("has_blood_tank", has(BMBlocks.BLOOD_TANK))
                 .save(output, bm("blood_tank_tiered"));
 
@@ -123,16 +123,16 @@ public class BMRecipeProvider extends RecipeProvider {
                 .requires(BMItems.SOUL_GEM_LESSER.get())
                 .requires(Tags.Items.GEMS_DIAMOND)
                 .requires(Tags.Items.STORAGE_BLOCKS_GOLD)
-                .requires(BMItems.ORB_MAGICIAN.get()) // T3 Slate
+                .requires(BMItems.SLATE_IMBUED.get())
                 .save(output);
 
         SoulForgeRecipeBuilder.build(BMItems.SOUL_GEM_GREATER.get())
                 .minWill(1000)
                 .drain(100)
                 .requires(BMItems.SOUL_GEM_COMMON.get())
-                .requires(BMItems.ORB_MASTER.get()) // T4 slate
-                .requires(Tags.Items.GEMS_AMETHYST) // Demon Will Crystal
-                .requires(BMItems.RAW_WILL.get()) // Weak Blood Shard
+                .requires(BMItems.SLATE_DEMONIC.get())
+                .requires(Tags.Items.GEMS_AMETHYST) // TODO: Demon Will Crystal
+                .requires(BMItems.BLOOD_SHARD_WEAK.get())
                 .save(output);
 
         AltarRecipeBuilder.build(BMItems.ORB_WEAK.get())

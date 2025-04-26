@@ -4,10 +4,10 @@
   "pattern": {
     "key": {
       "B": {
-        "item": "minecraft:polished_granite"
+        "item": "bloodmagic:bloodstone"
       },
       "R": {
-        "item": "minecraft:polished_deepslate"
+        "item": "bloodmagic:rune_blank"
       },
       "T": {
         "item": "bloodmagic:blood_tank"

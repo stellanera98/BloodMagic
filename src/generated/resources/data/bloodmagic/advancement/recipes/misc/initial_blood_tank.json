@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:polished_deepslate"
+            "items": "bloodmagic:rune_blank"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:polished_granite"
+            "items": "bloodmagic:bloodstone"
           }
         ]
       },
@@ -41,8 +41,8 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_bloodstone",
       "has_blank_rune",
+      "has_bloodstone",
       "has_glass"
     ]
   ],

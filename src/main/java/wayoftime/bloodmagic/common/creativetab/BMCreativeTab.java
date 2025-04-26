@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.blockentity.BloodTankTile;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
@@ -42,6 +43,11 @@ public class BMCreativeTab {
                         BMItems.ITEMS.getEntries().stream().map(Supplier::get).forEach(output::accept);
                         BMItems.BASICITEMS.getEntries().stream().map(Supplier::get).forEach(output::accept);
                         BMFluids.BUCKETS.getEntries().stream().map(Supplier::get).forEach(output::accept);
+                        for (int i = 1; i < BloodTankTile.CAPACITIES.length; i++) {
+                            ItemStack tmp = new ItemStack(BMBlocks.BLOOD_TANK.asItem());
+                            tmp.set(BMDataComponents.CONTAINER_TIER, i);
+                            output.accept(tmp);
+                        }
                     })
                     .build()
     );

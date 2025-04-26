@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "minecraft:polished_granite"
+      "item": "bloodmagic:bloodstone"
     },
     "G": {
       "item": "minecraft:glass"
     },
     "R": {
-      "item": "minecraft:polished_deepslate"
+      "item": "bloodmagic:rune_blank"
     }
   },
   "pattern": [
