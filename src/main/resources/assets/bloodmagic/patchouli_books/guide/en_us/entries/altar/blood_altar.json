@@ -32,7 +32,6 @@
     {
       "type": "patchouli:crafting",
       "recipe": "bloodmagic:sacrificial_dagger",
-      "anchor": "knife",
       "text": "Keep in mind that 10% of the total $(blood)LP$() the altar can hold will be absorbed into an invisible internal 'tank' used for extracting and inserting $(blood)Life Essence$() into the Altar."
     },
     {
@@ -45,7 +44,7 @@
     },
     {
       "type": "patchouli:text",
-	  "anchor": "rune_blank",
+	  "anchor": "bloodmagic:rune_blank",
       "text": "To upgrade the Blood Altar, you need to craft $(item)Blood Runes$() and place them around the Altar. Blood Runes act as upgrades to the Altar, and by using more advanced versions of the Blood Runes you can confer different effects on the Altar. The basic version, the $(item)Blank Rune$(), does not give any upgrades - it's only use is to upgrade the Tier of the Altar."
     },
     {
