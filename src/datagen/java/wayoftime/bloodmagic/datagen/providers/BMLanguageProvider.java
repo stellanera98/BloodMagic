@@ -108,6 +108,10 @@ public class BMLanguageProvider extends LanguageProvider {
         addJei("altar", "lp", "LP: %d");
         addJei("altar", "consumption", "Consumption: %s LP/t");
         addJei("altar", "drain", "Drain: %s LP/t");
+
+        addJei("soul_forge", "category", "Hellfire Forge");
+        addJei("soul_forge", "min_will", "Minimum: %s Will");
+        addJei("soul_forge", "drain_will", "Drained: %s Will");
     }
 
     public void addJei(String category, String thing, String value) {

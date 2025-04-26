@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.compat.jei;
 
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -9,15 +10,17 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.*;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.compat.jei.recipe.AltarRecipeCategory;
+import wayoftime.bloodmagic.compat.jei.recipe.SoulForgeCategory;
 import wayoftime.bloodmagic.util.DemonWillType;
+
+import java.util.List;
 
 @mezz.jei.api.JeiPlugin
 public class JeiPlugin implements IModPlugin {
@@ -28,18 +31,28 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new AltarRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
+
+        registration.addRecipeCategories(new AltarRecipeCategory(helper));
+        registration.addRecipeCategories(new SoulForgeCategory(helper));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(BMBlocks.BLOOD_ALTAR), AltarRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BMBlocks.HELLFIRE_FORGE), SoulForgeCategory.TYPE);
+    }
+
+    private static <I extends RecipeInput, T extends Recipe<I>> List<T> getRecipes(RecipeManager karen, RecipeType<T> type) {
+        return karen.getAllRecipesFor(type).stream().map(RecipeHolder::value).toList();
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager karen = Minecraft.getInstance().level.getRecipeManager();
-        registration.addRecipes(AltarRecipeCategory.TYPE, karen.getAllRecipesFor(BMRecipes.BLOOD_ALTAR_TYPE.get()).stream().map(RecipeHolder::value).toList());
+
+        registration.addRecipes(AltarRecipeCategory.TYPE, getRecipes(karen, BMRecipes.BLOOD_ALTAR_TYPE.get()));
+        registration.addRecipes(SoulForgeCategory.TYPE, getRecipes(karen, BMRecipes.SOUL_FORGE_TYPE.get()));
     }
 
     private static final IIngredientSubtypeInterpreter<ItemStack> WILL_TYPE = (stack, context) -> {
