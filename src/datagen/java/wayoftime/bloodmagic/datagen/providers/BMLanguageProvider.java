@@ -102,6 +102,16 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMItems.ORB_TRANSCENDENT.get(), "Transcendent Blood Orb");
 
         add(BMItems.SACRIFICIAL_DAGGER.get(), "Sacrificial Dagger");
+
+        addJei("altar", "category", "Blood Altar");
+        addJei("altar", "tier", "Tier %d");
+        addJei("altar", "lp", "LP: %d");
+        addJei("altar", "consumption", "Consumption: %s LP/t");
+        addJei("altar", "drain", "Drain: %s LP/t");
+    }
+
+    public void addJei(String category, String thing, String value) {
+        add("jei." + BloodMagic.MODID + "." + category + "." + thing, value);
     }
 
     public void add(FluidType type, String name) {

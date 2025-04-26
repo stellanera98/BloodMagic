@@ -244,12 +244,15 @@ public class BMRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_bloodstone", has(BMBlocks.BLOODSTONE))
                 .save(output);
 
-        pack9(BMBlocks.HELLFORGED_BLOCK, BMItems.INGOT_HELLFORGED.get());
-    }
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BMItems.INGOT_HELLFORGED.get(), 9)
+                .requires(BMBlocks.HELLFORGED_BLOCK)
+                .unlockedBy("has_hellforged_ingot", has(BMItems.INGOT_HELLFORGED.get()))
+                .save(output);
 
-    private static void pack9(ItemLike packed, ItemLike unpacked) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, unpacked, 9).requires(packed);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, packed).requires(unpacked, 9);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BMBlocks.HELLFORGED_BLOCK)
+                .requires(BMItems.INGOT_HELLFORGED.get(), 9)
+                .unlockedBy("has_hellforged_block", has(BMBlocks.HELLFORGED_BLOCK))
+                .save(output);
     }
 
     private static ResourceLocation bm(String path) {

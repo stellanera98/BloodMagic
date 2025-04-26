@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    },
+    {
+      "item": "bloodmagic:ingot_hellforged"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bloodmagic:hellforged_block"
+  }
+}
