@@ -12,26 +12,26 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(l:bloodmagic:altar/blood_altar)Blood Altar$(/l)'s main use is the production of $(item)Slates$(). Each tier of slate requires the previous tier and a more powerful altar than the last."
+      "text": "The $(l:bloodmagic:blood_altar/blood_altar)Blood Altar$(/l)'s main use is the production of $(item)Slates$(). Each tier of slate requires the previous tier and a more powerful altar than the last."
     },
     {
       "type": "bloodmagic:2x_crafting_altar",
       "a.heading": "Blank Slate",
-      "a.recipe": "bloodmagic:altar/slate_blank",
+      "a.recipe": "bloodmagic:blood_altar/slate_blank",
       "b.heading": "Reinforced Slate",
-      "b.recipe": "bloodmagic:altar/slate_reinforced"
+      "b.recipe": "bloodmagic:blood_altar/slate_reinforced"
     },
     {
       "type": "bloodmagic:2x_crafting_altar",
       "a.heading": "Imbued Slate",
-      "a.recipe": "bloodmagic:altar/slate_imbued",
+      "a.recipe": "bloodmagic:blood_altar/slate_imbued",
       "b.heading": "Demonic Slate",
-      "b.recipe": "bloodmagic:altar/slate_demonic"
+      "b.recipe": "bloodmagic:blood_altar/slate_demonic"
     },
     {
       "type": "bloodmagic:crafting_altar",
       "heading": "Ethereal Slate",
-      "recipe": "bloodmagic:altar/slate_ethereal"
+      "recipe": "bloodmagic:blood_altar/slate_ethereal"
     }
   ]
 }

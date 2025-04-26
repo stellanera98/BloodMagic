@@ -22,15 +22,15 @@ public class BloodAltarProcessor implements IComponentProcessor {
         ResourceLocation recipeId = ResourceLocation.parse(variables.get("recipe", level.registryAccess()).asString());
         Optional<RecipeHolder<?>> holder = ServerLifecycleHooks.getCurrentServer().getRecipeManager().byKey(recipeId);
         if (holder.isPresent()) {
-            BloodMagic.LOGGER.info("holder");
             this.recipe = (BloodAltarRecipe) holder.get().value();
+        } else {
+            BloodMagic.LOGGER.info("recipe {} for altar not present", recipeId);
         }
     }
 
     @Override
     public IVariable process(Level level, String key) {
         if (recipe == null) {
-            BloodMagic.LOGGER.info("recipe is null, cant process");
             return null;
         }
         return switch (key) {

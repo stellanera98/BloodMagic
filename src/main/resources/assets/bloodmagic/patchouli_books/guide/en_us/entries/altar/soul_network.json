@@ -13,7 +13,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In order to fill your $(thing)Soul Network$(), you will need to construct a $(item)Blood Orb$(). $(br2)Blood Orbs can be charged with $(blood)LP$() in one of two ways. $(li)A player can sacrifice 1 heart of health by pressing [$(k:use)] with the $(item)Blood Orb$(), providing the bound $(thing)Soul Network$() with $(blood)200 LP$(). $(li)The $(item)Blood Orb$() can be placed inside a $(l:bloodmagic:altar/blood_altar)Blood Altar$(/l) with some $(blood)Life Essence$() in it. The Orb will absorb it as fast as it can, limited by your Altar's $(item)Speed Runes$()."
+      "text": "In order to fill your $(thing)Soul Network$(), you will need to construct a $(item)Blood Orb$(). $(br2)Blood Orbs can be charged with $(blood)LP$() in one of two ways. $(li)A player can sacrifice 1 heart of health by pressing [$(k:use)] with the $(item)Blood Orb$(), providing the bound $(thing)Soul Network$() with $(blood)200 LP$(). $(li)The $(item)Blood Orb$() can be placed inside a $(l:bloodmagic:blood_altar/blood_altar)Blood Altar$(/l) with some $(blood)Life Essence$() in it. The Orb will absorb it as fast as it can, limited by your Altar's $(item)Speed Runes$()."
     },
     {
       "type": "patchouli:text",
@@ -22,27 +22,27 @@
     {
       "type": "bloodmagic:2x_crafting_altar",
       "a.heading": "Weak Blood Orb",
-      "a.recipe": "bloodmagic:altar/blood_orb_weak",
+      "a.recipe": "bloodmagic:blood_altar/blood_orb_weak",
       "b.heading": "Apprentice Blood Orb",
-      "b.recipe": "bloodmagic:altar/blood_orb_apprentice"
+      "b.recipe": "bloodmagic:blood_altar/blood_orb_apprentice"
     },
     {
       "type": "bloodmagic:2x_crafting_altar",
       "a.heading": "Magician Blood Orb",
-      "a.recipe": "bloodmagic:altar/blood_orb_mage",
+      "a.recipe": "bloodmagic:blood_altar/blood_orb_magician",
       "b.heading": "Master Blood Orb",
-      "b.recipe": "bloodmagic:altar/blood_orb_master"
+      "b.recipe": "bloodmagic:blood_altar/blood_orb_master"
     },
     {
       "type": "bloodmagic:crafting_altar",
       "heading": "Archmage Blood Orb",
-      "recipe": "bloodmagic:altar/blood_orb_archmage",
-      "text": "If that's still not enough $(blood)LP storage$() for you, consider using $(l:bloodmagic:altar/blood_rune/orb_rune)Runes of the Orb$()."
+      "recipe": "bloodmagic:blood_altar/blood_orb_archmage",
+      "text": "If that's still not enough $(blood)LP storage$() for you, consider using $(l:bloodmagic:blood_altar/blood_rune/orb_rune)Runes of the Orb$()."
     },
     {
       "type": "bloodmagic:crafting_altar",
       "heading": "Transcendent Blood Orb",
-      "recipe": "bloodmagic:altar/blood_orb_transcendent"
+      "recipe": "bloodmagic:blood_altar/blood_orb_transcendent"
     }
   ]
 }
