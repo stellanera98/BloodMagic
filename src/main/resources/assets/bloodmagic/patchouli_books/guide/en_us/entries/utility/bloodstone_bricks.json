@@ -1,6 +1,6 @@
 {
   "name": "Bloodstone Bricks",
-  "icon": "bloodmagic:largebloodstonebrick",
+  "icon": "bloodmagic:bloodstone",
   "category": "bloodmagic:utility",
   "pages":[
     {
@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "bloodmagic:largebloodstonebrick",
-      "recipe2": "bloodmagic:bloodstonebrick"
+      "recipe": "bloodmagic:bloodstone",
+      "recipe2": "bloodmagic:bloodstone_brick"
     }
   ]
 }

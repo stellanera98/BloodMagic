@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bloodmagic:bloodstone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_weak_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bloodmagic:blood_shard_weak"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_weak_shard"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bloodmagic:bloodstone"
+    ]
+  }
+}

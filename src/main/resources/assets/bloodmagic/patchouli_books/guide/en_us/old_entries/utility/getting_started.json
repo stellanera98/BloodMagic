@@ -1,6 +1,6 @@
 {
   "name": "Tiers & Getting Started",
-  "icon": "bloodmagic:sacrificialdagger",
+  "icon": "bloodmagic:sacrificial_dagger",
   "category": "bloodmagic:utility",
   "priority": "true",
   "pages": [
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "bloodmagic:altar",
+      "item": "bloodmagic:blood_altar",
       "title": "Blood Altar (Tier-1)",
       "text": "The first step of $(blood)Blood Magic$() is to build a $(l:bloodmagic:altar/blood_altar)Blood Altar$() and $(l:bloodmagic:altar/blood_altar#knife)Sacrificial Knife$(). Use these to generate $(blood)LP$() from Self-Sacrificing.$(br2)Use this $(blood)LP$() to craft a $(l:bloodmagic:altar/soul_network)Weak Blood Orb$(), several $(l:bloodmagic:altar/slates)Blank Slates$(), and a few $(l:bloodmagic:demon_will/will_manipulation/soul_snare)Soul Snares$()."
     },

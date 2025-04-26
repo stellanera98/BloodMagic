@@ -1,0 +1,13 @@
+{
+  "name": "Crystal Clusters",
+  "icon": "bloodmagic:crystal_cluster",
+  "category": "bloodmagic:utility",
+  "pages":[
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:bloodmagic:crystal_cluster",
+      "text": "$(item)Crystal Clusters$() are a decorative block, and used as the $(thing)capstones$() for the Tier-6 $(l:bloodmagic:altar/blood_altar)Blood Altar$(). It is currently widely unknown how to aquire them."
+    }
+  ]
+}
+

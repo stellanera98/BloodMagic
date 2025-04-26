@@ -10,7 +10,7 @@
     {
       "type": "bloodmagic:crafting_altar",
       "heading": "Bucket of Life",
-      "recipe": "bloodmagic:altar/bucket_life",
+      "recipe": "bloodmagic:blood_altar/life_essence_bucket",
       "text": "$(italic)It's definitely not blood. Blood would have coagulated by now. $(br2)... Why are you looking at me like that?$()"
     }
   ]

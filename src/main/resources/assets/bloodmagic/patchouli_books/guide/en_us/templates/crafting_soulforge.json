@@ -21,25 +21,25 @@
     },
     {
       "type": "patchouli:item",
-      "item": "#input1",
+      "item": "#input0",
       "x": 15,
       "y": 8
     },
     {
       "type": "patchouli:item",
-      "item": "#input2",
+      "item": "#input1",
       "x": 34,
       "y": 8
     },
     {
       "type": "patchouli:item",
-      "item": "#input3",
+      "item": "#input2",
       "x": 15,
       "y": 27
     },
     {
       "type": "patchouli:item",
-      "item": "#input4",
+      "item": "#input3",
       "x": 34,
       "y": 27
     },

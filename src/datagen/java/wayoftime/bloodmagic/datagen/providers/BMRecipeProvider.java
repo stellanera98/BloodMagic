@@ -4,11 +4,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.ingredient.BloodOrbIngredient;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.tag.BMTags;
@@ -219,6 +221,27 @@ public class BMRecipeProvider extends RecipeProvider {
                 .consumption(40)
                 .drain(100)
                 .from(BMItems.SLATE_DEMONIC.get())
+                .save(output);
+
+        AltarRecipeBuilder.build(BMFluids.LIFE_ESSENCE_BUCKET.get())
+                .minTier(0)
+                .bloodNeeded(1000)
+                .consumption(5)
+                .drain(0)
+                .from(Items.BUCKET)
+                .save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BMBlocks.BLOODSTONE, 8)
+                .requires(BMItems.BLOOD_SHARD_WEAK.get())
+                .requires(Tags.Items.STONES)
+                .unlockedBy("has_weak_shard", has(BMItems.BLOOD_SHARD_WEAK.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BMBlocks.BLOODSTONE_BRICK, 4)
+                .pattern("bb")
+                .pattern("bb")
+                .define('b', BMBlocks.BLOODSTONE)
+                .unlockedBy("has_bloodstone", has(BMBlocks.BLOODSTONE))
                 .save(output);
 
         pack9(BMBlocks.HELLFORGED_BLOCK, BMItems.INGOT_HELLFORGED.get());

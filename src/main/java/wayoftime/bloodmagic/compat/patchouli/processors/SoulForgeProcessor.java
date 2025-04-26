@@ -1,5 +1,6 @@
 package wayoftime.bloodmagic.compat.patchouli.processors;
 
+import net.minecraft.client.renderer.entity.layers.DolphinCarryingItemLayer;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,10 @@ import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeRecipe;
 import wayoftime.bloodmagic.util.DemonWillType;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SoulForgeProcessor implements IComponentProcessor {
 
@@ -39,6 +43,18 @@ public class SoulForgeProcessor implements IComponentProcessor {
         }
 
         RegistryAccess registries = level.registryAccess();
+
+        if (key.startsWith("input")) {
+            int idx = Integer.parseInt(key.substring(5));
+            if (idx < recipe.ingredients.size()) {
+                ItemStack[] stacks = recipe.ingredients.get(idx).getItems();
+                List<IVariable> list = Arrays.stream(stacks).map(stack -> IVariable.from(stack, registries)).toList();
+                return IVariable.wrapList(list, registries);
+            } else {
+                BloodMagic.LOGGER.info("got '{}' as key?", key);
+                return null;
+            }
+        }
 
         return switch (key) {
             case "output" -> IVariable.from(recipe.getOutput(), registries);
