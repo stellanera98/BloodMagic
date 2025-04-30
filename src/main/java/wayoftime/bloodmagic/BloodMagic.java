@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
+import wayoftime.bloodmagic.client.menu.BMMenus;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.command.BMCommands;
@@ -59,7 +60,7 @@ public class BloodMagic {
         BMRegistries.register(modBus);
         BMCreativeTab.register(modBus);
         BMIngredients.register(modBus);
-
+        BMMenus.register(modBus);
 
         BMMultiblock.register(NeoForge.EVENT_BUS);
         NeoForge.EVENT_BUS.addListener(BMCommands::register);

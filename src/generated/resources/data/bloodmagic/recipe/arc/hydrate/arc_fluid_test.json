@@ -1,0 +1,34 @@
+{
+  "type": "bloodmagic:alchemical_reaction_chamber",
+  "chance_outputs": [
+    {
+      "chance": 0.25,
+      "item": {
+        "count": 1,
+        "id": "minecraft:nether_brick"
+      }
+    },
+    {
+      "chance": 1.0,
+      "item": {
+        "count": 1,
+        "id": "minecraft:netherite_scrap"
+      }
+    }
+  ],
+  "guaranteed_outputs": [],
+  "input": {
+    "item": "minecraft:netherrack"
+  },
+  "input_fluid": {
+    "amount": 2000,
+    "id": "minecraft:water"
+  },
+  "output_fluid": {
+    "amount": 1000,
+    "id": "minecraft:lava"
+  },
+  "tool": {
+    "tag": "bloodmagic:arc_tool/hydrate"
+  }
+}

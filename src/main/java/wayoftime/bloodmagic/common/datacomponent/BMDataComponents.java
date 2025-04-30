@@ -28,6 +28,9 @@ public class BMDataComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> INCENSE = COMPONENT_TYPES.registerComponentType("incense", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> ARC_CHANCE = COMPONENT_TYPES.registerComponentType("arc_chance_multiplier", builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> ARC_SPEED = COMPONENT_TYPES.registerComponentType("arc_speed_multiplier", builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
+
     public static void register(IEventBus modBus) {
         COMPONENT_TYPES.register(modBus);
     }

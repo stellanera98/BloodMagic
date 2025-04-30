@@ -8,6 +8,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.recipe.arc.ARCRecipe;
+import wayoftime.bloodmagic.common.recipe.arc.ARCSerializer;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipe;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipeSerializer;
 import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeRecipe;
@@ -24,14 +26,21 @@ public class BMRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<FluidTieredRecipe>> FLUID_TIERED_SERIALIZER = SERIALIZERS.register("fluid_tiered", FluidTieredSerializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<EnergyTieredRecipe>> ENERGY_TIERED_SERIALIZER = SERIALIZERS.register("energy_tiered", EnergyTieredSerializer::new);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<SoulForgeRecipe>> SOUL_FORGE_TYPE = TYPES.register(SoulForgeRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, SoulForgeRecipe.RECIPE_TYPE_NAME)));
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SoulForgeRecipe>> SOUL_FORGE_SERIALIZER = SERIALIZERS.register("soul_forge", SoulForgeSerializer::new);
+    public static final DeferredHolder<RecipeType<?>, RecipeType<SoulForgeRecipe>> SOUL_FORGE_TYPE = TYPES.register(SoulForgeRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(bm(SoulForgeRecipe.RECIPE_TYPE_NAME)));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SoulForgeRecipe>> SOUL_FORGE_SERIALIZER = SERIALIZERS.register(SoulForgeRecipe.RECIPE_TYPE_NAME, SoulForgeSerializer::new);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<BloodAltarRecipe>> BLOOD_ALTAR_TYPE = TYPES.register(BloodAltarRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, BloodAltarRecipe.RECIPE_TYPE_NAME)));
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BloodAltarRecipe>> BLOOD_ALTAR_SERIALIZER = SERIALIZERS.register("blood_altar", BloodAltarRecipeSerializer::new);
+    public static final DeferredHolder<RecipeType<?>, RecipeType<BloodAltarRecipe>> BLOOD_ALTAR_TYPE = TYPES.register(BloodAltarRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(bm(BloodAltarRecipe.RECIPE_TYPE_NAME)));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BloodAltarRecipe>> BLOOD_ALTAR_SERIALIZER = SERIALIZERS.register(BloodAltarRecipe.RECIPE_TYPE_NAME, BloodAltarRecipeSerializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ARCRecipe>> ALCHEMICAL_REACTION_CHAMBER_TYPE = TYPES.register(ARCRecipe.RECIPE_TYPE_NAME, () -> RecipeType.simple(bm(ARCRecipe.RECIPE_TYPE_NAME)));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ARCRecipe>> ALCHEMICAL_REACTION_CHAMBER_SERIALIZER = SERIALIZERS.register(ARCRecipe.RECIPE_TYPE_NAME, ARCSerializer::new);
 
     public static void register(IEventBus modBus) {
         SERIALIZERS.register(modBus);
         TYPES.register(modBus);
+    }
+
+    private static ResourceLocation bm(String path) {
+        return ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, path);
     }
 }

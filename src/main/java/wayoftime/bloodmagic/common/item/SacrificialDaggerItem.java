@@ -39,7 +39,7 @@ public class SacrificialDaggerItem extends Item {
         }
 
         boolean isCeremonial = player.getMainHandItem().getOrDefault(BMDataComponents.INCENSE, false);
-        double conversion = BloodMagic.SERVER_CONFIG.selfSacrificeConversion.get();
+        double conversion = BloodMagic.SERVER_CONFIG.SELF_SACRIFICE_CONVERSION.get();
         BlockPos altarPos = AltarUtil.findAltar(level, player.blockPosition(), 2);
         int healthSacrificed = 2;
         int lpAdded = (int) (healthSacrificed * conversion);

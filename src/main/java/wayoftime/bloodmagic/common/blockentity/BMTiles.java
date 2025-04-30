@@ -28,6 +28,9 @@ public class BMTiles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HellfireForgeTile>> HELLFIRE_FORGE_TYPE = TILES.register("hellfire_forge",
             () -> new BlockEntityType<>(HellfireForgeTile::new, Set.of(BMBlocks.HELLFIRE_FORGE.block().get()), null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ARCTile>> ARC_TYPE = TILES.register("alchemical_reaction_chamber",
+            () -> new BlockEntityType<>(ARCTile::new, Set.of(BMBlocks.ARC.block().get()), null));
+
     private static void registerTileCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
@@ -48,6 +51,16 @@ public class BMTiles {
                 Capabilities.ItemHandler.BLOCK,
                 HELLFIRE_FORGE_TYPE.get(),
                 HellfireForgeTile::getInventory
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ARC_TYPE.get(),
+                ARCTile::getFluidHandler
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ARC_TYPE.get(),
+                ARCTile::getItemHandler
         );
     }
 

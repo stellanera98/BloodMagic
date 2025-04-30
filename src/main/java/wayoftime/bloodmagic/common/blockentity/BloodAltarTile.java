@@ -324,11 +324,6 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
-    }
-
-    @Override
     public void setChanged() {
         super.setChanged();
         this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL); // send to client

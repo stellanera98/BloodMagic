@@ -89,7 +89,7 @@ public class BMLanguageProvider extends LanguageProvider {
 
         addTooltip("will", "Will Quality: %s");
         for (DemonWillType type : DemonWillType.values()) {
-            addTooltip("current_type." + type.toLower(), String.format("Contains: %s Will", type.toCapitalized()));
+            addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
         }
 
         addTooltip("currentOwner", "Current Owner: %s");
@@ -113,7 +113,15 @@ public class BMLanguageProvider extends LanguageProvider {
         addJei("soul_forge", "min_will", "Minimum: %s Will");
         addJei("soul_forge", "drain_will", "Drained: %s Will");
 
+        addJei("arc", "category", "Alchemical Reaction Chamber");
+        addJei("arc_furnace", "arc_smelting", "ARC Smelting");
+        addJei("arc_furnace", "arc_blasting", "ARC Blasting");
+        addJei("arc_furnace", "arc_smoking", "ARC Smoking");
+
         addJei("info", "blood_tank", "To upgrade your Blood Tanks Tier place two same-tier Tanks instead of the glass blocks in the Tier 1 Tank recipe. The contents are added together if they are the same, if not the left (or the non-empty ones) contents win");
+
+        addTooltip("arc_speed", "Increases crafting speed by x%s.");
+        addTooltip("arc_chance", "Increases chance of additional outputs by x%s.");
     }
 
     public void addJei(String category, String thing, String value) {

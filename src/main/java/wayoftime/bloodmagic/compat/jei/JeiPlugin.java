@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.compat.jei;
 
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.registration.*;
@@ -14,6 +15,8 @@ import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
+import wayoftime.bloodmagic.compat.jei.recipe.ARCFurnaceCategory;
+import wayoftime.bloodmagic.compat.jei.recipe.ARCRecipeCategory;
 import wayoftime.bloodmagic.compat.jei.recipe.AltarRecipeCategory;
 import wayoftime.bloodmagic.compat.jei.recipe.SoulForgeCategory;
 import wayoftime.bloodmagic.util.DemonWillType;
@@ -33,12 +36,35 @@ public class JeiPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new AltarRecipeCategory(helper));
         registration.addRecipeCategories(new SoulForgeCategory(helper));
+        registration.addRecipeCategories(new ARCRecipeCategory(helper));
+        registration.addRecipeCategories(new ARCFurnaceCategory<SmeltingRecipe>(helper) {
+            @Override
+            public mezz.jei.api.recipe.RecipeType<SmeltingRecipe> getRecipeType() {
+                return ARCFurnaceCategory.SMELTING;
+            }
+        });
+        registration.addRecipeCategories(new ARCFurnaceCategory<BlastingRecipe>(helper) {
+            @Override
+            public mezz.jei.api.recipe.RecipeType<BlastingRecipe> getRecipeType() {
+                return ARCFurnaceCategory.BLASTING;
+            }
+        });
+        registration.addRecipeCategories(new ARCFurnaceCategory<SmokingRecipe>(helper) {
+            @Override
+            public mezz.jei.api.recipe.RecipeType<SmokingRecipe> getRecipeType() {
+                return ARCFurnaceCategory.SMOKING;
+            }
+        });
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(BMBlocks.BLOOD_ALTAR), AltarRecipeCategory.TYPE);
         registration.addRecipeCatalyst(new ItemStack(BMBlocks.HELLFIRE_FORGE), SoulForgeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BMBlocks.ARC), ARCRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BMBlocks.ARC), ARCFurnaceCategory.SMELTING);
+        registration.addRecipeCatalyst(new ItemStack(BMBlocks.ARC), ARCFurnaceCategory.BLASTING);
+        registration.addRecipeCatalyst(new ItemStack(BMBlocks.ARC), ARCFurnaceCategory.SMOKING);
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getRecipes(RecipeManager karen, RecipeType<T> type) {
@@ -51,13 +77,18 @@ public class JeiPlugin implements IModPlugin {
 
         registration.addRecipes(AltarRecipeCategory.TYPE, getRecipes(karen, BMRecipes.BLOOD_ALTAR_TYPE.get()));
         registration.addRecipes(SoulForgeCategory.TYPE, getRecipes(karen, BMRecipes.SOUL_FORGE_TYPE.get()));
+        registration.addRecipes(ARCRecipeCategory.TYPE, getRecipes(karen, BMRecipes.ALCHEMICAL_REACTION_CHAMBER_TYPE.get()));
+
+        registration.addRecipes(ARCFurnaceCategory.SMELTING, getRecipes(karen, RecipeType.SMELTING));
+        registration.addRecipes(ARCFurnaceCategory.BLASTING, getRecipes(karen, RecipeType.BLASTING));
+        registration.addRecipes(ARCFurnaceCategory.SMOKING, getRecipes(karen, RecipeType.SMOKING));
 
         registration.addItemStackInfo(new ItemStack(BMBlocks.BLOOD_TANK), Component.translatable("jei.bloodmagic.info.blood_tank"));
     }
 
     private static final IIngredientSubtypeInterpreter<ItemStack> WILL_TYPE = (stack, context) -> {
         DemonWillType type = stack.get(BMDataComponents.DEMON_WILL_TYPE);
-        return type == null ? IIngredientSubtypeInterpreter.NONE : type.toLower();
+        return type == null ? IIngredientSubtypeInterpreter.NONE : type.getSerializedName();
     };
 
     @Override

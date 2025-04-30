@@ -1,19 +1,27 @@
 package wayoftime.bloodmagic.datagen.providers;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.ingredient.BloodOrbIngredient;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.tag.BMTags;
+import wayoftime.bloodmagic.datagen.builders.recipe.ARCRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.AltarRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.SoulForgeRecipeBuilder;
 import wayoftime.bloodmagic.datagen.builders.recipe.TieredRecipeBuilder;
@@ -253,6 +261,25 @@ public class BMRecipeProvider extends RecipeProvider {
                 .requires(BMItems.INGOT_HELLFORGED.get(), 9)
                 .unlockedBy("has_hellforged_block", has(BMBlocks.HELLFORGED_BLOCK))
                 .save(output);
+
+        reinforcedRevert(BMBlocks.RUNE_2_ACCELERATION.block(), BMBlocks.RUNE_ACCELERATION.block(), output);
+
+        ARCRecipeBuilder.build(BMTags.Items.ARC_TOOL_HYDRATE)
+                .input(Blocks.NETHERRACK)
+                .fluidInput(new FluidStack(Fluids.WATER, 2 * FluidType.BUCKET_VOLUME))
+                .fluidOutput(new FluidStack(Fluids.LAVA, FluidType.BUCKET_VOLUME))
+                .chancedOutput(new ItemStack(Items.NETHER_BRICK), 0.25)
+                .chancedOutput(new ItemStack(Items.NETHERITE_SCRAP ), 1)
+                .save(output, bm("arc_fluid_test"));
+    }
+
+    private static void reinforcedRevert(DeferredHolder<Block, Block> reinforced, DeferredHolder<Block, Block> regular, RecipeOutput output) {
+        ARCRecipeBuilder.build(BMTags.Items.ARC_TOOL_REVERTER)
+                .input(reinforced.value())
+                .guaranteedOutput(new ItemStack(regular.value(), 1))
+                .guaranteedOutput(new ItemStack(Items.NETHERITE_SCRAP, 4))
+                .guaranteedOutput(new ItemStack(BMItems.HELLFORGED_PARTS, 1))
+                .save(output, regular.getId());
     }
 
     private static ResourceLocation bm(String path) {

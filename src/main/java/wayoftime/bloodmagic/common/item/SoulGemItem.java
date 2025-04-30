@@ -62,7 +62,7 @@ public class SoulGemItem extends Item {
 
         tooltip.add(Component.translatable("tooltip.bloodmagic.soul_gem." + loc.getPath()).withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.bloodmagic.will", ChatUtil.DECIMAL_FORMAT.format(amount)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.bloodmagic.current_type." + type.toLower()).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.bloodmagic.current_type." + type.getSerializedName()).withStyle(ChatFormatting.GRAY));
 
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
     }

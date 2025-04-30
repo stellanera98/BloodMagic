@@ -63,6 +63,6 @@ public class AltarRecipeBuilder extends BaseRecipeBuilder {
     public void save(RecipeOutput output, ResourceLocation id) {
         Advancement.Builder advBuilder = getBuilder(output, id);
         BloodAltarRecipe recipe = new BloodAltarRecipe(input, result, minTier, totalBlood, craftingSpeed, drainSpeed);
-        output.accept(id.withPrefix("blood_altar/"), recipe, advBuilder.build(advancementId(id, "soulforge")));
+        output.accept(id.withPrefix("blood_altar/"), recipe, advBuilder.build(advancementId(id, "blood_altar")));
     }
 }

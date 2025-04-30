@@ -23,7 +23,7 @@ public class BMItemModelProvider extends ItemModelProvider {
             String path = item.getId().getPath();
             ItemModelBuilder builder = getBuilder(path);
             for (DemonWillType type : DemonWillType.values()) {
-                ModelFile modelFile = singleTexture(String.format("item/variant/%s_%s", path, type.toLower()), mcLoc("item/handheld"), "layer0", modLoc(String.format("item/%s_%s", path, type.toLower())));
+                ModelFile modelFile = singleTexture(String.format("item/variant/%s_%s", path, type.getSerializedName()), mcLoc("item/handheld"), "layer0", modLoc(String.format("item/%s_%s", path, type.getSerializedName())));
                 builder.override().predicate(BloodMagic.TYPE_PROPERTY, type.ordinal()).model(modelFile).end();
             }
         });

@@ -1,12 +1,10 @@
 package wayoftime.bloodmagic.common.tag;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -33,8 +31,26 @@ public class BMTags {
 
         public static final TagKey<Item> STORAGE_BLOCKS_HELLFORGED = fromBlock(Blocks.STORAGE_BLOCKS_HELLFORGED);
 
+        public static final TagKey<Item> ARC_TOOL = tag(bm("arc_tool"));
+
+        public static final TagKey<Item> ARC_TOOL_FURNACE = withParent(ARC_TOOL, bm("furnace"));
+        public static final TagKey<Item> ARC_TOOL_SMELTING = withParent(ARC_TOOL_FURNACE, bm("smelting"));
+        public static final TagKey<Item> ARC_TOOL_BLASTING = withParent(ARC_TOOL_FURNACE, bm("blasting"));
+        public static final TagKey<Item> ARC_TOOL_SMOKING = withParent(ARC_TOOL_FURNACE, bm("smoking"));
+
+        public static final TagKey<Item> ARC_TOOL_REVERTER = withParent(ARC_TOOL, bm("reverter"));
+        public static final TagKey<Item> ARC_TOOL_HYDRATE = withParent(ARC_TOOL, bm("hydrate"));
+
+        public static final TagKey<Item> ARC_TOOL_EXPLOSIVE = withParent(ARC_TOOL, bm("explosive"));
+        public static final TagKey<Item> ARC_TOOL_RESONATOR = withParent(ARC_TOOL, bm("resonator"));
+        public static final TagKey<Item> ARC_TOOL_CUTTING_FLUID = withParent(ARC_TOOL, bm("cutting_fluid"));
+
         private static TagKey<Item> fromBlock(TagKey<Block> input) {
             return tag(input.location());
+        }
+
+        private static TagKey<Item> withParent(TagKey<Item> parent, ResourceLocation location) {
+            return TagKey.create(Registries.ITEM, location.withPrefix(parent.location().getPath()+"/"));
         }
 
         private static TagKey<Item> tag(ResourceLocation id) {

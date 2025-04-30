@@ -1,0 +1,12 @@
+{
+  "values": [
+    "#bloodmagic:arc_tool/furnace/smelting",
+    "#bloodmagic:arc_tool/furnace/smoking",
+    "#bloodmagic:arc_tool/furnace/blasting",
+    "#bloodmagic:arc_tool/hydrate",
+    "#bloodmagic:arc_tool/reverter",
+    "#bloodmagic:arc_tool/explosive",
+    "#bloodmagic:arc_tool/resonator",
+    "#bloodmagic:arc_tool/cutting_fluid"
+  ]
+}

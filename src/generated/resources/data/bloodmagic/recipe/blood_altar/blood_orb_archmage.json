@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagic:blood_altar",
+  "type": "bloodmagic:blood_altar_recipe",
   "bloodNeeded": 80000,
   "craftSpeed": 50,
   "drainSpeed": 100,

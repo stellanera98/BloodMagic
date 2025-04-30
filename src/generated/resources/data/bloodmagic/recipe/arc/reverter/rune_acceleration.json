@@ -1,0 +1,24 @@
+{
+  "type": "bloodmagic:alchemical_reaction_chamber",
+  "chance_outputs": [],
+  "guaranteed_outputs": [
+    {
+      "count": 1,
+      "id": "bloodmagic:rune_acceleration"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:netherite_scrap"
+    },
+    {
+      "count": 1,
+      "id": "bloodmagic:hellforged_parts"
+    }
+  ],
+  "input": {
+    "item": "bloodmagic:rune_2_acceleration"
+  },
+  "tool": {
+    "tag": "bloodmagic:arc_tool/reverter"
+  }
+}
