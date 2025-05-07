@@ -1,0 +1,94 @@
+{
+  "effects": {
+    "bloodmagic:tick": [
+      {
+        "effect": {
+          "type": "bloodmagic:cooldown_effect",
+          "id": "bloodmagic:fire_resist"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:reset_cooldown_effect",
+          "amounts": [
+            6000,
+            4800,
+            4800,
+            3600,
+            2400
+          ],
+          "effect": {
+            "type": "bloodmagic:add_mob_effect",
+            "effect": "minecraft:fire_resistance",
+            "power": [
+              {
+                "amplifier": 0,
+                "duration": 600
+              },
+              {
+                "amplifier": 0,
+                "duration": 600
+              },
+              {
+                "amplifier": 0,
+                "duration": 800
+              },
+              {
+                "amplifier": 0,
+                "duration": 1000
+              },
+              {
+                "amplifier": 0,
+                "duration": 1200
+              }
+            ]
+          },
+          "id": "bloodmagic:fire_resist"
+        },
+        "requirements": {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:fire_resist\":0}}}"
+              }
+            },
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "flags": {
+                  "is_on_fire": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 2,
+      "xp": 1200
+    },
+    {
+      "cost": 6,
+      "xp": 3600
+    },
+    {
+      "cost": 14,
+      "xp": 12000
+    },
+    {
+      "cost": 25,
+      "xp": 24000
+    },
+    {
+      "cost": 40,
+      "xp": 30000
+    }
+  ]
+}

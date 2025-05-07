@@ -3,6 +3,7 @@ package wayoftime.bloodmagic.common.tag;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import wayoftime.bloodmagic.BloodMagic;
@@ -59,7 +60,11 @@ public class BMTags {
     }
 
     public static class Tiers {
-        public static final TagKey<AltarTier> VALID_TIERS = TagKey.create(BMRegistries.ALTAR_TIER_KEY, bm("valid_tiers"));
+        public static final TagKey<AltarTier> VALID_TIERS = TagKey.create(BMRegistries.Keys.ALTAR_TIER_KEY, bm("valid_tiers"));
+    }
+
+    public static class Damage {
+        public static final TagKey<DamageType> SELF_SACRIFICE = TagKey.create(Registries.DAMAGE_TYPE, bm("self_sacrifice_type"));
     }
 
     private static ResourceLocation bm(String path) {

@@ -1,0 +1,40 @@
+{
+  "effects": {
+    "bloodmagic:tick": [
+      {
+        "effect": {
+          "type": "bloodmagic:cooldown_effect",
+          "id": "bloodmagic:repair"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:reset_cooldown_effect",
+          "amounts": [
+            100
+          ],
+          "effect": {
+            "type": "bloodmagic:repair_armour_effect",
+            "amounts": [
+              2
+            ]
+          },
+          "id": "bloodmagic:repair"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:repair\":0}}}"
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 25,
+      "xp": 10
+    }
+  ]
+}

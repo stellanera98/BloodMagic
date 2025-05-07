@@ -1,0 +1,40 @@
+{
+  "effects": {
+    "bloodmagic:eating": [
+      {
+        "effect": {
+          "type": "bloodmagic:movement_modifier",
+          "amounts": [
+            0.04,
+            0.08,
+            0.12,
+            0.16,
+            0.2
+          ]
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": -10,
+      "xp": 1
+    },
+    {
+      "cost": -25,
+      "xp": 2
+    },
+    {
+      "cost": -40,
+      "xp": 3
+    },
+    {
+      "cost": -65,
+      "xp": 4
+    },
+    {
+      "cost": -90,
+      "xp": 5
+    }
+  ]
+}

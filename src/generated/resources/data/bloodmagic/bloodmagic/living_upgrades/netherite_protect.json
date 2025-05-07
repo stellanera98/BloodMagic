@@ -1,0 +1,52 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "attribute": "minecraft:generic.armor",
+        "id": "bloodmagic:netherite_protect",
+        "operation": "add_value"
+      },
+      {
+        "amounts": [
+          2.0,
+          4.0,
+          6.0,
+          7.0,
+          8.0
+        ],
+        "attribute": "minecraft:generic.armor_toughness",
+        "id": "bloodmagic:netherite_protect",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 6,
+      "xp": 5
+    },
+    {
+      "cost": 10,
+      "xp": 10
+    },
+    {
+      "cost": 18,
+      "xp": 15
+    },
+    {
+      "cost": 25,
+      "xp": 20
+    },
+    {
+      "cost": 40,
+      "xp": 25
+    }
+  ]
+}

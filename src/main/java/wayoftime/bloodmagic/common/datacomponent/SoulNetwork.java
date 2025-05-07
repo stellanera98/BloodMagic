@@ -84,7 +84,7 @@ public class SoulNetwork {
                     int dmg = Math.ceilDiv((int) syphon, 100);
                     user.invulnerableTime = 0;
                     user.hurt(new DamageSource(user.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE)
-                            .getHolderOrThrow(BMRegistries.SACRIFICE_DAMAGE_KEY)), dmg);
+                            .getHolderOrThrow(BMRegistries.Keys.SACRIFICE_DAMAGE_KEY)), dmg);
                 }
             }
         }

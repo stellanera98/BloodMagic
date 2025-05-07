@@ -1,0 +1,11 @@
+{
+  "effects": {
+    "bloodmagic:make_piglin_neutral": {}
+  },
+  "levels": [
+    {
+      "cost": 5,
+      "xp": 1
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "effects": {
+    "bloodmagic:dealing_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:damage_increase_effect",
+          "amounts": [
+            0.5,
+            0.75,
+            1.0,
+            1.25,
+            1.5
+          ]
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_sprinting": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 3,
+      "xp": 200
+    },
+    {
+      "cost": 7,
+      "xp": 400
+    },
+    {
+      "cost": 15,
+      "xp": 1300
+    },
+    {
+      "cost": 25,
+      "xp": 2500
+    },
+    {
+      "cost": 40,
+      "xp": 3800
+    }
+  ]
+}

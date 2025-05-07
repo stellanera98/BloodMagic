@@ -1,6 +1,6 @@
 package wayoftime.bloodmagic.common.item;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -25,6 +25,13 @@ public class BMItems {
     public static final DeferredHolder<Item, Item> SLATE_IMBUED = BASICITEMS.register("slate_imbued", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_DEMONIC = BASICITEMS.register("slate_demonic", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_ETHEREAL = BASICITEMS.register("slate_ethereal", () -> new Item(new Item.Properties()));
+
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_HELMET = BASICITEMS.register("living_helmet", () -> new LivingArmourItem(ArmorItem.Type.HELMET));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = BASICITEMS.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_LEGGINGS = BASICITEMS.register("living_leggings", () -> new LivingArmourItem(ArmorItem.Type.LEGGINGS));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_BOOTS = BASICITEMS.register("living_boots", () -> new LivingArmourItem(ArmorItem.Type.BOOTS));
+
+    public static final DeferredHolder<Item, UpgradeTomeItem> UPGRADE_TOME = BASICITEMS.register("upgrade_tome", UpgradeTomeItem::new);
 
     public static final DeferredHolder<Item, Item> BLOOD_SHARD_WEAK = BASICITEMS.register("blood_shard_weak", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> INGOT_HELLFORGED = BASICITEMS.register("ingot_hellforged", () -> new Item(new Item.Properties()));

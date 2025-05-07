@@ -1,0 +1,218 @@
+{
+  "effects": {
+    "bloodmagic:break_block": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrades": "bloodmagic:digging"
+        }
+      }
+    ],
+    "bloodmagic:dealing_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": false,
+          "upgrade": "bloodmagic:melee_damage"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": false,
+          "upgrade": "bloodmagic:sprint_attack"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_sprinting": true
+            }
+          }
+        }
+      }
+    ],
+    "bloodmagic:exp_pickup": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrades": "bloodmagic:experienced"
+        }
+      }
+    ],
+    "bloodmagic:healing": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrades": "bloodmagic:health"
+        }
+      }
+    ],
+    "bloodmagic:taking_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": true,
+          "upgrade": "bloodmagic:arrow_protect"
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              },
+              {
+                "expected": true,
+                "id": "minecraft:is_projectile"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": true,
+          "upgrade": "bloodmagic:physical_protect"
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": true,
+          "upgrade": "bloodmagic:fall_protect"
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              },
+              {
+                "expected": true,
+                "id": "minecraft:is_fall"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:damage_based_exp_gain",
+          "pre": false,
+          "upgrade": "bloodmagic:self_sacrifice"
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": true,
+                "id": "bloodmagic:self_sacrifice_type"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "bloodmagic:tick": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrades": "bloodmagic:fire_resist"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_on_fire": true
+            }
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:distance_exp",
+          "movement": "VERTICAL",
+          "upgrade": "bloodmagic:jump"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_flying": false,
+              "is_on_ground": false
+            }
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:eating_exp",
+          "upgrade": "bloodmagic:knockback_resist"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrades": "bloodmagic:poison_resist"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "effects": {
+              "minecraft:poison": {}
+            }
+          }
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:repairing_exp",
+          "upgrade": "bloodmagic:repair"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:distance_exp",
+          "movement": "HORIZONTAL",
+          "upgrade": "bloodmagic:speed"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_on_ground": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 0,
+      "xp": 0
+    }
+  ]
+}

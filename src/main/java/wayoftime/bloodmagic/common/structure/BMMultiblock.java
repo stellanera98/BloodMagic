@@ -40,7 +40,7 @@ public class BMMultiblock {
     public static ResourceLocation[] TIER_KEYS = new ResourceLocation[]{};
     public static AltarTier[] TIER_LIST = new AltarTier[]{};
     public static void onServerStarted(ServerStartedEvent event) {
-        List<Holder<AltarTier>> tierList = event.getServer().registryAccess().registryOrThrow(BMRegistries.ALTAR_TIER_KEY).getOrCreateTag(BMTags.Tiers.VALID_TIERS).stream().toList();
+        List<Holder<AltarTier>> tierList = event.getServer().registryAccess().registryOrThrow(BMRegistries.Keys.ALTAR_TIER_KEY).getOrCreateTag(BMTags.Tiers.VALID_TIERS).stream().toList();
         ResourceLocation[] keys = new ResourceLocation[tierList.size()];
         AltarTier[] tiers = new AltarTier[tierList.size()];
         PatchouliAPI.IPatchouliAPI patchouliAPI = PatchouliAPI.get();

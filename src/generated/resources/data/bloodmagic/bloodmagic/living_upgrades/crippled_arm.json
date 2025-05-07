@@ -1,0 +1,11 @@
+{
+  "effects": {
+    "bloodmagic:crippled_arm": {}
+  },
+  "levels": [
+    {
+      "cost": -150,
+      "xp": 1
+    }
+  ]
+}

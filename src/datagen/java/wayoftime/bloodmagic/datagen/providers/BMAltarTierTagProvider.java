@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BMAltarTierTagProvider extends TagsProvider<AltarTier> {
     public BMAltarTierTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-        super(output, BMRegistries.ALTAR_TIER_KEY, lookupProvider, BloodMagic.MODID, existingFileHelper);
+        super(output, BMRegistries.Keys.ALTAR_TIER_KEY, lookupProvider, BloodMagic.MODID, existingFileHelper);
     }
 
     @Override

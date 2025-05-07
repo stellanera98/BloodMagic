@@ -1,0 +1,65 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          4.0,
+          8.0,
+          12.0,
+          16.0,
+          20.0,
+          26.0,
+          32.0,
+          38.0,
+          44.0,
+          50.0
+        ],
+        "attribute": "minecraft:generic.max_health",
+        "id": "bloodmagic:health",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 5,
+      "xp": 80
+    },
+    {
+      "cost": 12,
+      "xp": 200
+    },
+    {
+      "cost": 20,
+      "xp": 340
+    },
+    {
+      "cost": 35,
+      "xp": 540
+    },
+    {
+      "cost": 49,
+      "xp": 800
+    },
+    {
+      "cost": 78,
+      "xp": 1600
+    },
+    {
+      "cost": 110,
+      "xp": 2800
+    },
+    {
+      "cost": 160,
+      "xp": 5000
+    },
+    {
+      "cost": 215,
+      "xp": 7600
+    },
+    {
+      "cost": 320,
+      "xp": 10000
+    }
+  ]
+}

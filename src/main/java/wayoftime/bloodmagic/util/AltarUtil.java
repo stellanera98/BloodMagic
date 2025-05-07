@@ -35,7 +35,7 @@ public class AltarUtil {
     }
 
     public static DamageSource sacrificeDamage(Player causer) {
-        return new DamageSource(causer.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BMRegistries.SACRIFICE_DAMAGE_KEY), null, causer, causer.position());
+        return new DamageSource(causer.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BMRegistries.Keys.SACRIFICE_DAMAGE_KEY), null, causer, causer.position());
     }
 
     public static int getTier(Level level, BlockPos altarPos) {
