@@ -1,11 +1,20 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.DemonWillType;
 
 public class BMItems {
@@ -26,8 +35,13 @@ public class BMItems {
     public static final DeferredHolder<Item, Item> SLATE_DEMONIC = BASICITEMS.register("slate_demonic", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_ETHEREAL = BASICITEMS.register("slate_ethereal", () -> new Item(new Item.Properties()));
 
+    private static RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+    private static HolderLookup.RegistryLookup<LivingUpgrade> lookup = registryAccess.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES);
+    private static HolderSet<LivingUpgrade> startingUpgrades = lookup.get(BMTags.Living.LIVING_START).get();
+
+    // TODO use ItemStack#transmuteCopy on recipe so the base armour components are kept. also useful for Sentient Armour probably
     public static final DeferredHolder<Item, LivingArmourItem> LIVING_HELMET = BASICITEMS.register("living_helmet", () -> new LivingArmourItem(ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = BASICITEMS.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = BASICITEMS.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE, startingUpgrades));
     public static final DeferredHolder<Item, LivingArmourItem> LIVING_LEGGINGS = BASICITEMS.register("living_leggings", () -> new LivingArmourItem(ArmorItem.Type.LEGGINGS));
     public static final DeferredHolder<Item, LivingArmourItem> LIVING_BOOTS = BASICITEMS.register("living_boots", () -> new LivingArmourItem(ArmorItem.Type.BOOTS));
 

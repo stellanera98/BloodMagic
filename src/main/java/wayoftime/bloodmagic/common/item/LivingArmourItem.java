@@ -1,20 +1,49 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.LivingStats;
 import wayoftime.bloodmagic.common.living.LivingEffectComponents;
 import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LivingArmourItem extends ArmorItem {
 
     public LivingArmourItem(Type type) {
-        super(BMMaterialsAndTiers.LIVING_ARMOUR_MATERIAL, type, new Properties().durability(type.getDurability(33)));
+        this(type, HolderSet.empty());
+    }
+
+    public LivingArmourItem(Type type, HolderSet<LivingUpgrade> startingUpgrades) {
+        super(
+                BMMaterialsAndTiers.LIVING_ARMOUR_MATERIAL,
+                type,
+                new Properties()
+                        .durability(type.getDurability(33))
+                        .component(BMDataComponents.LIVING_UPGRADES, LivingStats.fromHolderSet(startingUpgrades))
+                );
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        super.setDamage(stack, damage);
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+        return super.damageItem(stack, amount, entity, onBroken);
     }
 
     @Override

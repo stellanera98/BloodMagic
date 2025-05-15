@@ -1,7 +1,6 @@
 package wayoftime.bloodmagic.compat.jei;
 
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.registration.*;
@@ -13,6 +12,7 @@ import net.minecraft.world.item.crafting.*;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.StoredUpgrade;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.compat.jei.recipe.ARCFurnaceCategory;
@@ -91,6 +91,11 @@ public class JeiPlugin implements IModPlugin {
         return type == null ? IIngredientSubtypeInterpreter.NONE : type.getSerializedName();
     };
 
+    private static final IIngredientSubtypeInterpreter<ItemStack> LIVING_UPGRADE = (stack, context) -> {
+        StoredUpgrade upgrade = stack.get(BMDataComponents.STORED_UPGRADE);
+        return upgrade == null ? "empty" : upgrade.upgrade().getRegisteredName();
+    };
+
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(BMItems.SOUL_GEM_PETTY.get(), WILL_TYPE);
@@ -99,5 +104,7 @@ public class JeiPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(BMItems.SOUL_GEM_GREATER.get(), WILL_TYPE);
         registration.registerSubtypeInterpreter(BMItems.SOUL_GEM_GRAND.get(), WILL_TYPE);
         registration.registerSubtypeInterpreter(BMItems.RAW_WILL.get(), WILL_TYPE);
+
+        registration.registerSubtypeInterpreter(BMItems.UPGRADE_TOME.get(), LIVING_UPGRADE);
     }
 }

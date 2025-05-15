@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 
@@ -65,6 +66,17 @@ public class BMTags {
 
     public static class Damage {
         public static final TagKey<DamageType> SELF_SACRIFICE = TagKey.create(Registries.DAMAGE_TYPE, bm("self_sacrifice_type"));
+    }
+
+    public static class Living {
+        public static final TagKey<LivingUpgrade> TOOLTIP_ORDER = tag(bm("tooltip_order"));
+        public static final TagKey<LivingUpgrade> LIVING_START = tag(bm("living_start"));
+        public static final TagKey<LivingUpgrade> IS_DOWNGRADE = tag(bm("is_downgrade"));
+        public static final TagKey<LivingUpgrade> TOOLTIP_HIDE = tag(bm("tooltip_hide"));
+
+        private static TagKey<LivingUpgrade> tag(ResourceLocation id) {
+            return TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, id);
+        }
     }
 
     private static ResourceLocation bm(String path) {

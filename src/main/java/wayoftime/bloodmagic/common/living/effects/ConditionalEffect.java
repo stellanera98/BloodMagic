@@ -15,24 +15,24 @@ public record ConditionalEffect<T>(T effect, Optional<LootItemCondition> require
     public static Codec<LootItemCondition> conditionCodec(LootContextParamSet params) {
         return LootItemCondition.DIRECT_CODEC
                 .validate(
-                        p_351949_ -> {
-                            ProblemReporter.Collector problemreporter$collector = new ProblemReporter.Collector();
-                            ValidationContext validationcontext = new ValidationContext(problemreporter$collector, params);
-                            p_351949_.validate(validationcontext);
-                            return problemreporter$collector.getReport()
-                                    .map(p_344978_ -> DataResult.<LootItemCondition>error(() -> "Validation error in living effect condition: " + p_344978_))
-                                    .orElseGet(() -> DataResult.success(p_351949_));
+                        result -> {
+                            ProblemReporter.Collector problemReporter = new ProblemReporter.Collector();
+                            ValidationContext validationcontext = new ValidationContext(problemReporter, params);
+                            result.validate(validationcontext);
+                            return problemReporter.getReport()
+                                    .map(report -> DataResult.<LootItemCondition>error(() -> "Validation error in living effect condition: " + report))
+                                    .orElseGet(() -> DataResult.success(result));
                         }
                 );
     }
 
     public static <T> Codec<ConditionalEffect<T>> codec(Codec<T> codec, LootContextParamSet params) {
         return RecordCodecBuilder.create(
-                p_345993_ -> p_345993_.group(
+                builder -> builder.group(
                                 codec.fieldOf("effect").forGetter(ConditionalEffect::effect),
                                 conditionCodec(params).optionalFieldOf("requirements").forGetter(ConditionalEffect::requirements)
                         )
-                        .apply(p_345993_, ConditionalEffect::new)
+                        .apply(builder, ConditionalEffect::new)
         );
     }
 

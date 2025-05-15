@@ -11,10 +11,12 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.blockentity.BloodTankTile;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.StoredUpgrade;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
-import wayoftime.bloodmagic.common.tag.BMTags;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.util.DemonWillType;
 
 import java.util.function.Supplier;
@@ -51,6 +53,22 @@ public class BMCreativeTab {
                     })
                     .build()
     );
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> UPGRADE_TAB = TABS.register("upgrades",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup." + BloodMagic.MODID + ".upgrades"))
+                    .icon(() -> new ItemStack(BMItems.UPGRADE_TOME.get()))
+                    .displayItems((params, output) -> {
+                        params.holders().lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).listElements().forEach(holder -> {
+                            for (LivingUpgrade.Level level : holder.value().levels()) {
+                                ItemStack stack = new ItemStack(BMItems.UPGRADE_TOME);
+                                stack.set(BMDataComponents.STORED_UPGRADE, new StoredUpgrade(holder, level.xpNeeded()));
+                                output.accept(stack);
+                            }
+                        });
+                    })
+                    .build()
+            );
 
     public static void register(IEventBus modBus) {
         TABS.register(modBus);

@@ -3,14 +3,18 @@
     "bloodmagic:taking_damage": [
       {
         "effect": {
-          "type": "bloodmagic:damage_reduction_effect",
-          "amounts": [
-            0.2,
-            0.4,
-            0.6,
-            0.8,
-            1.0
-          ]
+          "type": "bloodmagic:multiply_reduce",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.2,
+              0.4,
+              0.6,
+              0.8,
+              1.0
+            ]
+          }
         },
         "requirements": {
           "condition": "minecraft:damage_source_properties",

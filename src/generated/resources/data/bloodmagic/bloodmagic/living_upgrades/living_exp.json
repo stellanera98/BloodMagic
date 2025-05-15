@@ -4,78 +4,19 @@
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrades": "bloodmagic:digging"
+          "upgrade": "bloodmagic:digging"
         }
       }
     ],
-    "bloodmagic:dealing_damage": [
-      {
-        "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": false,
-          "upgrade": "bloodmagic:melee_damage"
-        }
-      },
-      {
-        "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": false,
-          "upgrade": "bloodmagic:sprint_attack"
-        },
-        "requirements": {
-          "condition": "minecraft:entity_properties",
-          "entity": "this",
-          "predicate": {
-            "flags": {
-              "is_sprinting": true
-            }
-          }
-        }
-      }
-    ],
-    "bloodmagic:exp_pickup": [
+    "bloodmagic:damage_dealt_exp": [
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrades": "bloodmagic:experienced"
-        }
-      }
-    ],
-    "bloodmagic:healing": [
-      {
-        "effect": {
-          "type": "bloodmagic:living_exp",
-          "upgrades": "bloodmagic:health"
-        }
-      }
-    ],
-    "bloodmagic:taking_damage": [
-      {
-        "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": true,
-          "upgrade": "bloodmagic:arrow_protect"
-        },
-        "requirements": {
-          "condition": "minecraft:damage_source_properties",
-          "predicate": {
-            "tags": [
-              {
-                "expected": false,
-                "id": "minecraft:bypasses_invulnerability"
-              },
-              {
-                "expected": true,
-                "id": "minecraft:is_projectile"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": true,
+          "multiplier": {
+            "type": "minecraft:fraction",
+            "denominator": 25.0,
+            "numerator": 15.0
+          },
           "upgrade": "bloodmagic:physical_protect"
         },
         "requirements": {
@@ -92,8 +33,12 @@
       },
       {
         "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": true,
+          "type": "bloodmagic:living_exp",
+          "multiplier": {
+            "type": "minecraft:fraction",
+            "denominator": 25.0,
+            "numerator": 15.0
+          },
           "upgrade": "bloodmagic:fall_protect"
         },
         "requirements": {
@@ -114,8 +59,79 @@
       },
       {
         "effect": {
-          "type": "bloodmagic:damage_based_exp_gain",
-          "pre": false,
+          "type": "bloodmagic:living_exp",
+          "multiplier": 1.0,
+          "upgrade": "bloodmagic:melee_damage"
+        }
+      },
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "multiplier": 1.0,
+          "upgrade": "bloodmagic:sprint_attack"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_sprinting": true
+            }
+          }
+        }
+      }
+    ],
+    "bloodmagic:damage_taken_exp": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "multiplier": {
+            "type": "minecraft:fraction",
+            "denominator": 25.0,
+            "numerator": 15.0
+          },
+          "upgrade": "bloodmagic:arrow_protect"
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              },
+              {
+                "expected": true,
+                "id": "minecraft:is_projectile"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "bloodmagic:exp_pickup": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "multiplier": 1.0,
+          "upgrade": "bloodmagic:experienced"
+        }
+      }
+    ],
+    "bloodmagic:healing": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "multiplier": 1.0,
+          "upgrade": "bloodmagic:health"
+        }
+      }
+    ],
+    "bloodmagic:taking_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "multiplier": 1.0,
           "upgrade": "bloodmagic:self_sacrifice"
         },
         "requirements": {
@@ -135,7 +151,7 @@
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrades": "bloodmagic:fire_resist"
+          "upgrade": "bloodmagic:fire_resist"
         },
         "requirements": {
           "condition": "minecraft:entity_properties",
@@ -149,7 +165,7 @@
       },
       {
         "effect": {
-          "type": "bloodmagic:distance_exp",
+          "type": "bloodmagic:distance_living_exp",
           "movement": "VERTICAL",
           "upgrade": "bloodmagic:jump"
         },
@@ -166,14 +182,14 @@
       },
       {
         "effect": {
-          "type": "bloodmagic:eating_exp",
+          "type": "bloodmagic:eating_living_exp",
           "upgrade": "bloodmagic:knockback_resist"
         }
       },
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrades": "bloodmagic:poison_resist"
+          "upgrade": "bloodmagic:poison_resist"
         },
         "requirements": {
           "condition": "minecraft:entity_properties",
@@ -187,13 +203,13 @@
       },
       {
         "effect": {
-          "type": "bloodmagic:repairing_exp",
+          "type": "bloodmagic:repairing_living_exp",
           "upgrade": "bloodmagic:repair"
         }
       },
       {
         "effect": {
-          "type": "bloodmagic:distance_exp",
+          "type": "bloodmagic:distance_living_exp",
           "movement": "HORIZONTAL",
           "upgrade": "bloodmagic:speed"
         },

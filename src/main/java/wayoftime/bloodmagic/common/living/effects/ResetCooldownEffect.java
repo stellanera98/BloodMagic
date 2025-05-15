@@ -1,37 +1,34 @@
 package wayoftime.bloodmagic.common.living.effects;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
 import wayoftime.bloodmagic.common.dataattachment.BMDataAttachments;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public record ResetCooldownEffect(ResourceLocation id, List<Integer> amounts, Optional<StandaloneEffect> effect) implements StandaloneEffect {
+public record ResetCooldownEffect(ResourceLocation id, LevelBasedValue amounts, Optional<LivingEntityEffect> effect) implements LivingEntityEffect {
     public static final MapCodec<ResetCooldownEffect> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(ResetCooldownEffect::id),
-            Codec.INT.listOf().fieldOf("amounts").forGetter(ResetCooldownEffect::amounts),
-            StandaloneEffect.CODEC.optionalFieldOf("effect").forGetter(ResetCooldownEffect::effect)
+            LevelBasedValue.CODEC.fieldOf("amounts").forGetter(ResetCooldownEffect::amounts),
+            LivingEntityEffect.CODEC.optionalFieldOf("reset_effect").forGetter(ResetCooldownEffect::effect)
     ).apply(builder, ResetCooldownEffect::new));
 
     @Override
-    public void apply(int level, Player wearer) {
-        if (effect.isPresent()) {
-            effect.get().apply(level, wearer);
-        }
-        Map<ResourceLocation, Integer> map = wearer.getData(BMDataAttachments.LIVING_COOLDOWN.get());
-        map.remove(id);
-        map.put(id, amounts.get(level));
-        wearer.setData(BMDataAttachments.LIVING_COOLDOWN.get(), map);
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        Map<ResourceLocation, Integer> data = entity.getData(BMDataAttachments.LIVING_COOLDOWN);
+        data.compute(id, (key, amount) -> 0);
+        entity.setData(BMDataAttachments.LIVING_COOLDOWN, data);
+        //effect.ifPresent(livingEntityEffect -> livingEntityEffect.apply(level, upgradeLevel, entity));
     }
 
     @Override
-    public MapCodec<? extends StandaloneEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 }

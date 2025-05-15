@@ -1,9 +1,7 @@
 package wayoftime.bloodmagic.datagen.builders.recipe;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;

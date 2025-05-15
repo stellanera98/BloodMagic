@@ -3,23 +3,19 @@
     "bloodmagic:tick": [
       {
         "effect": {
-          "type": "bloodmagic:cooldown_effect",
+          "type": "bloodmagic:cooldown",
           "id": "bloodmagic:repair"
         }
       },
       {
         "effect": {
-          "type": "bloodmagic:reset_cooldown_effect",
-          "amounts": [
-            100
-          ],
-          "effect": {
-            "type": "bloodmagic:repair_armour_effect",
-            "amounts": [
-              2
-            ]
-          },
-          "id": "bloodmagic:repair"
+          "type": "bloodmagic:reset_cooldown",
+          "amounts": 100.0,
+          "id": "bloodmagic:repair",
+          "reset_effect": {
+            "type": "bloodmagic:random_armour_damage",
+            "amounts": -2.0
+          }
         },
         "requirements": {
           "condition": "minecraft:entity_properties",

@@ -1,33 +1,31 @@
 package wayoftime.bloodmagic.common.living.effects;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 
-import java.util.List;
-
-public record AddMobEffect(List<Pair<Integer, Integer>> power, Holder<MobEffect> effect) implements StandaloneEffect {
+public record AddMobEffect(Holder<MobEffect> mobEffect, LevelBasedValue amplifier, LevelBasedValue duration) implements LivingEntityEffect {
     public static final MapCodec<AddMobEffect> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.pair(
-                    Codec.INT.fieldOf("duration").codec(),
-                    Codec.INT.fieldOf("amplifier").codec()
-            ).listOf().fieldOf("power").forGetter(AddMobEffect::power),
-            BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("effect").forGetter(AddMobEffect::effect)
+            BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("mob_effect").forGetter(AddMobEffect::mobEffect),
+            LevelBasedValue.CODEC.fieldOf("amplifier").forGetter(AddMobEffect::amplifier),
+            LevelBasedValue.CODEC.fieldOf("duration").forGetter(AddMobEffect::duration)
     ).apply(builder, AddMobEffect::new));
 
     @Override
-    public void apply(int level, Player wearer) {
-        wearer.addEffect(new MobEffectInstance(effect, power.get(level).getFirst(), power.get(level).getSecond()));
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        ((LivingEntity) entity).addEffect(new MobEffectInstance(mobEffect, (int) duration.calculate(upgradeLevel), (int) amplifier.calculate(upgradeLevel)));
     }
 
     @Override
-    public MapCodec<? extends StandaloneEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 }

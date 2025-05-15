@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import wayoftime.bloodmagic.common.living.effects.AttributeEffect;
@@ -19,12 +20,14 @@ import java.util.*;
 public record LivingUpgrade(List<Level> levels, DataComponentMap effects) {
     public static final Codec<LivingUpgrade> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Level.CODEC.listOf().fieldOf("levels").forGetter(LivingUpgrade::levels),
-            LivingEffectComponents.CODEC.optionalFieldOf("effects", DataComponentMap.EMPTY).forGetter(LivingUpgrade::effects)
+            LivingEffectComponents.CODEC.fieldOf("effects").forGetter(LivingUpgrade::effects)
     ).apply(builder, LivingUpgrade::new)); // TODO .validate() levels.len and effects amounts. or call it a skill issue, idk
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<LivingUpgrade>> STREAM_CODEC = ByteBufCodecs.holderRegistry(BMRegistries.Keys.LIVING_UPGRADES);
 
-    public static record Level(int xpNeeded, int cost) {
+    public static final Codec<Holder<LivingUpgrade>> HOLDER_CODEC = RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES);
+
+    public record Level(int xpNeeded, int cost) {
         public static final Codec<Level> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 Codec.INT.fieldOf("xp").forGetter(Level::xpNeeded),
                 Codec.INT.fieldOf("cost").forGetter(Level::cost)

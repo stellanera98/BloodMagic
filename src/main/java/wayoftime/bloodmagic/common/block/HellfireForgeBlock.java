@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.HellfireForgeTile;
-import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.util.helper.BlockEntityHelper;
 
 public class HellfireForgeBlock extends Block implements EntityBlock {

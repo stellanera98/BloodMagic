@@ -1,6 +1,5 @@
 package wayoftime.bloodmagic.compat.patchouli.processors;
 
-import net.minecraft.client.renderer.entity.layers.DolphinCarryingItemLayer;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +18,6 @@ import wayoftime.bloodmagic.util.DemonWillType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SoulForgeProcessor implements IComponentProcessor {
 

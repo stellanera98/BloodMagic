@@ -1,8 +1,11 @@
 package wayoftime.bloodmagic.datagen.builders;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
@@ -13,8 +16,29 @@ import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class AltarTierBuilder {
+
+    public static void bootstrap(BootstrapContext<AltarTier> builder) {
+        builder.register(Keys.WEAK, new AltarTier(0, AltarTierBuilder.WEAK));
+        builder.register(Keys.APPRENTICE, new AltarTier(1, AltarTierBuilder.APPRENTICE));
+        builder.register(Keys.MAGE, new AltarTier(2, AltarTierBuilder.MAGE));
+        builder.register(Keys.MASTER, new AltarTier(3, AltarTierBuilder.MASTER));
+        builder.register(Keys.ARCHMAGE, new AltarTier(4, AltarTierBuilder.ARCHMAGE));
+        builder.register(Keys.TRANSCENDENT, new AltarTier(5, AltarTierBuilder.TRANSCENDENT));
+    }
+
+    public static void tags(Function<TagKey<AltarTier>, TagsProvider.TagAppender<AltarTier>> blah) {
+        blah.apply(BMTags.Tiers.VALID_TIERS)
+                .add(Keys.WEAK)
+                .add(Keys.APPRENTICE)
+                .add(Keys.MAGE)
+                .add(Keys.MASTER)
+                .add(Keys.ARCHMAGE)
+                .add(Keys.TRANSCENDENT);
+    }
+
     protected static ResourceLocation bm(String path) {
         return ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, path);
     }

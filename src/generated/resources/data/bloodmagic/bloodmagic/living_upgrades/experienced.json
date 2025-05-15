@@ -3,19 +3,23 @@
     "bloodmagic:exp_pickup": [
       {
         "effect": {
-          "type": "bloodmagic:multiply_value_effect",
-          "amounts": [
-            0.15,
-            0.3,
-            0.45,
-            0.6,
-            0.75,
-            0.9,
-            1.05,
-            1.2,
-            1.35,
-            1.5
-          ]
+          "type": "bloodmagic:multiply_increase",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 1.0,
+            "values": [
+              0.15,
+              0.3,
+              0.45,
+              0.6,
+              0.75,
+              0.9,
+              1.05,
+              1.2,
+              1.35,
+              1.5
+            ]
+          }
         }
       }
     ]

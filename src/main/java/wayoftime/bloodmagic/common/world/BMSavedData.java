@@ -7,7 +7,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.saveddata.SavedData;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

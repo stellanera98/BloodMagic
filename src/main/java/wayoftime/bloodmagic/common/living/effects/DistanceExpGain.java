@@ -4,20 +4,22 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
 
-public record DistanceExpGain(Holder<LivingUpgrade> upgrade, Movement movement) implements StandaloneEffect {
+public record DistanceExpGain(Holder<LivingUpgrade> upgrade, Movement movement) implements LivingEntityEffect {
     public static final MapCodec<DistanceExpGain> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES).fieldOf("upgrade").forGetter(DistanceExpGain::upgrade),
+            LivingUpgrade.HOLDER_CODEC.fieldOf("upgrade").forGetter(DistanceExpGain::upgrade),
             Movement.CODEC.fieldOf("movement").forGetter(DistanceExpGain::movement)
     ).apply(builder, DistanceExpGain::new));
 
     @Override
-    public void apply(int level, Player wearer) {
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        Player wearer = (Player) entity;
         double x = wearer.getDeltaMovement().x;
         double y = wearer.getDeltaMovement().y;
         double z = wearer.getDeltaMovement().z;
@@ -31,7 +33,7 @@ public record DistanceExpGain(Holder<LivingUpgrade> upgrade, Movement movement) 
     }
 
     @Override
-    public MapCodec<? extends StandaloneEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 

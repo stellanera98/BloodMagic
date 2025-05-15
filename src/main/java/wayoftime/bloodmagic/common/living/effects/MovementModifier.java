@@ -1,34 +1,32 @@
 package wayoftime.bloodmagic.common.living.effects;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.phys.Vec3;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 
-import java.util.List;
-
-public record MovementModifier(List<Double> amounts) implements EntityEffect {
+public record MovementModifier(LevelBasedValue amounts) implements LivingEntityEffect {
     public static final MapCodec<MovementModifier> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.DOUBLE.listOf().fieldOf("amounts").forGetter(MovementModifier::amounts)
+            LevelBasedValue.CODEC.fieldOf("amounts").forGetter(MovementModifier::amounts)
     ).apply(builder, MovementModifier::new));
 
     @Override
-    public void apply(int level, Player wearer, Projectile projectile) {
-        Vec3 mov = projectile.getDeltaMovement();
-        double jiggle = amounts().get(level) * Math.sqrt(mov.x * mov.x + mov.y * mov.y + mov.z + mov.z);
-        RandomSource source = wearer.level().random;
-        projectile.setDeltaMovement(mov.add(rand(source, jiggle), rand(source, jiggle), rand(source, jiggle)));
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        Vec3 delta = entity.getDeltaMovement();
+        double variation = amounts.calculate(upgradeLevel) * Math.sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) * 2;
+        Vec3 motion = delta.add(rand(level) * variation, rand(level) * variation, rand(level) * variation);
+        entity.setDeltaMovement(motion);
     }
 
-    private double rand(RandomSource source, double jiggle) {
-        return 2 * (source.nextDouble() - 0.5) * jiggle;
+    private double rand(ServerLevel level) {
+        return level.random.nextDouble() - 0.5;
     }
 
     @Override
-    public MapCodec<? extends EntityEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 }

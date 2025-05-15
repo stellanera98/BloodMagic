@@ -1,24 +1,25 @@
 package wayoftime.bloodmagic.common.living.effects;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 
-import java.util.List;
-
-public record CauseExhaustionEffect(List<Float> amounts) implements StandaloneEffect {
+public record CauseExhaustionEffect(LevelBasedValue amounts) implements LivingEntityEffect {
     public static final MapCodec<CauseExhaustionEffect> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.FLOAT.listOf().fieldOf("exhaustion").forGetter(CauseExhaustionEffect::amounts)
+            LevelBasedValue.CODEC.fieldOf("amounts").forGetter(CauseExhaustionEffect::amounts)
     ).apply(builder, CauseExhaustionEffect::new));
 
     @Override
-    public void apply(int level, Player wearer) {
-        wearer.causeFoodExhaustion(amounts.get(level));
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        ((Player) entity).causeFoodExhaustion(amounts.calculate(upgradeLevel));
     }
 
     @Override
-    public MapCodec<? extends StandaloneEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 }

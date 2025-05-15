@@ -14,7 +14,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +28,7 @@ import wayoftime.bloodmagic.common.recipe.soulforge.SoulForgeRecipe;
 import wayoftime.bloodmagic.util.DemonWillType;
 
 import java.util.*;
+
 
 public class SoulForgeCategory implements IRecipeCategory<SoulForgeRecipe> {
 

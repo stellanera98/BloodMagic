@@ -4,8 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
-import net.minecraft.client.Minecraft;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -15,13 +17,13 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.entity.EnchantingTableBlockEntity;
+import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -44,8 +46,13 @@ public class LivingStats implements TooltipProvider {
         this.upgrades = upgrades;
     }
 
-    public Set<Object2FloatMap.Entry<Holder<LivingUpgrade>>> entrySet(RegistryAccess registries) {
-        this.upgrades.putIfAbsent(registries.holderOrThrow(BMRegistries.Keys.LIVING_EXP), 0);
+    public static LivingStats fromHolderSet(HolderSet<LivingUpgrade> holders) {
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> in = new Object2FloatOpenHashMap<>();
+        holders.forEach(holder -> in.computeFloat(holder, (key, exp) -> exp == null ? 0 : exp));
+        return new LivingStats(in);
+    }
+
+    public Set<Object2FloatMap.Entry<Holder<LivingUpgrade>>> entrySet() {
         return Collections.unmodifiableSet(this.upgrades.object2FloatEntrySet());
     }
 
@@ -70,7 +77,31 @@ public class LivingStats implements TooltipProvider {
 
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag tooltipFlag) {
-        // TODO ItemEnchantments.addToTooltip
+        HolderSet<LivingUpgrade> order = getOrder(context.registries());
+
+        for (Holder<LivingUpgrade> holder : order) {
+            if (this.upgrades.containsKey(holder)) {
+                float exp = this.upgrades.getFloat(holder);
+                tooltipAdder.accept(LivingHelper.getTooltip(holder, exp, tooltipFlag.hasShiftDown()));
+            }
+        }
+
+        for (Object2FloatMap.Entry<Holder<LivingUpgrade>> entry : this.upgrades.object2FloatEntrySet()) {
+            if (!order.contains(entry.getKey()) && !entry.getKey().is(BMTags.Living.TOOLTIP_HIDE)) {
+                tooltipAdder.accept(LivingHelper.getTooltip(entry.getKey(), entry.getFloatValue(), tooltipFlag.hasShiftDown()));
+            }
+        }
+    }
+
+    private static HolderSet<LivingUpgrade> getOrder(HolderLookup.Provider registries) {
+        if (registries != null) {
+            Optional<HolderSet.Named<LivingUpgrade>> optional = registries.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.TOOLTIP_ORDER);
+            if (optional.isPresent()) {
+                return optional.get();
+            }
+        }
+
+        return HolderSet.empty();
     }
 
     public LivingStats.Mutable toMutable() {

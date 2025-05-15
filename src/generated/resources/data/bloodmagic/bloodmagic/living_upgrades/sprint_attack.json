@@ -3,14 +3,18 @@
     "bloodmagic:dealing_damage": [
       {
         "effect": {
-          "type": "bloodmagic:damage_increase_effect",
-          "amounts": [
-            0.5,
-            0.75,
-            1.0,
-            1.25,
-            1.5
-          ]
+          "type": "bloodmagic:multiply_increase",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 1.0,
+            "values": [
+              0.5,
+              0.75,
+              1.0,
+              1.25,
+              1.5
+            ]
+          }
         },
         "requirements": {
           "condition": "minecraft:entity_properties",
@@ -19,6 +23,18 @@
             "flags": {
               "is_sprinting": true
             }
+          }
+        }
+      }
+    ],
+    "bloodmagic:knockback": [
+      {
+        "effect": {
+          "type": "bloodmagic:add_value",
+          "amounts": {
+            "type": "minecraft:linear",
+            "base": 1.0,
+            "per_level_above_first": 1.0
           }
         }
       }

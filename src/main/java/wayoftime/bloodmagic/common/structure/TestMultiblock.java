@@ -10,7 +10,7 @@ import vazkii.patchouli.common.multiblock.StateMatcher;
 
 import java.util.Map;
 
-// TODO t'is to be yoten once the Violet Moon raises
+// TODO t'is to be yoten once the Violet Moon rises
 public class TestMultiblock extends SparseMultiblock {
 
     private final Map<BlockPos, IStateMatcher> bookData;

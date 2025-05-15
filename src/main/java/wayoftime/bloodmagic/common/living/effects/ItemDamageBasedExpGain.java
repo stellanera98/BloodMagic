@@ -3,21 +3,23 @@ package wayoftime.bloodmagic.common.living.effects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
 
-public record ItemDamageBasedExpGain(Holder<LivingUpgrade> upgrade) implements StandaloneEffect {
+public record ItemDamageBasedExpGain(Holder<LivingUpgrade> upgrade) implements LivingEntityEffect {
     public static final MapCodec<ItemDamageBasedExpGain> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES).fieldOf("upgrade").forGetter(ItemDamageBasedExpGain::upgrade)
+            LivingUpgrade.HOLDER_CODEC.fieldOf("upgrade").forGetter(ItemDamageBasedExpGain::upgrade)
     ).apply(builder, ItemDamageBasedExpGain::new));
 
     @Override
-    public void apply(int level, Player wearer) {
+    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+        Player wearer = (Player) entity;
         ItemStack chestStack = LivingHelper.getChest(wearer);
         if (chestStack.has(BMDataComponents.PREVIOUS_DAMAGE)) {
             Integer prev = chestStack.get(BMDataComponents.PREVIOUS_DAMAGE);
@@ -34,7 +36,7 @@ public record ItemDamageBasedExpGain(Holder<LivingUpgrade> upgrade) implements S
     }
 
     @Override
-    public MapCodec<? extends StandaloneEffect> codec() {
+    public MapCodec<? extends LivingEntityEffect> codec() {
         return CODEC;
     }
 }

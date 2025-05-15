@@ -4,13 +4,17 @@
       {
         "effect": {
           "type": "bloodmagic:movement_modifier",
-          "amounts": [
-            0.04,
-            0.08,
-            0.12,
-            0.16,
-            0.2
-          ]
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.04,
+              0.08,
+              0.12,
+              0.16,
+              0.2
+            ]
+          }
         }
       }
     ]

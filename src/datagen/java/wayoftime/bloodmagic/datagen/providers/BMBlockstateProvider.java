@@ -3,7 +3,6 @@ package wayoftime.bloodmagic.datagen.providers;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
@@ -11,10 +10,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.ARCBlock;
 import wayoftime.bloodmagic.common.block.BMBlocks;
-import wayoftime.bloodmagic.common.blockentity.ARCTile;
 import wayoftime.bloodmagic.util.DemonWillType;
-
-import java.util.Map;
 
 public class BMBlockstateProvider extends BlockStateProvider {
     public BMBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper) {

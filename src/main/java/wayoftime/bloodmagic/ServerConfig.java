@@ -1,6 +1,5 @@
 package wayoftime.bloodmagic;
 
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ServerConfig {

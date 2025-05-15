@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import wayoftime.bloodmagic.common.item.LivingArmourItem;
@@ -63,11 +64,20 @@ public class LivingEventHandler {
     }
 
     @SubscribeEvent
-    public static void onExpDropped(LivingExperienceDropEvent event) {
-        if (event.getAttackingPlayer() != null) {
-            if (LivingHelper.hasFullSet(event.getAttackingPlayer())) {
-                LivingHelper.runExp(event.getAttackingPlayer(), event.getOriginalExperience(), event::setDroppedExperience);
+    public static void onKnockback(LivingKnockBackEvent event) {
+        Entity causer = event.getEntity().getLastDamageSource().getEntity();
+        if (causer instanceof Player player) {
+            if (LivingHelper.hasFullSet(player)) {
+                float changed = LivingHelper.modifyKnockback(player.level(), player, event.getEntity().getLastDamageSource(), event.getOriginalStrength());
+                event.setStrength(changed);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onExpPickup(PlayerXpEvent.PickupXp event) {
+        if (LivingHelper.hasFullSet(event.getEntity())) {
+            event.getOrb().value = LivingHelper.modifyExperience(event.getEntity().level(), event.getEntity(), event.getOrb().value);
         }
     }
 
@@ -75,7 +85,8 @@ public class LivingEventHandler {
     public static void onHeal(LivingHealEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (LivingHelper.hasFullSet(player)) {
-                LivingHelper.runHealing(player, event.getAmount(), event::setAmount);
+                float changed = LivingHelper.modifyHealing(player.level(), player, event.getAmount());
+                event.setAmount(changed);
             }
         }
     }
@@ -87,13 +98,17 @@ public class LivingEventHandler {
 
         if (causer instanceof Player playerCauser) {
             if (LivingHelper.hasFullSet(playerCauser)) {
-                LivingHelper.runDamageDealt(playerCauser, victim, event.getContainer());
+                float newDamage = LivingHelper.modifyDamageDealt(playerCauser, victim, event.getSource(), event.getOriginalDamage());
+                event.setNewDamage(newDamage);
+                LivingHelper.reactToDamageDealt(playerCauser, victim, event.getSource(), newDamage);
             }
         }
 
         if (victim instanceof Player playerVictim) {
             if (LivingHelper.hasFullSet(playerVictim)) {
-                LivingHelper.runDamageTaken(playerVictim, event.getContainer());
+                float newDamage = LivingHelper.modifyDamageTaken(playerVictim, event.getSource(), event.getNewDamage());
+                event.setNewDamage(newDamage);
+                LivingHelper.reactToDamageTaken(playerVictim, event.getSource(), newDamage);
             }
         }
     }
@@ -122,15 +137,15 @@ public class LivingEventHandler {
         }
 
         ItemStack fromStack = event.getFrom();
-        if (LivingHelper.hasFullSet(player)) {
-            LivingHelper.addAttributes(player.level().registryAccess(), player.getItemBySlot(EquipmentSlot.CHEST));
-        } else {
-            if (fromStack.getItem() instanceof LivingArmourItem) {
-                ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-                if (chestStack.getItem() instanceof LivingArmourItem) {
-                    LivingHelper.removeAttributes(player.level().registryAccess(), chestStack);
-                }
+        if (fromStack.getItem() instanceof LivingArmourItem) {
+            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (chestStack.getItem() instanceof LivingArmourItem) {
+                LivingHelper.removeAttributes(player.level().registryAccess(), chestStack);
             }
+        }
+
+        if (LivingHelper.hasFullSet(player)) {
+            LivingHelper.addAttributes(player);
         }
     }
 
