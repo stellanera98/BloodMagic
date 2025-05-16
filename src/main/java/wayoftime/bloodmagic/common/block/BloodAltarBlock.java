@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.common.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 import wayoftime.bloodmagic.util.helper.BlockEntityHelper;
@@ -27,6 +30,7 @@ public class BloodAltarBlock extends Block implements EntityBlock {
                 .forceSolidOn()
                 .requiresCorrectToolForDrops()
                 .strength(2.0F, 5.0F)
+                .sound(SoundType.STONE)
         );
     }
 
@@ -35,6 +39,34 @@ public class BloodAltarBlock extends Block implements EntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;
+    }
+
+    @Override
+    protected boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if (!(tile instanceof BloodAltarTile altar)) {
+            return 0;
+        }
+        return altar.analogSignal();
+    }
+
+    @Override
+    protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if (!(tile instanceof BloodAltarTile altar)) {
+            return 0;
+        }
+        return altar.isSignaling ? 15 : 0;
     }
 
     @Override

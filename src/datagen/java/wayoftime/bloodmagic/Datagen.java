@@ -27,6 +27,7 @@ public class Datagen {
 
         generator.addProvider(event.includeClient(), new BMLanguageProvider(output, "en_us"));
         generator.addProvider(event.includeClient(), new BMItemModelProvider(output, fileHelper));
+        generator.addProvider(event.includeClient(), new BMBlockstateProvider(output, fileHelper));
 
         generator.addProvider(event.includeServer(), new BMDataMapProvider(output, registries));
 

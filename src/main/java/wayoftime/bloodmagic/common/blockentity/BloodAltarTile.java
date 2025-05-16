@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -22,6 +23,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
@@ -31,6 +33,7 @@ import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarInput;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipe;
+import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.EnumRuneType;
 import wayoftime.bloodmagic.util.AltarUtil;
 import wayoftime.bloodmagic.util.SoulTicket;
@@ -52,6 +55,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
     public int outputTank = 0;
     public int mainTank = 0;
     public int chargingTank = 0;
+    public boolean isSignaling = false;
     public ItemStackHandler inv = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -91,6 +95,10 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
     public static void tick(Level level, BlockPos pos, BlockState state, BloodAltarTile tile) {
         if (level.isClientSide) {
             return;
+        }
+
+        if (tile.isSignaling) {
+            tile.isSignaling = false;
         }
 
         tile.ticks++;
@@ -177,8 +185,8 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
                 BloodMagicCraftedEvent.Altar event = new BloodMagicCraftedEvent.Altar(result, inputStack);
                 NeoForge.EVENT_BUS.post(event);
                 tile.inv.setStackInSlot(0, event.getOutput());
-                if (level.getBlockState(pos.below()).is(Blocks.REDSTONE_LAMP)) {
-                    // do the redstone shenanigan
+                if (level.getBlockState(pos.below()).is(BMTags.Blocks.PULSE_ON_CRAFTING)) {
+                    tile.isSignaling = true;
                 }
                 tile.progress = 0;
                 tile.cooldownAfterCrafting = 30;
@@ -232,6 +240,22 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
         isActive = false;
     }
 
+    public int analogSignal() {
+        if (level.getBlockState(getBlockPos().below()).is(BMTags.Blocks.SOUL_NETWORK_COMPARATOR)) {
+            ItemStack content = inv.getStackInSlot(0);
+            Binding binding = content.getOrDefault(BMDataComponents.BINDING, Binding.EMPTY);
+            BloodOrb orb = content.getItemHolder().getData(BMDataMaps.BLOOD_ORB_STATS);
+            if (binding.isEmpty() || orb == null) {
+                return 0;
+            }
+            float current = SoulNetworkHelper.getSoulNetwork(binding).getCurrentEssence();
+            float max = (int) ((float) orb.capacity() * (1 + orbCapMod));
+            return Mth.lerpDiscrete(current / max, 0, 15);
+        }
+
+        return Mth.lerpDiscrete((float) mainTank / (float) getMainCapacity(), 0, 15);
+    }
+
     public int getMainCapacity() {
         return (int) ((float) FluidType.BUCKET_VOLUME * 10F * capacityMod);
     }
@@ -270,6 +294,8 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
 
         inv.deserializeNBT(registries, tag.getCompound("inventory"));
 
+        this.isSignaling = tag.getBoolean("signal");
+
         this.tier = tag.getInt("tier");
     }
 
@@ -304,6 +330,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
 
         tag.put("stats", stats);
         tag.putInt("tier", this.tier);
+        tag.putBoolean("signal", isSignaling);
     }
 
     @Override

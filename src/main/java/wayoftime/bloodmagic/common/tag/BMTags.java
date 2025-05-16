@@ -38,6 +38,9 @@ public class BMTags {
         public static final TagKey<Block> T5_CAPSTONES = tag(bm("altar/t5_capstones"));
         public static final TagKey<Block> T6_CAPSTONES = tag(bm("altar/t6_capstones"));
 
+        public static final TagKey<Block> PULSE_ON_CRAFTING = tag(bm("altar/pulse_on_crafting"));
+        public static final TagKey<Block> SOUL_NETWORK_COMPARATOR = tag(bm("altar/soul_network_comparator"));
+
         public static final TagKey<Block> STORAGE_BLOCKS_HELLFORGED = tag(c("storage_blocks/hellforged"));
 
         private static TagKey<Block> tag(ResourceLocation id) {

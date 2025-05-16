@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
+    "particle": "bloodmagic:block/altar_side",
     "side": "bloodmagic:block/altar_side",
     "inside": "bloodmagic:block/altar_inside",
     "edge": "bloodmagic:block/altar_edge",

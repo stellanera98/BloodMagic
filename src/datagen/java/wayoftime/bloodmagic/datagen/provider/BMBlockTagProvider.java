@@ -39,19 +39,26 @@ public class BMBlockTagProvider extends BlockTagsProvider {
         this.tag(BMTags.Blocks.T6_CAPSTONES)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER);
 
-        this.tag(BMTags.Blocks.PILLARS); // means all solid blocks are viable
+        this.tag(BMTags.Blocks.PILLARS); // means all solid blocks are viable, has to be added otherwise the tag isnt generated
+
+        this.tag(BMTags.Blocks.SOUL_NETWORK_COMPARATOR)
+                .addAll(BlockGroups.BLOODSTONE);
+
+        this.tag(BMTags.Blocks.PULSE_ON_CRAFTING)
+                .add(Blocks.REDSTONE_LAMP, Blocks.NOTE_BLOCK);
 
         this.tag(BMTags.Blocks.STORAGE_BLOCKS_HELLFORGED)
-                .add(BMBlocks.HELLFORGED_BLOCK.block().get());
+                .addAll(BlockGroups.HELLFORGED_BLOCK);
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(BMBlocks.BLOOD_ALTAR.block().getKey(), BMBlocks.HELLFIRE_FORGE.block().getKey());
+                .add(BMBlocks.BLOOD_ALTAR.block().getKey());
 
         this.tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(BMBlocks.BLOOD_ALTAR.block().getKey(), BMBlocks.HELLFIRE_FORGE.block().getKey());
+                .add(BMBlocks.BLOOD_ALTAR.block().getKey());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addAll(BlockGroups.BLOODSTONE)
+                .addAll(BlockGroups.HELLFORGED_BLOCK)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER)
                 .addAll(BlockGroups.RUNE_T1)
                 .addAll(BlockGroups.RUNE_T2);
@@ -60,6 +67,9 @@ public class BMBlockTagProvider extends BlockTagsProvider {
                 .addAll(BlockGroups.BLOODSTONE)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER)
                 .addAll(BlockGroups.RUNE_T1);
+
+        this.tag(BlockTags.NEEDS_IRON_TOOL)
+                .addAll(BlockGroups.HELLFORGED_BLOCK);
 
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL)
                 .addAll(BlockGroups.RUNE_T2);

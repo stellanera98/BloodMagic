@@ -1,7 +1,6 @@
 {
   "values": [
     "bloodmagic:blood_altar",
-    "bloodmagic:hellfire_forge",
     "bloodmagic:bloodstone",
     "bloodmagic:bloodstone_brick",
     "bloodmagic:crystal_cluster",
@@ -9,7 +8,7 @@
     "bloodmagic:rune_blank",
     "bloodmagic:rune_efficiency",
     "bloodmagic:rune_sacrifice",
-    "bloodmagic:rune_self_sacrifice",
+    "bloodmagic:rune_sacrifice_self",
     "bloodmagic:rune_speed",
     "bloodmagic:rune_acceleration",
     "bloodmagic:rune_dislocation",
