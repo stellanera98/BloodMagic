@@ -1,0 +1,69 @@
+{
+  "effects": {
+    "bloodmagic:exp_pickup": [
+      {
+        "effect": {
+          "type": "bloodmagic:multiply_increase",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 1.0,
+            "values": [
+              0.15,
+              0.3,
+              0.45,
+              0.6,
+              0.75,
+              0.9,
+              1.05,
+              1.2,
+              1.35,
+              1.5
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 7,
+      "xp": 100
+    },
+    {
+      "cost": 13,
+      "xp": 400
+    },
+    {
+      "cost": 22,
+      "xp": 1000
+    },
+    {
+      "cost": 40,
+      "xp": 1600
+    },
+    {
+      "cost": 65,
+      "xp": 3200
+    },
+    {
+      "cost": 90,
+      "xp": 5000
+    },
+    {
+      "cost": 130,
+      "xp": 7000
+    },
+    {
+      "cost": 180,
+      "xp": 9200
+    },
+    {
+      "cost": 250,
+      "xp": 11500
+    },
+    {
+      "cost": 350,
+      "xp": 14000
+    }
+  ]
+}

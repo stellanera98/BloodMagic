@@ -1,0 +1,65 @@
+{
+  "effects": {
+    "bloodmagic:dealing_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:multiply_increase",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 1.0,
+            "values": [
+              0.5,
+              0.75,
+              1.0,
+              1.25,
+              1.5
+            ]
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_sprinting": true
+            }
+          }
+        }
+      }
+    ],
+    "bloodmagic:knockback": [
+      {
+        "effect": {
+          "type": "bloodmagic:add_value",
+          "amounts": {
+            "type": "minecraft:linear",
+            "base": 1.0,
+            "per_level_above_first": 1.0
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 3,
+      "xp": 200
+    },
+    {
+      "cost": 7,
+      "xp": 400
+    },
+    {
+      "cost": 15,
+      "xp": 1300
+    },
+    {
+      "cost": 25,
+      "xp": 2500
+    },
+    {
+      "cost": 40,
+      "xp": 3800
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          1.0,
+          1.2,
+          1.5
+        ],
+        "attribute": "minecraft:player.mining_efficiency",
+        "id": "bloodmagic:digging",
+        "operation": "add_multiplied_base"
+      }
+    ],
+    "bloodmagic:break_block": [
+      {
+        "effect": {
+          "type": "bloodmagic:add_mob_effect",
+          "amplifier": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              2.0,
+              2.0
+            ]
+          },
+          "duration": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.0,
+              50.0,
+              60.0,
+              100.0,
+              100.0,
+              100.0,
+              100.0,
+              150.0,
+              150.0,
+              150.0
+            ]
+          },
+          "mob_effect": "minecraft:haste"
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 5,
+      "xp": 128
+    },
+    {
+      "cost": 10,
+      "xp": 512
+    },
+    {
+      "cost": 18,
+      "xp": 1024
+    },
+    {
+      "cost": 32,
+      "xp": 2048
+    },
+    {
+      "cost": 60,
+      "xp": 8192
+    },
+    {
+      "cost": 90,
+      "xp": 16000
+    },
+    {
+      "cost": 140,
+      "xp": 32000
+    },
+    {
+      "cost": 180,
+      "xp": 50000
+    },
+    {
+      "cost": 240,
+      "xp": 80000
+    },
+    {
+      "cost": 300,
+      "xp": 150000
+    }
+  ]
+}

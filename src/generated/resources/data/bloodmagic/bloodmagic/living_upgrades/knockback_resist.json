@@ -1,0 +1,52 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          0.0,
+          0.0,
+          0.0,
+          4.0,
+          10.0
+        ],
+        "attribute": "minecraft:generic.max_health",
+        "id": "bloodmagic:knockback_resist",
+        "operation": "add_value"
+      },
+      {
+        "amounts": [
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1.0
+        ],
+        "attribute": "minecraft:generic.knockback_resistance",
+        "id": "bloodmagic:knockback_resist",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 3,
+      "xp": 100
+    },
+    {
+      "cost": 7,
+      "xp": 200
+    },
+    {
+      "cost": 13,
+      "xp": 300
+    },
+    {
+      "cost": 26,
+      "xp": 500
+    },
+    {
+      "cost": 42,
+      "xp": 1000
+    }
+  ]
+}

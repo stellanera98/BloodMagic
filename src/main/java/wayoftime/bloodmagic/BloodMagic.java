@@ -20,6 +20,10 @@ import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.common.item.BMMaterialsAndTiers;
+import wayoftime.bloodmagic.common.living.LivingEffectComponents;
+import wayoftime.bloodmagic.common.living.LivingEntityEffect;
+import wayoftime.bloodmagic.common.living.LivingValueEffect;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.structure.BMMultiblock;
@@ -54,6 +58,11 @@ public class BloodMagic {
         BMRecipes.register(modBus);
         BMMultiblock.register(NeoForge.EVENT_BUS);
         BMMenus.register(modBus);
+        BMMaterialsAndTiers.register(modBus);
+
+        LivingEntityEffect.ENTITY_EFFECT_TYPE.register(modBus);
+        LivingValueEffect.VALUE_BASED_EFFECT_TYPE.register(modBus);
+        LivingEffectComponents.LIVING_EFFECT_COMPONENTS.register(modBus);
 
         container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
 

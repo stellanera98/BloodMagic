@@ -1,0 +1,80 @@
+{
+  "effects": {
+    "bloodmagic:taking_damage": [
+      {
+        "effect": {
+          "type": "bloodmagic:multiply_reduce",
+          "amounts": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.65,
+              0.7,
+              0.75,
+              0.8
+            ]
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 5,
+      "xp": 30
+    },
+    {
+      "cost": 10,
+      "xp": 200
+    },
+    {
+      "cost": 18,
+      "xp": 400
+    },
+    {
+      "cost": 35,
+      "xp": 800
+    },
+    {
+      "cost": 65,
+      "xp": 1500
+    },
+    {
+      "cost": 100,
+      "xp": 2500
+    },
+    {
+      "cost": 140,
+      "xp": 3500
+    },
+    {
+      "cost": 190,
+      "xp": 5000
+    },
+    {
+      "cost": 250,
+      "xp": 7000
+    },
+    {
+      "cost": 300,
+      "xp": 15000
+    }
+  ]
+}

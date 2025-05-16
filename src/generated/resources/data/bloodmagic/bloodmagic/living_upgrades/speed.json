@@ -1,0 +1,115 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.9,
+          1.1,
+          1.3,
+          1.5
+        ],
+        "attribute": "minecraft:generic.movement_speed",
+        "id": "bloodmagic:speed",
+        "operation": "add_multiplied_base"
+      }
+    ],
+    "bloodmagic:tick": [
+      {
+        "effect": {
+          "type": "bloodmagic:add_mob_effect",
+          "amplifier": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              1.0,
+              2.0
+            ]
+          },
+          "duration": {
+            "type": "minecraft:lookup",
+            "fallback": 0.0,
+            "values": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              20.0,
+              60.0,
+              60.0,
+              100.0,
+              200.0
+            ]
+          },
+          "mob_effect": "minecraft:speed"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_sprinting": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 3,
+      "xp": 200
+    },
+    {
+      "cost": 7,
+      "xp": 1000
+    },
+    {
+      "cost": 13,
+      "xp": 2000
+    },
+    {
+      "cost": 26,
+      "xp": 4000
+    },
+    {
+      "cost": 42,
+      "xp": 7000
+    },
+    {
+      "cost": 60,
+      "xp": 15000
+    },
+    {
+      "cost": 90,
+      "xp": 25000
+    },
+    {
+      "cost": 130,
+      "xp": 35000
+    },
+    {
+      "cost": 180,
+      "xp": 50000
+    },
+    {
+      "cost": 250,
+      "xp": 70000
+    }
+  ]
+}
