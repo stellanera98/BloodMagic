@@ -13,6 +13,7 @@ import wayoftime.bloodmagic.datagen.content.AltarTiers;
 import wayoftime.bloodmagic.datagen.content.BloodyDamageSources;
 import wayoftime.bloodmagic.datagen.provider.*;
 
+
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)

@@ -23,6 +23,7 @@ public class BMDataMaps {
             BloodOrb.CODEC
     ).synced(BloodOrb.CODEC, true).build();
 
+
     public static final DataMapType<Block, List<BloodRune>> BLOOD_RUNES = DataMapType.builder(
             BloodMagic.rl("blood_runes"),
             Registries.BLOCK,

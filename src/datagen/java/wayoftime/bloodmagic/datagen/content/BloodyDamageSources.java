@@ -6,7 +6,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
-import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.common.damagesource.BMDamageSources;
 import wayoftime.bloodmagic.common.tag.BMTags;
 
