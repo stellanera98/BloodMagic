@@ -1,0 +1,11 @@
+{
+  "effects": {
+    "bloodmagic:quenched": {}
+  },
+  "levels": [
+    {
+      "cost": -100,
+      "xp": 1
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 
@@ -67,6 +68,13 @@ public class BMTags {
 
     public static class Tiers {
         public static final TagKey<AltarTier> VALID_TIERS = TagKey.create(BMRegistries.Keys.ALTAR_TIER_KEY, bm("valid_tiers"));
+    }
+
+    public static class Living {
+        public static final TagKey<LivingUpgrade> TOOLTIP_ORDER = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("tooltip_order"));
+        public static final TagKey<LivingUpgrade> TOOLTIP_HIDE = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("tooltip_hide"));
+        public static final TagKey<LivingUpgrade> IS_DOWNGRADE = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("is_downgrade"));
+        public static final TagKey<LivingUpgrade> LIVING_START = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("living_start"));
     }
 
     private static ResourceLocation bm(String path) {

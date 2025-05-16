@@ -1,0 +1,65 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0
+        ],
+        "attribute": "minecraft:generic.attack_damage",
+        "id": "bloodmagic:melee_damage",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 5,
+      "xp": 200
+    },
+    {
+      "cost": 12,
+      "xp": 800
+    },
+    {
+      "cost": 20,
+      "xp": 1300
+    },
+    {
+      "cost": 35,
+      "xp": 2500
+    },
+    {
+      "cost": 29,
+      "xp": 3800
+    },
+    {
+      "cost": 78,
+      "xp": 5000
+    },
+    {
+      "cost": 110,
+      "xp": 7000
+    },
+    {
+      "cost": 160,
+      "xp": 9200
+    },
+    {
+      "cost": 215,
+      "xp": 11500
+    },
+    {
+      "cost": 320,
+      "xp": 14000
+    }
+  ]
+}

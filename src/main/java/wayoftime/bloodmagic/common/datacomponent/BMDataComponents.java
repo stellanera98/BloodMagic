@@ -27,6 +27,10 @@ public class BMDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID_CONTENT = DATA_COMPONENTS.registerComponentType("fluid_content", builder -> builder.persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ENERGY_CONTENT = DATA_COMPONENTS.registerComponentType("energy_content", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<LivingStats>> LIVING_UPGRADES = DATA_COMPONENTS.registerComponentType("living_stats", builder -> builder.persistent(LivingStats.CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PREVIOUS_DAMAGE = DATA_COMPONENTS.registerComponentType("previous_damage", builder -> builder.persistent(Codec.INT));
+
     public static void register(IEventBus modBus) {
         DATA_COMPONENTS.register(modBus);
     }

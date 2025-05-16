@@ -1,0 +1,11 @@
+{
+  "effects": {
+    "bloodmagic:enable_elytra": {}
+  },
+  "levels": [
+    {
+      "cost": 15,
+      "xp": 1
+    }
+  ]
+}

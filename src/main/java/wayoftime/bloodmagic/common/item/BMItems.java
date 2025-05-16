@@ -1,5 +1,6 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -17,6 +18,11 @@ public class BMItems {
     public static final DeferredHolder<Item, BloodOrbItem> ORB_MASTER = BASIC_ITEMS.register("blood_orb_master", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_ARCHMAGE = BASIC_ITEMS.register("blood_orb_archmage", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_TRANSCENDENT = BASIC_ITEMS.register("blood_orb_transcendent", BloodOrbItem::new);
+
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_HELMET = BASIC_ITEMS.register("living_helmet", () -> new LivingArmourItem(ArmorItem.Type.HELMET));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = BASIC_ITEMS.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_LEGGINGS = BASIC_ITEMS.register("living_leggings", () -> new LivingArmourItem(ArmorItem.Type.LEGGINGS));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_BOOTS = BASIC_ITEMS.register("living_boots", () -> new LivingArmourItem(ArmorItem.Type.BOOTS));
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
 

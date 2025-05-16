@@ -1,0 +1,65 @@
+{
+  "effects": {
+    "bloodmagic:attributes": [
+      {
+        "amounts": [
+          0.15,
+          0.3,
+          0.45,
+          0.6,
+          0.75,
+          0.9,
+          1.05,
+          1.2,
+          1.35,
+          1.5
+        ],
+        "attribute": "bloodmagic:player.self_sacrifice_multiplier",
+        "id": "bloodmagic:self_sacrifice",
+        "operation": "add_multiplied_base"
+      }
+    ]
+  },
+  "levels": [
+    {
+      "cost": 7,
+      "xp": 30
+    },
+    {
+      "cost": 13,
+      "xp": 200
+    },
+    {
+      "cost": 22,
+      "xp": 400
+    },
+    {
+      "cost": 40,
+      "xp": 700
+    },
+    {
+      "cost": 65,
+      "xp": 1100
+    },
+    {
+      "cost": 90,
+      "xp": 1500
+    },
+    {
+      "cost": 130,
+      "xp": 2000
+    },
+    {
+      "cost": 180,
+      "xp": 2800
+    },
+    {
+      "cost": 250,
+      "xp": 3600
+    },
+    {
+      "cost": 350,
+      "xp": 5000
+    }
+  ]
+}
