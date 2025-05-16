@@ -1,7 +1,6 @@
 package wayoftime.bloodmagic.util;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +14,6 @@ import wayoftime.bloodmagic.common.damagesource.BMDamageSources;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.datamap.BloodRune;
 import wayoftime.bloodmagic.common.registry.AltarComponent;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.structure.BMMultiblock;
 
 import java.util.*;

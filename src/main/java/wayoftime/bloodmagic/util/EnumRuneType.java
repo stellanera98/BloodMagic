@@ -1,7 +1,6 @@
 package wayoftime.bloodmagic.util;
 
 import net.minecraft.util.StringRepresentable;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 public enum EnumRuneType implements StringRepresentable {

@@ -6,8 +6,6 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.block.BMBlocks;
-import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.concurrent.CompletableFuture;
