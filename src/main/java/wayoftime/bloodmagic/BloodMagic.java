@@ -53,9 +53,11 @@ public class BloodMagic {
         BMRecipes.register(modBus);
         BMMultiblock.register(NeoForge.EVENT_BUS);
 
+        container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
+
+        NeoForge.EVENT_BUS.addListener(BMCommands::register);
         NeoForge.EVENT_BUS.addListener(BMCommands::register);
 
-        container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
     }
 
     public static ResourceLocation rl(String path) {
