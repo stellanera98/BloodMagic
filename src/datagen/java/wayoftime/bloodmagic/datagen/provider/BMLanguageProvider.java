@@ -34,6 +34,9 @@ public class BMLanguageProvider extends LanguageProvider {
         addTooltip("current_owner", "Current Owner: %s");
         addTooltip("no_owner", "Not bound yet");
 
+        add(BMBlocks.BLOOD_ALTAR, "Blood Altar");
+        add(BMItems.SACRIFICIAL_DAGGER.get(), "Sacrificial Dagger");
+
         add(BMFluids.DOUBT_TYPE.get().getDescriptionId(), "Liquid Doubt");
         add(BMFluids.DOUBT_BUCKET.get(), "Doubt Bucket");
         add(BMFluids.DOUBT_BLOCK.get(), "Liquid Doubt");

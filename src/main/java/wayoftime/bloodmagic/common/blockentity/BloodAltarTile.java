@@ -31,7 +31,7 @@ import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarInput;
 import wayoftime.bloodmagic.common.recipe.bloodaltar.BloodAltarRecipe;
-import wayoftime.bloodmagic.util.RuneType;
+import wayoftime.bloodmagic.util.EnumRuneType;
 import wayoftime.bloodmagic.util.AltarUtil;
 import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
@@ -75,17 +75,17 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
         super(BMTiles.BLOOD_ALTAR_TYPE.get(), pos, blockState);
     }
 
-    public void calculateStats(Map<RuneType, Integer> upgrades) {
-        capacityMod = (float) ((1D + 0.2D * upgrades.getOrDefault(RuneType.CAPACITY, 0) * Math.pow(1.075, upgrades.getOrDefault(RuneType.AUGMENTED_CAPACITY, 0))));
-        tickRate = Math.max(1, 20 - upgrades.getOrDefault(RuneType.ACCELERATION, 0));
-        consumptionMod = 0.2F * upgrades.getOrDefault(RuneType.SPEED, 0);
-        sacrificeMod = 0.1F * upgrades.getOrDefault(RuneType.SACRIFICE, 0);
-        selfSacMod = 0.1F * upgrades.getOrDefault(RuneType.SELF_SACRIFICE, 0);
-        dislocationMod = (float) Math.pow(1.2, upgrades.getOrDefault(RuneType.DISPLACEMENT, 0));
-        orbCapMod = 0.2F * upgrades.getOrDefault(RuneType.ORB, 0);
-        chargeAmountMod = (10 * upgrades.getOrDefault(RuneType.CHARGING, 0) * (1 + consumptionMod/2));
-        chargeCapMod = (float) Math.max(0.5 * capacityMod, 1) * upgrades.getOrDefault(RuneType.CHARGING, 0);
-        efficiencyMod = (float) Math.pow(0.85, upgrades.getOrDefault(RuneType.EFFICIENCY, 0));
+    public void calculateStats(Map<EnumRuneType, Integer> upgrades) {
+        capacityMod = (float) ((1D + 0.2D * upgrades.getOrDefault(EnumRuneType.CAPACITY, 0) * Math.pow(1.075, upgrades.getOrDefault(EnumRuneType.AUGMENTED_CAPACITY, 0))));
+        tickRate = Math.max(1, 20 - upgrades.getOrDefault(EnumRuneType.ACCELERATION, 0));
+        consumptionMod = 0.2F * upgrades.getOrDefault(EnumRuneType.SPEED, 0);
+        sacrificeMod = 0.1F * upgrades.getOrDefault(EnumRuneType.SACRIFICE, 0);
+        selfSacMod = 0.1F * upgrades.getOrDefault(EnumRuneType.SELF_SACRIFICE, 0);
+        dislocationMod = (float) Math.pow(1.2, upgrades.getOrDefault(EnumRuneType.DISPLACEMENT, 0));
+        orbCapMod = 0.2F * upgrades.getOrDefault(EnumRuneType.ORB, 0);
+        chargeAmountMod = (10 * upgrades.getOrDefault(EnumRuneType.CHARGING, 0) * (1 + consumptionMod/2));
+        chargeCapMod = (float) Math.max(0.5 * capacityMod, 1) * upgrades.getOrDefault(EnumRuneType.CHARGING, 0);
+        efficiencyMod = (float) Math.pow(0.85, upgrades.getOrDefault(EnumRuneType.EFFICIENCY, 0));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, BloodAltarTile tile) {
@@ -96,7 +96,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
         tile.ticks++;
         if (tile.ticks % (20 * 5) == 0) {
             int newTier = AltarUtil.getTier(level, pos);
-            Map<RuneType, Integer> newUpgrades = AltarUtil.getUpgrades(newTier, level, pos);
+            Map<EnumRuneType, Integer> newUpgrades = AltarUtil.getUpgrades(newTier, level, pos);
             tile.calculateStats(newUpgrades);
             tile.setChanged();
             if (tile.isActive || tile.cooldownAfterCrafting <= 0) {
@@ -188,7 +188,7 @@ public class BloodAltarTile extends BlockEntity implements IFluidHandler {
             }
         } else {
             Binding binding = inputStack.getOrDefault(BMDataComponents.BINDING, Binding.EMPTY);
-            BloodOrb orb = inputStack.getItemHolder().getData(BMDataMaps.BLOOD_ORBS);
+            BloodOrb orb = inputStack.getItemHolder().getData(BMDataMaps.BLOOD_ORB_STATS);
             if (binding.isEmpty() || orb == null) {
                 return;
             }

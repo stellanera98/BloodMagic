@@ -1,4 +1,4 @@
-package wayoftime.bloodmagic.datagen.providers;
+package wayoftime.bloodmagic.datagen.provider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
@@ -15,13 +15,15 @@ import java.util.function.Function;
 
 public class BMTagsProvider {
     private final PackOutput output;
+    private final CompletableFuture<HolderLookup.Provider> registries;
     private final ExistingFileHelper exFiHe;
-    public BMTagsProvider(PackOutput output, ExistingFileHelper exFiHe) {
+    public BMTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper exFiHe) {
         this.output = output;
+        this.registries = registries;
         this.exFiHe = exFiHe;
     }
 
-    public <T> TagsProvider<T> setup(CompletableFuture<HolderLookup.Provider> registries, ResourceKey<Registry<T>> key, Consumer<Function<TagKey<T>, TagsProvider.TagAppender<T>>> consumer) {
+    public <T> TagsProvider<T> setup(ResourceKey<Registry<T>> key, Consumer<Function<TagKey<T>, TagsProvider.TagAppender<T>>> consumer) {
         return new TagsProvider<T>(output, key, registries, BloodMagic.MODID, exFiHe) {
             @Override
             protected void addTags(HolderLookup.Provider provider) {

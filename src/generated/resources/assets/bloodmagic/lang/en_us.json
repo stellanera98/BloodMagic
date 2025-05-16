@@ -1,4 +1,5 @@
 {
+  "block.bloodmagic.blood_altar": "Blood Altar",
   "block.bloodmagic.doubt_block": "Liquid Doubt",
   "block.bloodmagic.hellfire_forge": "Hellfire Forge",
   "block.bloodmagic.life_essence_block": "Life Essence",
@@ -13,6 +14,7 @@
   "item.bloodmagic.doubt_bucket": "Doubt Bucket",
   "item.bloodmagic.life_essence_bucket": "Bucket of Life",
   "item.bloodmagic.raw_will": "Raw Will",
+  "item.bloodmagic.sacrificial_dagger": "Sacrificial Dagger",
   "item.bloodmagic.soul_gem_common": "Common Tartaric Gem",
   "item.bloodmagic.soul_gem_grand": "Grand Tartaric Gem",
   "item.bloodmagic.soul_gem_greater": "Greater Tartaric Gem",

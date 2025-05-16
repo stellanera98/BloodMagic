@@ -80,13 +80,13 @@ public class BMMultiblock {
             if (component.material().tag()) {
                 predicate = (getter, pos, state) -> state.is(TagKey.create(Registries.BLOCK, component.material().id()));
                 blockRegistry.getOrCreateTag(TagKey.create(Registries.BLOCK, component.material().id())).stream().map(Holder::value).map(Block::defaultBlockState).forEach(stateList::add);
-                if (component.material().id().equals(BMTags.Blocks.PILLAR.location())) {
+                if (component.material().id().equals(BMTags.Blocks.PILLARS.location())) {
                     if (stateList.isEmpty()) {
                         predicate = (getter, pos, state) -> state.isSolid();
                         stateList.add(Blocks.STONE_BRICKS.defaultBlockState());
                     }
                 }
-                if (component.material().id().equals(BMTags.Blocks.BLOODRUNE.location())) {
+                if (component.material().id().equals(BMTags.Blocks.RUNES.location())) {
                     // using blank/non-blank runes to signify whether this is an upgrade spot... since the actual rune benefits are configurable this is suboptimal
                     // probably fine just mentioning this behaviour in the book
                     if (component.isUpgrade()) {

@@ -1,4 +1,4 @@
-package wayoftime.bloodmagic.datagen.builders.recipe;
+package wayoftime.bloodmagic.datagen.builder.recipe;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.RecipeOutput;

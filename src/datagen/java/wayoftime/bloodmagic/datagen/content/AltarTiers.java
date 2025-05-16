@@ -1,4 +1,4 @@
-package wayoftime.bloodmagic.datagen.builders;
+package wayoftime.bloodmagic.datagen.content;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.tags.TagsProvider;
@@ -18,19 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class AltarTierBuilder {
+public class AltarTiers {
 
     public static void bootstrap(BootstrapContext<AltarTier> builder) {
-        builder.register(Keys.WEAK, new AltarTier(0, AltarTierBuilder.WEAK));
-        builder.register(Keys.APPRENTICE, new AltarTier(1, AltarTierBuilder.APPRENTICE));
-        builder.register(Keys.MAGE, new AltarTier(2, AltarTierBuilder.MAGE));
-        builder.register(Keys.MASTER, new AltarTier(3, AltarTierBuilder.MASTER));
-        builder.register(Keys.ARCHMAGE, new AltarTier(4, AltarTierBuilder.ARCHMAGE));
-        builder.register(Keys.TRANSCENDENT, new AltarTier(5, AltarTierBuilder.TRANSCENDENT));
+        builder.register(Keys.WEAK, new AltarTier(0, AltarTiers.WEAK));
+        builder.register(Keys.APPRENTICE, new AltarTier(1, AltarTiers.APPRENTICE));
+        builder.register(Keys.MAGE, new AltarTier(2, AltarTiers.MAGE));
+        builder.register(Keys.MASTER, new AltarTier(3, AltarTiers.MASTER));
+        builder.register(Keys.ARCHMAGE, new AltarTier(4, AltarTiers.ARCHMAGE));
+        builder.register(Keys.TRANSCENDENT, new AltarTier(5, AltarTiers.TRANSCENDENT));
     }
 
-    public static void tags(Function<TagKey<AltarTier>, TagsProvider.TagAppender<AltarTier>> blah) {
-        blah.apply(BMTags.Tiers.VALID_TIERS)
+    public static void tags(Function<TagKey<AltarTier>, TagsProvider.TagAppender<AltarTier>> setter) {
+        setter.apply(BMTags.Tiers.VALID_TIERS)
                 .add(Keys.WEAK)
                 .add(Keys.APPRENTICE)
                 .add(Keys.MAGE)
@@ -63,12 +63,12 @@ public class AltarTierBuilder {
 
     private static final TagOrElementLocation ALTAR = new TagOrElementLocation(BMBlocks.BLOOD_ALTAR.block().getId(), false);
 
-    private static final TagOrElementLocation PILLAR = new TagOrElementLocation(BMTags.Blocks.PILLAR.location(), true);
-    private static final TagOrElementLocation RUNE = new TagOrElementLocation(BMTags.Blocks.BLOODRUNE.location(), true);
-    private static final TagOrElementLocation T3_CAP = new TagOrElementLocation(BMTags.Blocks.T3_CAP.location(), true);
-    private static final TagOrElementLocation T4_CAP = new TagOrElementLocation(BMTags.Blocks.T4_CAP.location(), true);
-    private static final TagOrElementLocation T5_CAP = new TagOrElementLocation(BMTags.Blocks.T5_CAP.location(), true);
-    private static final TagOrElementLocation T6_CAP = new TagOrElementLocation(BMTags.Blocks.T6_CAP.location(), true);
+    private static final TagOrElementLocation PILLAR = new TagOrElementLocation(BMTags.Blocks.PILLARS.location(), true);
+    private static final TagOrElementLocation RUNE = new TagOrElementLocation(BMTags.Blocks.RUNES.location(), true);
+    private static final TagOrElementLocation T3_CAP = new TagOrElementLocation(BMTags.Blocks.T3_CAPSTONES.location(), true);
+    private static final TagOrElementLocation T4_CAP = new TagOrElementLocation(BMTags.Blocks.T4_CAPSTONES.location(), true);
+    private static final TagOrElementLocation T5_CAP = new TagOrElementLocation(BMTags.Blocks.T5_CAPSTONES.location(), true);
+    private static final TagOrElementLocation T6_CAP = new TagOrElementLocation(BMTags.Blocks.T6_CAPSTONES.location(), true);
 
     public static List<AltarComponent> WEAK = List.of(new AltarComponent(new BlockPos(0, 0, 0), ALTAR, false));
 

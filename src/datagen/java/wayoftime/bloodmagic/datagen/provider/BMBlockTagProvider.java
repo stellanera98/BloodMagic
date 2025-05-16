@@ -1,4 +1,4 @@
-package wayoftime.bloodmagic.datagen.providers;
+package wayoftime.bloodmagic.datagen.provider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -22,33 +22,33 @@ public class BMBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(BMTags.Blocks.BLOODRUNE)
+        this.tag(BMTags.Blocks.RUNES)
                 .addAll(BlockGroups.RUNE_T1)
                 .addAll(BlockGroups.RUNE_T2);
 
-        this.tag(BMTags.Blocks.T3_CAP)
+        this.tag(BMTags.Blocks.T3_CAPSTONES)
                 .add(Blocks.GLOWSTONE, Blocks.SHROOMLIGHT, Blocks.SEA_LANTERN)
                 .add(Blocks.OCHRE_FROGLIGHT, Blocks.PEARLESCENT_FROGLIGHT, Blocks.VERDANT_FROGLIGHT);
 
-        this.tag(BMTags.Blocks.T4_CAP)
+        this.tag(BMTags.Blocks.T4_CAPSTONES)
                 .addAll(BlockGroups.BLOODSTONE);
 
-        this.tag(BMTags.Blocks.T5_CAP)
-                .add(BMBlocks.HELLFORGED_BLOCK.block().get());
+        this.tag(BMTags.Blocks.T5_CAPSTONES)
+                .addAll(BlockGroups.HELLFORGED_BLOCK);
 
-        this.tag(BMTags.Blocks.T6_CAP)
+        this.tag(BMTags.Blocks.T6_CAPSTONES)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER);
 
-        this.tag(BMTags.Blocks.PILLAR); // means all solid blocks are viable
+        this.tag(BMTags.Blocks.PILLARS); // means all solid blocks are viable
 
         this.tag(BMTags.Blocks.STORAGE_BLOCKS_HELLFORGED)
                 .add(BMBlocks.HELLFORGED_BLOCK.block().get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get(), BMBlocks.HELLFORGED_BLOCK.block().get());
+                .add(BMBlocks.BLOOD_ALTAR.block().getKey(), BMBlocks.HELLFIRE_FORGE.block().getKey());
 
         this.tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(BMBlocks.BLOOD_TANK.block().get(), BMBlocks.BLOOD_ALTAR.block().get(), BMBlocks.HELLFORGED_BLOCK.block().get());
+                .add(BMBlocks.BLOOD_ALTAR.block().getKey(), BMBlocks.HELLFIRE_FORGE.block().getKey());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addAll(BlockGroups.BLOODSTONE)
