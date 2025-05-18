@@ -30,7 +30,7 @@ public class BMRegistries {
 
     private static void registerPack(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(Keys.ALTAR_TIER_KEY, AltarTier.CODEC);
-        event.dataPackRegistry(Keys.LIVING_UPGRADES, LivingUpgrade.CODEC);
+        event.dataPackRegistry(Keys.LIVING_UPGRADES, LivingUpgrade.CODEC, LivingUpgrade.CODEC);
     }
 
     private static void registerBuiltIn(NewRegistryEvent event) {

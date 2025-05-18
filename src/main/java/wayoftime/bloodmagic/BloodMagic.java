@@ -69,8 +69,6 @@ public class BloodMagic {
         container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
 
         NeoForge.EVENT_BUS.addListener(BMCommands::register);
-        NeoForge.EVENT_BUS.addListener(BMCommands::register);
-
     }
 
     public static ResourceLocation rl(String path) {

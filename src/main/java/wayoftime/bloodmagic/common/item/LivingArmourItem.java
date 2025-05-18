@@ -8,8 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.living.LivingEffectComponents;
 import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,6 +24,7 @@ public class LivingArmourItem extends ArmorItem {
                 type,
                 new Properties()
                         .durability(type.getDurability(33))
+                        .component(BMDataComponents.REQUIRED_SET, BMTags.Items.IS_LIVING_SET)
                 );
     }
 

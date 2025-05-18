@@ -7,10 +7,13 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 
+import java.util.function.Supplier;
+
 public class BMItems {
     public static final DeferredRegister<Item> BASIC_ITEMS = DeferredRegister.createItems(BloodMagic.MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(BloodMagic.MODID);
     public static final DeferredRegister<Item> WILL_ITEMS = DeferredRegister.createItems(BloodMagic.MODID);
+    public static final DeferredRegister<Item> TAB_REQ = DeferredRegister.createItems(BloodMagic.MODID);
 
     public static final DeferredHolder<Item, BloodOrbItem> ORB_WEAK = BASIC_ITEMS.register("blood_orb_weak", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_APPRENTICE = BASIC_ITEMS.register("blood_orb_apprentice", BloodOrbItem::new);
@@ -19,10 +22,13 @@ public class BMItems {
     public static final DeferredHolder<Item, BloodOrbItem> ORB_ARCHMAGE = BASIC_ITEMS.register("blood_orb_archmage", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_TRANSCENDENT = BASIC_ITEMS.register("blood_orb_transcendent", BloodOrbItem::new);
 
-    public static final DeferredHolder<Item, LivingArmourItem> LIVING_HELMET = BASIC_ITEMS.register("living_helmet", () -> new LivingArmourItem(ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = BASIC_ITEMS.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE));
-    public static final DeferredHolder<Item, LivingArmourItem> LIVING_LEGGINGS = BASIC_ITEMS.register("living_leggings", () -> new LivingArmourItem(ArmorItem.Type.LEGGINGS));
-    public static final DeferredHolder<Item, LivingArmourItem> LIVING_BOOTS = BASIC_ITEMS.register("living_boots", () -> new LivingArmourItem(ArmorItem.Type.BOOTS));
+    private static Supplier<ArmorItem> makeLivingArmour(ArmorItem.Type type) {
+        return () -> new ArmorItem(BMMaterialsAndTiers.LIVING_ARMOUR_MATERIAL, type, new Item.Properties().durability(type.getDurability(33)));
+    }
+    public static final DeferredHolder<Item, ArmorItem> LIVING_HELMET = BASIC_ITEMS.register("living_helmet", makeLivingArmour(ArmorItem.Type.HELMET));
+    public static final DeferredHolder<Item, LivingArmourItem> LIVING_PLATE = TAB_REQ.register("living_plate", () -> new LivingArmourItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredHolder<Item, ArmorItem> LIVING_LEGGINGS = BASIC_ITEMS.register("living_leggings", makeLivingArmour(ArmorItem.Type.LEGGINGS));
+    public static final DeferredHolder<Item, ArmorItem> LIVING_BOOTS = BASIC_ITEMS.register("living_boots", makeLivingArmour(ArmorItem.Type.BOOTS));
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
 
@@ -38,5 +44,6 @@ public class BMItems {
         BASIC_ITEMS.register(modBus);
         ITEMS.register(modBus);
         WILL_ITEMS.register(modBus);
+        TAB_REQ.register(modBus);
     }
 }
