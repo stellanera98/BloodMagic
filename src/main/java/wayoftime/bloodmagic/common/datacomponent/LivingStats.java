@@ -56,6 +56,10 @@ public class LivingStats implements TooltipProvider {
         return Collections.unmodifiableSet(this.upgrades.object2FloatEntrySet());
     }
 
+    public float getExp(Holder<LivingUpgrade> holder) {
+        return upgrades.getFloat(holder);
+    }
+
     @Override
     public int hashCode() {
         return this.upgrades.hashCode();

@@ -30,6 +30,7 @@ public class BMTags {
         public static final TagKey<Item> ARC_SMELTING = withParent(ARC_FURNACE, bm("smelting"));
         public static final TagKey<Item> ARC_SMOKING = withParent(ARC_FURNACE, bm("smoking"));
 
+        public static final TagKey<Item> IS_LIVING_SET = tag(bm("is_living_set"));
 
         private static TagKey<Item> fromBlock(TagKey<Block> input) {
             return tag(input.location());

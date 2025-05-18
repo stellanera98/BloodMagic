@@ -10,6 +10,7 @@ import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.datagen.content.LivingUpgrades;
 import wayoftime.bloodmagic.util.helper.BlockWithItemHolder;
 
 public class BMLanguageProvider extends LanguageProvider {
@@ -102,6 +103,21 @@ public class BMLanguageProvider extends LanguageProvider {
             addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
         }
         add("item_group.bloodmagic.main", "Blood Magic");
+
+        add(BMItems.LIVING_HELMET.get(), "Living Helmet");
+        add(BMItems.LIVING_PLATE.get(), "Living Plate");
+        add(BMItems.LIVING_LEGGINGS.get(), "Living Leggings");
+        add(BMItems.LIVING_BOOTS.get(), "Living Boots");
+
+        addCommand("upgrade.get", "%s has the following upgrades:\n");
+        addCommand("upgrade.set", "Set %s to %s exp for %s");
+        addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a required_set component set. Upgrades cannot take effect like this");
+
+        LivingUpgrades.translations(this::add);
+    }
+
+    public void addCommand(String key, String value) {
+        add("commands.bloodmagic." + key, value);
     }
 
     public void addGemDesc(DeferredHolder holder, String desc) {

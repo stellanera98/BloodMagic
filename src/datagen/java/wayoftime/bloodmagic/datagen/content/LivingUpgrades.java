@@ -33,6 +33,7 @@ import wayoftime.bloodmagic.common.tag.BMTags;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class LivingUpgrades {
@@ -218,15 +219,17 @@ public class LivingUpgrades {
          */
         context.register(
                 NETHERITE_PROTECT,
-                new LivingUpgrade.Builder()
+                new LivingUpgrade.Builder() // TODO 6 dias = 1 xp, 1 1xp tome netherite upgraded = 1000xp
                         .level(1, 6)
                         .level(2, 10)
                         .level(3, 18)
                         .level(4, 25)
-                        .level(5, 40)
-                        .level(15000, 65) // TODO Upgrade tome with lvl 5 + 4 netherite + netherite upgrade in alchemy table
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR, Operation.ADD_VALUE, List.of(1D, 2D, 3D, 4D, 5D, 5D)))
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR_TOUGHNESS, Operation.ADD_VALUE, List.of(2D, 4D, 6D, 7D, 8D, 12D)))
+                        .level(1000, 40)
+                        .level(2000, 55)
+                        .level(3000, 70)
+                        .level(4000, 85)
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR, Operation.ADD_VALUE, List.of(1D, 3D, 4D, 5D, 5D, 5D, 5D, 5D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR_TOUGHNESS, Operation.ADD_VALUE, List.of(2D, 4D, 6D, 8D, 9D, 10D, 11D, 12D)))
                         .build()
         );
         context.register(
@@ -483,8 +486,10 @@ public class LivingUpgrades {
         );
     }
 
+    // TODO order these alphabetical by translation
     private static final List<ResourceKey<LivingUpgrade>> downgrades = List.of(BATTLE_HUNGRY, CRIPPLED_ARM, DIG_SLOWDOWN, MELEE_DECREASE, QUENCHED, SLOW_HEAL, SPEED_DECREASE, STORM_TROOPER, SWIM_DECREASE);
     private static final List<ResourceKey<LivingUpgrade>> upgrades = List.of(ARROW_PROTECT, DIGGING, ELYTRA, EXPERIENCED, FALL_PROTECT, FIRE_RESIST, GILDED, HEALTH, JUMP, KNOCKBACK_RESIST, LUCK, MELEE_DAMAGE, NETHERITE_PROTECT, PHYSICAL_PROTECT, POISON_RESIST, REPAIR, SELF_SACRIFICE, SPEED, SPRINT_ATTACK);
+
     public static void tags(Function<TagKey<LivingUpgrade>, TagsProvider.TagAppender<LivingUpgrade>> adder) {
         adder.apply(BMTags.Living.LIVING_START)
                 .add(LIVING_EXP);
@@ -498,6 +503,42 @@ public class LivingUpgrades {
 
         adder.apply(BMTags.Living.TOOLTIP_HIDE)
                 .add(LIVING_EXP);
+    }
+
+    public static void translations(BiConsumer<String, String> translator) {
+        translator.accept(id(BATTLE_HUNGRY), "Battle Hungry");
+        translator.accept(id(CRIPPLED_ARM), "Crippled Arm");
+        translator.accept(id(DIG_SLOWDOWN), "Leadened Pick");
+        translator.accept(id(MELEE_DECREASE), "Dulled Blade");
+        translator.accept(id(QUENCHED), "Quenched");
+        translator.accept(id(SLOW_HEAL), "Slow Heal");
+        translator.accept(id(SPEED_DECREASE), "Limp Leg");
+        translator.accept(id(STORM_TROOPER), "Storm Trooper");
+        translator.accept(id(SWIM_DECREASE), "Concrete Shoes");
+
+        translator.accept(id(ARROW_PROTECT), "Pin Cushion");
+        translator.accept(id(DIGGING), "Dwarven Might");
+        translator.accept(id(ELYTRA), "Elytra");
+        translator.accept(id(EXPERIENCED), "Experienced");
+        translator.accept(id(FALL_PROTECT), "Soft Fall");
+        translator.accept(id(FIRE_RESIST), "Gift of Ignis");
+        translator.accept(id(GILDED), "Gilded");
+        translator.accept(id(HEALTH), "Healthy");
+        translator.accept(id(JUMP), "Strong Legs");
+        translator.accept(id(KNOCKBACK_RESIST), "Body Builder");
+        translator.accept(id(LUCK), "Skilled");
+        translator.accept(id(MELEE_DAMAGE), "Fierce Strike");
+        translator.accept(id(NETHERITE_PROTECT), "Forgotten");
+        translator.accept(id(PHYSICAL_PROTECT), "Tough");
+        translator.accept(id(POISON_RESIST), "Poison Resistance");
+        translator.accept(id(REPAIR), "Repair");
+        translator.accept(id(SELF_SACRIFICE), "Tough Palms");
+        translator.accept(id(SPEED), "Quick Feet");
+        translator.accept(id(SPRINT_ATTACK), "Charging Strike");
+    }
+
+    private static String id(ResourceKey<LivingUpgrade> key) {
+        return "living_upgrade." + key.location().getNamespace() + "." + key.location().getPath();
     }
 
     private static LootItemCondition.Builder cooldownCondition(ResourceKey<LivingUpgrade> key) {

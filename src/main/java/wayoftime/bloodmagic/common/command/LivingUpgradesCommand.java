@@ -1,0 +1,101 @@
+package wayoftime.bloodmagic.common.command;
+
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import net.minecraft.Util;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.LivingStats;
+import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+
+import java.util.Optional;
+
+public class LivingUpgradesCommand {
+    private static final DynamicCommandExceptionType ERROR_NO_LIVING_HOLDER = new DynamicCommandExceptionType(playername -> Component.translatable("command.bloodmagic.upgrade.no_armour", playername));
+
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
+        dispatcher.register(
+                Commands.literal("living-upgrade")
+                        .requires(source -> source.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .then(
+                                Commands.argument("target", EntityArgument.player())
+                                        .then(
+                                                Commands.literal("set")
+                                                        .then(
+                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                        .then(
+                                                                                Commands.argument("exp", IntegerArgumentType.integer(0))
+                                                                                        .executes(
+                                                                                                context -> setUpgrade(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES), IntegerArgumentType.getInteger(context, "exp"))
+                                                                                        )
+                                                                        )
+                                                        )
+                                        )
+                                        .then(
+                                                Commands.literal("get")
+                                                        .executes(
+                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.empty())
+                                                        )
+                                                        .then(
+                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                        .executes(
+                                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.of(ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
+                                                                        )
+                                                        )
+                                        )
+                        )
+        );
+    }
+
+    private static int setUpgrade(CommandSourceStack source, ServerPlayer target, Holder<LivingUpgrade> id, int exp) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        ItemStack chest = LivingHelper.getChest(target);
+        LivingStats.Mutable mutable = chest.getOrDefault(BMDataComponents.LIVING_UPGRADES, LivingStats.EMPTY).toMutable();
+        mutable.set(id, exp);
+        chest.set(BMDataComponents.LIVING_UPGRADES, mutable.toImmutable());
+
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.set", Component.translatable(Util.makeDescriptionId("living_upgrade", id.getKey().location())), exp, target.getName()), true);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int getUpgrades(CommandSourceStack source, Player target, Optional<Holder<LivingUpgrade>> filter) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) { // if this check fails the applied upgrades can never take effect
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+
+        ItemStack chestStack = LivingHelper.getChest(target);
+        LivingStats stats = chestStack.getOrDefault(BMDataComponents.LIVING_UPGRADES, LivingStats.EMPTY);
+        MutableComponent result = Component.empty();
+        if (filter.isEmpty()) {
+            stats.entrySet().forEach(entry -> {
+                result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", entry.getKey().getKey().location())));
+                result.append(Component.literal(": " + entry.getFloatValue() + "exp\n"));
+            });
+        } else {
+            result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", filter.get().getKey().location())));
+            result.append(Component.literal(": " + stats.getExp(filter.get()) + "exp"));
+        }
+
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.get", target.getName()).append(result), true);
+        return Command.SINGLE_SUCCESS;
+    }
+}

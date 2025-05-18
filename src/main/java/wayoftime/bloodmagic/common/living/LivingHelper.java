@@ -6,12 +6,17 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,22 +31,27 @@ import java.util.function.BiConsumer;
 
 public class LivingHelper {
     public static boolean hasFullSet(Player player) {
+        ItemStack chestStack = getChest(player);
+        TagKey<Item> set = chestStack.get(BMDataComponents.REQUIRED_SET);
+        if (set == null) {
+            return false;
+        }
+
         for (ItemStack stack : player.getArmorSlots()) {
-            if (!(stack.getItem() instanceof LivingArmourItem armourItem)) {
+            if (!stack.is(set)) {
                 return false;
-            }
-            if (armourItem.getType() == ArmorItem.Type.CHESTPLATE) {
-                if (stack.getDamageValue() == stack.getMaxDamage()) {
-                    return false;
-                }
             }
         }
 
         return true;
     }
 
+    public static boolean isNeverValid(Player player) {
+        return !getChest(player).has(BMDataComponents.REQUIRED_SET);
+    }
+
     public static ItemStack getChest(Player player) {
-        return player.getInventory().getArmor(2);
+        return player.getItemBySlot(EquipmentSlot.CHEST);
     }
 
     public static boolean has(ItemStack stack, DataComponentType<?> type) {
