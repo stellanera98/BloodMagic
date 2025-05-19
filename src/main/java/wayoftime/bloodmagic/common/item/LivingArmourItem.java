@@ -7,6 +7,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.living.LivingEffectComponents;
@@ -26,16 +27,6 @@ public class LivingArmourItem extends ArmorItem {
                         .durability(type.getDurability(33))
                         .component(BMDataComponents.REQUIRED_SET, BMTags.Items.IS_LIVING_SET)
                 );
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        super.setDamage(stack, damage);
-    }
-
-    @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
-        return super.damageItem(stack, amount, entity, onBroken);
     }
 
     @Override
@@ -63,5 +54,6 @@ public class LivingArmourItem extends ArmorItem {
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
         return super.elytraFlightTick(stack, entity, flightTicks); // TODO reduce damage sustained with higher levels? also actually doing the damage
+        // TODO GameEvent.ELYTRA_GLIDE
     }
 }
