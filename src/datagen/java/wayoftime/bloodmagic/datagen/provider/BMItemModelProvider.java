@@ -19,6 +19,7 @@ public class BMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         BMItems.BASIC_ITEMS.getEntries().stream().map(Supplier::get).forEach(this::basicItem);
+        basicItem(BMItems.LIVING_PLATE.get());
         BMItems.WILL_ITEMS.getEntries().forEach(item -> {
             String path = item.getId().getPath();
             ItemModelBuilder builder = getBuilder(path);

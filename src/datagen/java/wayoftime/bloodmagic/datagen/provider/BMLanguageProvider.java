@@ -109,6 +109,9 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMItems.LIVING_LEGGINGS.get(), "Living Leggings");
         add(BMItems.LIVING_BOOTS.get(), "Living Boots");
 
+        add("item.bloodmagic.living_plate.dead", "Formerly Living Plate");
+        addTooltip("has_living_stats", "Theres some kind of notes, but you cant decipher them");
+
         addCommand("upgrade.get", "%s has the following upgrades:\n");
         addCommand("upgrade.set", "Set %s to %s exp for %s");
         addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a required_set component set. Upgrades cannot take effect like this");
