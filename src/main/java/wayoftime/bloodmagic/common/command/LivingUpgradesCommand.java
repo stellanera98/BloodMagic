@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -68,9 +69,9 @@ public class LivingUpgradesCommand {
             throw ERROR_NO_LIVING_HOLDER.create(target.getName());
         }
         ItemStack chest = LivingHelper.getChest(target);
-        LivingStats.Mutable mutable = chest.getOrDefault(BMDataComponents.LIVING_UPGRADES, LivingStats.EMPTY).toMutable();
-        mutable.set(id, exp);
-        chest.set(BMDataComponents.LIVING_UPGRADES, mutable.toImmutable());
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
+        map.put(id, exp);
+        chest.set(BMDataComponents.UPGRADES, new LivingStats(map));
 
         source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.set", Component.translatable(Util.makeDescriptionId("living_upgrade", id.getKey().location())), exp, target.getName()), true);
 
@@ -83,16 +84,16 @@ public class LivingUpgradesCommand {
         }
 
         ItemStack chestStack = LivingHelper.getChest(target);
-        LivingStats stats = chestStack.getOrDefault(BMDataComponents.LIVING_UPGRADES, LivingStats.EMPTY);
+        LivingStats stats = chestStack.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY);
         MutableComponent result = Component.empty();
         if (filter.isEmpty()) {
-            stats.entrySet().forEach(entry -> {
+            stats.object2FloatEntrySet().forEach(entry -> {
                 result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", entry.getKey().getKey().location())));
                 result.append(Component.literal(": " + entry.getFloatValue() + "exp\n"));
             });
         } else {
             result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", filter.get().getKey().location())));
-            result.append(Component.literal(": " + stats.getExp(filter.get()) + "exp"));
+            result.append(Component.literal(": " + stats.upgrades().getFloat(filter.get()) + "exp"));
         }
 
         source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.get", target.getName()).append(result), true);

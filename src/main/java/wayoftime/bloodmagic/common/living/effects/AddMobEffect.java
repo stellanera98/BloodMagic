@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +19,7 @@ public record AddMobEffect(Holder<MobEffect> mobEffect, LevelBasedValue amplifie
     ).apply(builder, AddMobEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         ((LivingEntity) entity).addEffect(new MobEffectInstance(mobEffect, (int) duration.calculate(upgradeLevel), (int) amplifier.calculate(upgradeLevel)));
     }
 

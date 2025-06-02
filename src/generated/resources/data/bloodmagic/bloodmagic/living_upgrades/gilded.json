@@ -1,11 +1,13 @@
 {
   "effects": {
-    "bloodmagic:make_piglin_neutral": {}
+    "bloodmagic:gilded": {}
   },
-  "levels": [
-    {
-      "cost": 5,
-      "xp": 1
+  "levels": {
+    "exp_to_level": {
+      "1": 1
+    },
+    "level_to_cost": {
+      "1": 5
     }
-  ]
+  }
 }

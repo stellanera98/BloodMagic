@@ -1,0 +1,20 @@
+{
+  "effects": {
+    "bloodmagic:healing": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrade": "bloodmagic:health"
+        }
+      }
+    ]
+  },
+  "levels": {
+    "exp_to_level": {
+      "0": 1
+    },
+    "level_to_cost": {
+      "1": 0
+    }
+  }
+}

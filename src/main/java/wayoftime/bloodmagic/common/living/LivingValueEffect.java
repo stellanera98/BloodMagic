@@ -2,8 +2,8 @@ package wayoftime.bloodmagic.common.living;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.living.effects.*;
@@ -13,11 +13,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface LivingValueEffect {
-    Codec<LivingValueEffect> CODEC = BMRegistries.VALUE_BASED_EFFECT_TYPE_REGISTRY
-        .byNameCodec()
-        .dispatch(LivingValueEffect::codec, Function.identity());
-
     DeferredRegister<MapCodec<? extends LivingValueEffect>> VALUE_BASED_EFFECT_TYPE = DeferredRegister.create(BMRegistries.Keys.VALUE_BASED_EFFECT_TYPE, BloodMagic.MODID);
+    Codec<LivingValueEffect> CODEC = Codec.lazyInitialized(() -> VALUE_BASED_EFFECT_TYPE
+            .getRegistry()
+            .get()
+            .byNameCodec()
+            .dispatch(LivingValueEffect::codec, Function.identity())
+    );
 
     Supplier<MapCodec<DelegateEffect>> DELEGATE = VALUE_BASED_EFFECT_TYPE.register("delegate", () -> DelegateEffect.CODEC);
     Supplier<MapCodec<MultiplyReduceValue>> MULTIPLY_REDUCTION = VALUE_BASED_EFFECT_TYPE.register("multiply_reduce", () -> MultiplyReduceValue.CODEC);
@@ -26,7 +28,12 @@ public interface LivingValueEffect {
 
     Supplier<MapCodec<ValueBasedExp>> VALUE_BASED_EXP = VALUE_BASED_EFFECT_TYPE.register("living_exp", () -> ValueBasedExp.CODEC);
 
-    float process(int level, RandomSource random, LootContext lootContext, float value);
+    static void register(IEventBus modBus) {
+        VALUE_BASED_EFFECT_TYPE.makeRegistry(builder -> {});
+        VALUE_BASED_EFFECT_TYPE.register(modBus);
+    }
+
+    float process(int level, LootContext lootContext, float value);
 
     MapCodec<? extends LivingValueEffect> codec();
 }

@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
@@ -18,7 +17,7 @@ public record DistanceExpGain(Holder<LivingUpgrade> upgrade, Movement movement) 
     ).apply(builder, DistanceExpGain::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         Player wearer = (Player) entity;
         double x = wearer.getDeltaMovement().x;
         double y = wearer.getDeltaMovement().y;

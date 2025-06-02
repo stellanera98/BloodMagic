@@ -3,7 +3,6 @@ package wayoftime.bloodmagic.common.living.effects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import wayoftime.bloodmagic.common.dataattachment.BMDataAttachments;
@@ -20,11 +19,11 @@ public record ResetCooldownEffect(ResourceLocation id, LevelBasedValue amounts, 
     ).apply(builder, ResetCooldownEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         Map<ResourceLocation, Integer> data = entity.getData(BMDataAttachments.LIVING_COOLDOWN);
         data.compute(id, (key, amount) -> 0);
         entity.setData(BMDataAttachments.LIVING_COOLDOWN, data);
-        //effect.ifPresent(livingEntityEffect -> livingEntityEffect.apply(level, upgradeLevel, entity));
+        effect.ifPresent(livingEntityEffect -> livingEntityEffect.apply(upgradeLevel, entity));
     }
 
     @Override

@@ -116,6 +116,8 @@ public class BMLanguageProvider extends LanguageProvider {
         addCommand("upgrade.set", "Set %s to %s exp for %s");
         addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a required_set component set. Upgrades cannot take effect like this");
 
+        addTooltip("upgrade_points", "Upgrade Points: %s/%s");
+
         LivingUpgrades.translations(this::add);
     }
 

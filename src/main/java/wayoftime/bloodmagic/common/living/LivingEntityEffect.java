@@ -2,8 +2,8 @@ package wayoftime.bloodmagic.common.living;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.living.effects.*;
@@ -13,8 +13,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface LivingEntityEffect {
-    Codec<LivingEntityEffect> CODEC = BMRegistries.ENTITY_EFFECT_TYPE_REGISTRY.byNameCodec().dispatch(LivingEntityEffect::codec, Function.identity());
     DeferredRegister<MapCodec<? extends LivingEntityEffect>> ENTITY_EFFECT_TYPE = DeferredRegister.create(BMRegistries.Keys.ENTITY_EFFECT_TYPE, BloodMagic.MODID);
+    Codec<LivingEntityEffect> CODEC = Codec.lazyInitialized(() -> ENTITY_EFFECT_TYPE
+            .getRegistry()
+            .get()
+            .byNameCodec()
+            .dispatch(LivingEntityEffect::codec, Function.identity())
+    );
 
     Supplier<MapCodec<CooldownEffect>> COOLDOWN = ENTITY_EFFECT_TYPE.register("cooldown", () -> CooldownEffect.CODEC);
     Supplier<MapCodec<ResetCooldownEffect>> RESET_COOLDOWN = ENTITY_EFFECT_TYPE.register("reset_cooldown", () -> ResetCooldownEffect.CODEC);
@@ -29,7 +34,12 @@ public interface LivingEntityEffect {
     Supplier<MapCodec<EatingExpEffect>> EATING_EXP = ENTITY_EFFECT_TYPE.register("eating_living_exp", () -> EatingExpEffect.CODEC);
     Supplier<MapCodec<ItemDamageBasedExpGain>> REPAIR_EXP = ENTITY_EFFECT_TYPE.register("repairing_living_exp", () -> ItemDamageBasedExpGain.CODEC);
 
-    void apply(ServerLevel level, int upgradeLevel, Entity entity);
+    static void register(IEventBus modBus) {
+        ENTITY_EFFECT_TYPE.makeRegistry(builder -> {});
+        ENTITY_EFFECT_TYPE.register(modBus);
+    }
+
+    void apply(int upgradeLevel, Entity entity);
 
     MapCodec<? extends LivingEntityEffect> codec();
 }

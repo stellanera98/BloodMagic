@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.item.BMMaterialsAndTiers;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -30,7 +31,8 @@ public class BMTags {
         public static final TagKey<Item> ARC_SMELTING = withParent(ARC_FURNACE, bm("smelting"));
         public static final TagKey<Item> ARC_SMOKING = withParent(ARC_FURNACE, bm("smoking"));
 
-        public static final TagKey<Item> IS_LIVING_SET = tag(bm("is_living_set"));
+        public static final TagKey<Item> LIVING_UPGRADE_SET = tag(bm("living_upgrade_set"));
+        public static final TagKey<Item> LIVING_SET = withParent(LIVING_UPGRADE_SET, BMMaterialsAndTiers.LIVING_ARMOUR_MATERIAL.getId());
 
         private static TagKey<Item> fromBlock(TagKey<Block> input) {
             return tag(input.location());
@@ -72,10 +74,15 @@ public class BMTags {
     }
 
     public static class Living {
-        public static final TagKey<LivingUpgrade> TOOLTIP_ORDER = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("tooltip_order"));
-        public static final TagKey<LivingUpgrade> TOOLTIP_HIDE = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("tooltip_hide"));
-        public static final TagKey<LivingUpgrade> IS_DOWNGRADE = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("is_downgrade"));
-        public static final TagKey<LivingUpgrade> LIVING_START = TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, bm("living_start"));
+        public static final TagKey<LivingUpgrade> TOOLTIP_ORDER = tag(bm("tooltip_order"));
+        public static final TagKey<LivingUpgrade> TOOLTIP_HIDE = tag(bm("tooltip_hide"));
+        public static final TagKey<LivingUpgrade> IS_DOWNGRADE = tag(bm("is_downgrade"));
+        public static final TagKey<LivingUpgrade> LIVING_START = tag(bm("living_start"));
+        public static final TagKey<LivingUpgrade> TRAINERS = tag(bm("trainer"));
+
+        private static TagKey<LivingUpgrade> tag(ResourceLocation id) {
+            return TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, id);
+        }
     }
 
     private static ResourceLocation bm(String path) {

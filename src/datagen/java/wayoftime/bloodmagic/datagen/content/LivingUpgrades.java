@@ -30,6 +30,7 @@ import wayoftime.bloodmagic.common.living.effects.*;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,8 +38,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class LivingUpgrades {
-    public static final ResourceKey<LivingUpgrade> LIVING_EXP = key("living_exp");
-
     // Downgrades
     public static final ResourceKey<LivingUpgrade> BATTLE_HUNGRY = key("battle_hungry");
     public static final ResourceKey<LivingUpgrade> CRIPPLED_ARM = key("crippled_arm");
@@ -107,7 +106,7 @@ public class LivingUpgrades {
                         .level(8, -125)
                         .level(9, -160)
                         .level(10, -200)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(DIG_SLOWDOWN.location(), Attributes.MINING_EFFICIENCY, Operation.ADD_MULTIPLIED_BASE, List.of(-0.1, -0.2, -0.3, -0.4, -0.45, -0.5, -0.6, -0.65, -0.7, -0.8)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(DIG_SLOWDOWN.location(), Attributes.MINING_EFFICIENCY, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(-0.1f, -0.2f, -0.3f, -0.4f, -0.45f, -0.5f, -0.6f, -0.65f, -0.7f, -0.8f), LevelBasedValue.constant(-0.8f))))
                         .build()
         );
         context.register(
@@ -123,7 +122,7 @@ public class LivingUpgrades {
                         .level(8, -125)
                         .level(9, -160)
                         .level(10, -200)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DECREASE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_MULTIPLIED_BASE, List.of(-0.1, -0.2, -0.25, -0.3, -0.35, -0.4,  -0.5, -0.6, -0.7, -0.8)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DECREASE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(-0.1f, -0.2f, -0.25f, -0.3f, -0.35f, -0.4f,  -0.5f, -0.6f, -0.7f, -0.8f), LevelBasedValue.constant(-0.8f))))
                         .build()
         );
         context.register(
@@ -162,7 +161,7 @@ public class LivingUpgrades {
                         .level(8, -125)
                         .level(9, -160)
                         .level(10, -200)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SPEED_DECREASE.location(), Attributes.MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE, List.of(-0.1, -0.2, -0.3, -0.4, -0.45, -0.5, -0.6, -0.65, -0.7, -0.8)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SPEED_DECREASE.location(), Attributes.MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(-0.1f, -0.2f, -0.3f, -0.4f, -0.45f, -0.5f, -0.6f, -0.65f, -0.7f, -0.8f), LevelBasedValue.constant(-0.8f))))
                         .build()
         );
         context.register(
@@ -189,7 +188,7 @@ public class LivingUpgrades {
                         .level(8, -125)
                         .level(9, -160)
                         .level(10, -200)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DECREASE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_MULTIPLIED_BASE, List.of(-0.1, -0.2, -0.25, -0.3, -0.35, -0.4,  -0.5, -0.6, -0.7, -0.8)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DECREASE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(-0.1f, -0.2f, -0.25f, -0.3f, -0.35f, -0.4f,  -0.5f, -0.6f, -0.7f, -0.8f), LevelBasedValue.constant(-0.8f))))
                         .build()
         );
         LootItemCondition.Builder arrowDamage = DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY)).tag(TagPredicate.is(DamageTypeTags.IS_PROJECTILE)));
@@ -206,7 +205,7 @@ public class LivingUpgrades {
                         .level(5000, 165)
                         .level(7000, 210)
                         .level(15000, 250)
-                        .withEffect(LivingEffectComponents.TAKING_DAMAGE_PRE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.1F, 0.2F, 0.3F, 0.4F, 0.5F, 0.6F, 0.65F, 0.7F, 0.75F, 0.8F), LevelBasedValue.constant(0))), arrowDamage)
+                        .withEffect(LivingEffectComponents.TAKING_DAMAGE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.1F, 0.2F, 0.3F, 0.4F, 0.5F, 0.6F, 0.65F, 0.7F, 0.75F, 0.8F), LevelBasedValue.constant(0))), arrowDamage)
                         .build()
         );
         /* TODO curios is nyi, do that and finish this
@@ -228,8 +227,8 @@ public class LivingUpgrades {
                         .level(2000, 55)
                         .level(3000, 70)
                         .level(4000, 85)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR, Operation.ADD_VALUE, List.of(1D, 3D, 4D, 5D, 5D, 5D, 5D, 5D)))
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR_TOUGHNESS, Operation.ADD_VALUE, List.of(2D, 4D, 6D, 8D, 9D, 10D, 11D, 12D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(1f, 3f, 4f, 5f, 5f, 5f, 5f, 5f), LevelBasedValue.constant(0f))))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(NETHERITE_PROTECT.location(), Attributes.ARMOR_TOUGHNESS, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(2f, 4f, 6f, 8f, 9f, 10f, 11f, 12f), LevelBasedValue.constant(0f))))
                         .build()
         );
         context.register(
@@ -245,7 +244,7 @@ public class LivingUpgrades {
                         .level(50000, 180)
                         .level(80000, 240)
                         .level(150000, 300)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(DIGGING.location(), Attributes.MINING_EFFICIENCY, Operation.ADD_MULTIPLIED_BASE, List.of(0.1D, 0.2D, 0.3D, 0.4D, 0.5D, 0.6D, 0.7D, 0.8D, 1D, 1.2D, 1.5D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(DIGGING.location(), Attributes.MINING_EFFICIENCY, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 1f, 1.2f, 1.5f), LevelBasedValue.constant(0f))))
                         .withEffect(LivingEffectComponents.BREAK_BLOCK.get(), new AddMobEffect(MobEffects.DIG_SPEED, LevelBasedValue.lookup(List.of(0f, 0f, 0f, 1f, 1f, 1f, 1f, 1f, 2f, 2f), LevelBasedValue.constant(0)), LevelBasedValue.lookup(List.of(0f, 50f, 60f, 100f, 100f, 100f, 100f, 150f, 150f, 150f), LevelBasedValue.constant(0))))
                         .build()
         );
@@ -253,7 +252,7 @@ public class LivingUpgrades {
                 ELYTRA,
                 new LivingUpgrade.Builder()
                         .level(1, 15)
-                        .withEffect(LivingEffectComponents.ENABLE_ELYTRA.get())
+                        .withEffect(LivingEffectComponents.ELYTRA.get())
                         .build()
         );
         context.register(
@@ -281,7 +280,7 @@ public class LivingUpgrades {
                         .level(400, 9)
                         .level(800, 15)
                         .level(1500, 25)
-                        .withEffect(LivingEffectComponents.TAKING_DAMAGE_PRE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.2F, 0.4F, 0.6F, 0.8F, 1F), LevelBasedValue.constant(0))), fallDamage)
+                        .withEffect(LivingEffectComponents.TAKING_DAMAGE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.2F, 0.4F, 0.6F, 0.8F, 1F), LevelBasedValue.constant(0))), fallDamage)
                         .build()
         );
         context.register(
@@ -300,7 +299,7 @@ public class LivingUpgrades {
                 GILDED,
                 new LivingUpgrade.Builder()
                         .level(1, 5)
-                        .withEffect(LivingEffectComponents.MAKE_PIGLIN_NEUTRAL.get())
+                        .withEffect(LivingEffectComponents.GILDED.get())
                         .build()
         );
         context.register(
@@ -316,7 +315,7 @@ public class LivingUpgrades {
                         .level(5000, 160)
                         .level(7600, 215)
                         .level(10000, 320)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(HEALTH.location(), Attributes.MAX_HEALTH, Operation.ADD_VALUE, List.of(4D, 8D, 12D, 16D, 20D, 26D, 32D, 38D, 44D, 50D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(HEALTH.location(), Attributes.MAX_HEALTH, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(4f, 8f, 12f, 16f, 20f, 26f, 32f, 38f, 44f, 50f), LevelBasedValue.constant(0f))))
                         .build()
         );
         context.register(
@@ -332,8 +331,8 @@ public class LivingUpgrades {
                         .level(2800, 100)
                         .level(3600, 140)
                         .level(5000, 200)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(JUMP.location(), Attributes.JUMP_STRENGTH, Operation.ADD_MULTIPLIED_BASE, List.of(0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 0.75, 0.9, 1.1, 1.3)))
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(JUMP.location(), Attributes.FALL_DAMAGE_MULTIPLIER, Operation.ADD_MULTIPLIED_BASE, List.of(-0.33, -0.4, -0.45, -0.5, -0.55, -0.6, -0.65, -0.75, -0.85, -0.95)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(JUMP.location(), Attributes.JUMP_STRENGTH, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.7f, 0.75f, 0.9f, 1.1f, 1.3f), LevelBasedValue.constant(0f))))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(JUMP.location(), Attributes.FALL_DAMAGE_MULTIPLIER, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(-0.33f, -0.4f, -0.45f, -0.5f, -0.55f, -0.6f, -0.65f, -0.75f, -0.85f, -0.95f), LevelBasedValue.constant(0f))))
                         .build()
         );
         context.register(
@@ -344,8 +343,8 @@ public class LivingUpgrades {
                         .level(300, 13)
                         .level(500, 26)
                         .level(1000, 42)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(KNOCKBACK_RESIST.location(), Attributes.MAX_HEALTH, Operation.ADD_VALUE, List.of(0D, 0D, 0D, 4D, 10D)))
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(KNOCKBACK_RESIST.location(), Attributes.KNOCKBACK_RESISTANCE, Operation.ADD_VALUE, List.of(0.2D, 0.4D, 0.6D, 0.8D, 1D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(KNOCKBACK_RESIST.location(), Attributes.MAX_HEALTH, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(0f, 0f, 0f, 4f, 10f), LevelBasedValue.constant(0f))))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(KNOCKBACK_RESIST.location(), Attributes.KNOCKBACK_RESISTANCE, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(0.2f, 0.4f, 0.6f, 0.8f, 1f), LevelBasedValue.constant(0f))))
                         .build()
         );
         context.register(
@@ -361,7 +360,7 @@ public class LivingUpgrades {
                         .level(9200, 160)
                         .level(11500, 215)
                         .level(14000, 320)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DAMAGE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_VALUE, List.of(0.5D, 1D, 1.5D, 2D, 2.5D, 3D, 4D, 5D, 6D, 7D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(MELEE_DAMAGE.location(), Attributes.ATTACK_DAMAGE, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(0.5f, 1f, 1.5f, 2f, 2.5f, 3f, 4f, 5f, 6f, 7f), LevelBasedValue.constant(0f))))
                         .build()
         );
         LootItemCondition.Builder physicalDamage = DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY)));
@@ -378,7 +377,7 @@ public class LivingUpgrades {
                         .level(5000, 190)
                         .level(7000, 250)
                         .level(15000, 300)
-                        .withEffect(LivingEffectComponents.TAKING_DAMAGE_PRE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.1F, 0.2F, 0.3F, 0.4F, 0.5F, 0.6F, 0.65F, 0.7F, 0.75F, 0.8F), LevelBasedValue.constant(0))), physicalDamage)
+                        .withEffect(LivingEffectComponents.TAKING_DAMAGE.get(), new MultiplyReduceValue(LevelBasedValue.lookup(List.of(0.1F, 0.2F, 0.3F, 0.4F, 0.5F, 0.6F, 0.65F, 0.7F, 0.75F, 0.8F), LevelBasedValue.constant(0))), physicalDamage)
                         .build()
         );
         context.register(
@@ -396,7 +395,7 @@ public class LivingUpgrades {
         context.register(
                 REPAIR,
                 new LivingUpgrade.Builder()
-                        .level(10, 25)
+                        .level(10, 25) // TODO with repairing salve this could easily be 100xp needed (or called redundant tbh)
                         .withEffect(LivingEffectComponents.TICK.get(), new CooldownEffect(REPAIR.location()))
                         .withEffect(LivingEffectComponents.TICK.get(), new ResetCooldownEffect(REPAIR.location(), LevelBasedValue.constant(100), Optional.of(new RandomArmourDamageEffect(LevelBasedValue.constant(-2)))), cooldownCondition(REPAIR))
                         .build()
@@ -414,7 +413,7 @@ public class LivingUpgrades {
                         .level(2800, 180)
                         .level(3600, 250)
                         .level(5000, 350)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SELF_SACRIFICE.location(), BMAttributes.SELF_SACRIFICE_MULTIPLIER.getDelegate(), Operation.ADD_MULTIPLIED_BASE, List.of(0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.2, 1.35, 1.5)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SELF_SACRIFICE.location(), BMAttributes.SELF_SACRIFICE_MULTIPLIER.getDelegate(), Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(0.15f, 0.3f, 0.45f, 0.6f, 0.75f, 0.9f, 1.05f, 1.2f, 1.35f, 1.5f), LevelBasedValue.constant(0f))))
                         .build()
         );
         context.register(
@@ -430,7 +429,7 @@ public class LivingUpgrades {
                         .level(35000, 130)
                         .level(50000, 180)
                         .level(70000, 250)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SPEED.location(), Attributes.MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE, List.of(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9, 1.1, 1.3, 1.5)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(SPEED.location(), Attributes.MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE, LevelBasedValue.lookup(List.of(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.9f, 1.1f, 1.3f, 1.5f), LevelBasedValue.constant(0f))))
                         .withEffect(LivingEffectComponents.TICK.get(), new AddMobEffect(MobEffects.MOVEMENT_SPEED, LevelBasedValue.lookup(List.of(0f, 0f, 0f, 0f, 0f, 0f, 0f, 1f, 1f, 2f), LevelBasedValue.constant(0)), LevelBasedValue.lookup(List.of(0f, 0f, 0f, 0f, 0f, 20f, 60f, 60f, 100f, 200f), LevelBasedValue.constant(0))), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setSprinting(true))))
                         .build()
         );
@@ -455,44 +454,130 @@ public class LivingUpgrades {
                         .level(3, 40)
                         .level(4, 65)
                         .level(5, 90)
-                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(LUCK.location(), Attributes.LUCK, Operation.ADD_VALUE, List.of(2D, 4D, 6D, 8D, 10D)))
+                        .withEffect(LivingEffectComponents.ATTRIBUTES.get(), new AttributeEffect(LUCK.location(), Attributes.LUCK, Operation.ADD_VALUE, LevelBasedValue.lookup(List.of(2f, 4f, 6f, 8f, 10f), LevelBasedValue.constant(0f))))
                         .build()
         );
 
         HolderGetter<LivingUpgrade> lookup = context.lookup(BMRegistries.Keys.LIVING_UPGRADES);
 
-        LevelBasedValue armourReduction = new LevelBasedValue.Fraction(LevelBasedValue.constant(15), LevelBasedValue.constant(25)); // 15 = default living armour armour points, armour points divided by 25 = armour reduction
-
         context.register(
-                LIVING_EXP,
+                exp(ARROW_PROTECT),
+                new LivingUpgrade.Builder()
+                        .level(0, 0) // TODO separate into individual upgrades, one for each "trainable"
+                        .withEffect(LivingEffectComponents.DAMAGE_TAKEN_EXP.get(), new ValueBasedExp(lookup.getOrThrow(ARROW_PROTECT)), arrowDamage)
+                        .build()
+        );
+        context.register(
+                exp(PHYSICAL_PROTECT),
                 new LivingUpgrade.Builder()
                         .level(0, 0)
-                        .withEffect(LivingEffectComponents.DAMAGE_TAKEN_EXP.get(), new ValueBasedExp(lookup.getOrThrow(ARROW_PROTECT), armourReduction), arrowDamage)
-                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(PHYSICAL_PROTECT), armourReduction), physicalDamage)
-                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(FALL_PROTECT), armourReduction), fallDamage)
+                        .withEffect(LivingEffectComponents.DAMAGE_TAKEN_EXP.get(), new ValueBasedExp(lookup.getOrThrow(PHYSICAL_PROTECT)), physicalDamage)
+                        .build()
+        );
+        context.register(
+                exp(FALL_PROTECT),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
+                        .withEffect(LivingEffectComponents.DAMAGE_TAKEN_EXP.get(), new ValueBasedExp(lookup.getOrThrow(FALL_PROTECT)), fallDamage)
+                        .build()
+        );
+        context.register(
+                exp(DIGGING),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
                         .withEffect(LivingEffectComponents.BREAK_BLOCK.get(), new EntityBasedExp(lookup.getOrThrow(DIGGING)))
-                        .withEffect(LivingEffectComponents.EXP_PICKUP.get(), new ValueBasedExp(lookup.getOrThrow(EXPERIENCED), LevelBasedValue.constant(1)))
+                        .build()
+        );
+        context.register(
+                exp(EXPERIENCED),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
+                        .withEffect(LivingEffectComponents.EXP_PICKUP.get(), new ValueBasedExp(lookup.getOrThrow(EXPERIENCED)))
+                        .build()
+        );
+        context.register(
+                exp(FIRE_RESIST),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
                         .withEffect(LivingEffectComponents.TICK.get(), new EntityBasedExp(lookup.getOrThrow(FIRE_RESIST)), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setOnFire(true))))
-                        .withEffect(LivingEffectComponents.HEALING.get(), new ValueBasedExp(lookup.getOrThrow(HEALTH), LevelBasedValue.constant(1)))
+                        .build()
+        );
+        context.register(
+                exp(HEALTH),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
+                        .withEffect(LivingEffectComponents.HEALING.get(), new ValueBasedExp(lookup.getOrThrow(HEALTH)))
+                        .build()
+        );
+        context.register(
+                exp(JUMP),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
                         .withEffect(LivingEffectComponents.TICK.get(), new DistanceExpGain(lookup.getOrThrow(JUMP), DistanceExpGain.Movement.VERTICAL), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setIsFlying(false).setOnGround(false))))
+                        .build()
+        );
+        context.register(
+                exp(KNOCKBACK_RESIST),
+                new LivingUpgrade.Builder()
+                        .level(0, 0)
                         .withEffect(LivingEffectComponents.TICK.get(), new EatingExpEffect(lookup.getOrThrow(KNOCKBACK_RESIST)))
-                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(MELEE_DAMAGE), LevelBasedValue.constant(1)))
+                        .build()
+        );
+        context.register(
+                exp(MELEE_DAMAGE),
+                new LivingUpgrade.Builder()
+                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(MELEE_DAMAGE)))
+                        .build()
+        );
+        context.register(
+                exp(POISON_RESIST),
+                new LivingUpgrade.Builder()
                         .withEffect(LivingEffectComponents.TICK.get(), new EntityBasedExp(lookup.getOrThrow(POISON_RESIST)), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().effects(new MobEffectsPredicate.Builder().and(MobEffects.POISON))))
+                        .build()
+        );
+        context.register(
+                exp(REPAIR),
+                new LivingUpgrade.Builder()
                         .withEffect(LivingEffectComponents.TICK.get(), new ItemDamageBasedExpGain(lookup.getOrThrow(REPAIR)))
-                        .withEffect(LivingEffectComponents.TAKING_DAMAGE_PRE.get(), new ValueBasedExp(lookup.getOrThrow(SELF_SACRIFICE), LevelBasedValue.constant(1)), DamageSourceCondition.hasDamageSource(new DamageSourcePredicate.Builder().tag(TagPredicate.is(BMTags.DamageTypes.SELF_SACRIFICE))))
+                        .build()
+        );
+        context.register(
+                exp(SELF_SACRIFICE),
+                new LivingUpgrade.Builder()
+                        .withEffect(LivingEffectComponents.DAMAGE_TAKEN_EXP.get(), new ValueBasedExp(lookup.getOrThrow(SELF_SACRIFICE)), DamageSourceCondition.hasDamageSource(new DamageSourcePredicate.Builder().tag(TagPredicate.is(BMTags.DamageTypes.SELF_SACRIFICE))))
+                        .build()
+        );
+        context.register(
+                exp(SPEED),
+                new LivingUpgrade.Builder()
                         .withEffect(LivingEffectComponents.TICK.get(), new DistanceExpGain(lookup.getOrThrow(SPEED), DistanceExpGain.Movement.HORIZONTAL), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setOnGround(true))))
-                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(SPRINT_ATTACK), LevelBasedValue.constant(1)), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setSprinting(true))))
+                        .build()
+        );
+        context.register(
+                exp(SPRINT_ATTACK),
+                new LivingUpgrade.Builder()
+                        .withEffect(LivingEffectComponents.DAMAGE_DEALT_EXP.get(), new ValueBasedExp(lookup.getOrThrow(SPRINT_ATTACK)), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, new EntityPredicate.Builder().flags(new EntityFlagsPredicate.Builder().setSprinting(true))))
                         .build()
         );
     }
 
-    // TODO order these alphabetical by translation
+    private static List<ResourceKey<LivingUpgrade>> expList = new ArrayList<>();
+    private static ResourceKey<LivingUpgrade> exp(ResourceKey<LivingUpgrade> key) {
+        ResourceKey<LivingUpgrade> xpKey = ResourceKey.create(key.registryKey(), key.location().withPrefix("exp/"));
+        expList.add(xpKey);
+        return xpKey;
+    }
+
+    // TODO order these alphabetical by *english* translation
     private static final List<ResourceKey<LivingUpgrade>> downgrades = List.of(BATTLE_HUNGRY, CRIPPLED_ARM, DIG_SLOWDOWN, MELEE_DECREASE, QUENCHED, SLOW_HEAL, SPEED_DECREASE, STORM_TROOPER, SWIM_DECREASE);
     private static final List<ResourceKey<LivingUpgrade>> upgrades = List.of(ARROW_PROTECT, DIGGING, ELYTRA, EXPERIENCED, FALL_PROTECT, FIRE_RESIST, GILDED, HEALTH, JUMP, KNOCKBACK_RESIST, LUCK, MELEE_DAMAGE, NETHERITE_PROTECT, PHYSICAL_PROTECT, POISON_RESIST, REPAIR, SELF_SACRIFICE, SPEED, SPRINT_ATTACK);
 
     public static void tags(Function<TagKey<LivingUpgrade>, TagsProvider.TagAppender<LivingUpgrade>> adder) {
+        adder.apply(BMTags.Living.TRAINERS)
+                .addAll(expList);
+
         adder.apply(BMTags.Living.LIVING_START)
-                .add(LIVING_EXP);
+                .addTag(BMTags.Living.TRAINERS);
 
         adder.apply(BMTags.Living.IS_DOWNGRADE)
                 .addAll(downgrades);
@@ -502,7 +587,7 @@ public class LivingUpgrades {
                 .addAll(downgrades);
 
         adder.apply(BMTags.Living.TOOLTIP_HIDE)
-                .add(LIVING_EXP);
+                .addTag(BMTags.Living.TRAINERS);
     }
 
     public static void translations(BiConsumer<String, String> translator) {

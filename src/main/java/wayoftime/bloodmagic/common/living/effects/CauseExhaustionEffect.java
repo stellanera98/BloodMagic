@@ -2,7 +2,6 @@ package wayoftime.bloodmagic.common.living.effects;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
@@ -14,7 +13,7 @@ public record CauseExhaustionEffect(LevelBasedValue amounts) implements LivingEn
     ).apply(builder, CauseExhaustionEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         ((Player) entity).causeFoodExhaustion(amounts.calculate(upgradeLevel));
     }
 

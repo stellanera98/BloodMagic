@@ -1,0 +1,16 @@
+{
+  "effects": {
+    "bloodmagic:damage_dealt_exp": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrade": "bloodmagic:melee_damage"
+        }
+      }
+    ]
+  },
+  "levels": {
+    "exp_to_level": {},
+    "level_to_cost": {}
+  }
+}

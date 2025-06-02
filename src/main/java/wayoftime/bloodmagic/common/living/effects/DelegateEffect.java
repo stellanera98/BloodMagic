@@ -2,7 +2,6 @@ package wayoftime.bloodmagic.common.living.effects;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
@@ -14,8 +13,8 @@ public record DelegateEffect(LivingEntityEffect effect) implements LivingValueEf
     ).apply(builder, DelegateEffect::new));
 
     @Override
-    public float process(int level, RandomSource random, LootContext lootContext, float value) {
-        effect.apply(lootContext.getLevel(), level, lootContext.getParam(LootContextParams.THIS_ENTITY));
+    public float process(int level, LootContext lootContext, float value) {
+        effect.apply(level, lootContext.getParam(LootContextParams.THIS_ENTITY));
         return 0;
     }
 

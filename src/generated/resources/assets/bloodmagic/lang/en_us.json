@@ -103,5 +103,6 @@
   "tooltip.bloodmagic.soul_gem.soul_gem_greater": "A gem used to contain a greater amount of will.",
   "tooltip.bloodmagic.soul_gem.soul_gem_lesser": "A gem used to contain some will.",
   "tooltip.bloodmagic.soul_gem.soul_gem_petty": "A gem used to contain a little will.",
+  "tooltip.bloodmagic.upgrade_points": "Upgrade Points: %s/%s",
   "tooltip.bloodmagic.will": "Will Quality: %s"
 }

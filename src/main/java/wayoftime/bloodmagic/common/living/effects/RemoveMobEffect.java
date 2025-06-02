@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +18,7 @@ public record RemoveMobEffect(Holder<MobEffect> mobEffect, LevelBasedValue ampli
     ).apply(builder, RemoveMobEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         LivingEntity living = (LivingEntity) entity;
         MobEffectInstance instance = living.getEffect(mobEffect);
         if (instance != null && instance.getAmplifier() <= amplifier.calculate(upgradeLevel)) {
