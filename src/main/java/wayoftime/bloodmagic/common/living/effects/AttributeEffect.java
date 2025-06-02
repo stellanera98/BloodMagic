@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
+import org.apache.logging.log4j.util.TriConsumer;
 import wayoftime.bloodmagic.BloodMagic;
 
 import java.util.List;
@@ -24,16 +25,20 @@ public record AttributeEffect(ResourceLocation id, Holder<Attribute> attribute, 
             LevelBasedValue.CODEC.fieldOf("amounts").forGetter(AttributeEffect::amounts)
     ).apply(builder, AttributeEffect::new));
 
-    public AttributeModifier getModifier(int level) {
+    public void getModifier(int level, TriConsumer<Holder<Attribute>, AttributeModifier, EquipmentSlotGroup> modifierList) {
         BloodMagic.LOGGER.info("{}: {} {}", id, operation.getSerializedName(), amounts.calculate(level));
-        return new AttributeModifier(id, amounts().calculate(level), operation);
+        modifierList.accept(
+                attribute,
+                new AttributeModifier(id, amounts.calculate(level), operation),
+                EquipmentSlotGroup.CHEST
+        );
     }
 
     public void addModifier(int level, ItemStack chestStack) {
         BloodMagic.LOGGER.info("addModifier");
         ItemAttributeModifiers mods = chestStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        ItemAttributeModifiers apply = mods.withModifierAdded(attribute, getModifier(level), EquipmentSlotGroup.CHEST);
-        chestStack.set(DataComponents.ATTRIBUTE_MODIFIERS, apply);
+        //ItemAttributeModifiers apply = mods.withModifierAdded(attribute, getModifier(level), EquipmentSlotGroup.CHEST);
+        //chestStack.set(DataComponents.ATTRIBUTE_MODIFIERS, apply);
     }
 
     public void removeModifier(ItemStack chestStack) {

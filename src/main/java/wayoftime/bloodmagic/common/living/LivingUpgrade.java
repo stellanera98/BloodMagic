@@ -13,14 +13,19 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.apache.logging.log4j.util.TriConsumer;
 import wayoftime.bloodmagic.common.living.effects.AttributeEffect;
 import wayoftime.bloodmagic.common.living.effects.ConditionalEffect;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -124,6 +129,12 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     public void addAttribute(Integer level, ItemStack chestStack) {
         for (AttributeEffect effect : getEffects(LivingEffectComponents.ATTRIBUTES.get())) {
             effect.addModifier(level, chestStack);
+        }
+    }
+
+    public void collectAttributes(Integer level, TriConsumer<Holder<Attribute>, AttributeModifier, EquipmentSlotGroup> consumer) {
+        for (AttributeEffect effect : getEffects(LivingEffectComponents.ATTRIBUTES.get())) {
+            effect.getModifier(level, consumer);
         }
     }
 

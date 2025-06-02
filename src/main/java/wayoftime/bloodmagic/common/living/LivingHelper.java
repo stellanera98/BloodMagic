@@ -9,14 +9,17 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -27,6 +30,7 @@ import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.ChatUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -166,6 +170,10 @@ public class LivingHelper {
     public static void addAttributes(Player player) {
         ItemStack chestStack = LivingHelper.getChest(player);
         runIterationOnItem(chestStack, (holder, level) -> holder.value().addAttribute(level, chestStack));
+    }
+
+    public static void getAttributes(ItemStack chestStack, ItemAttributeModifiers.Builder builder) {
+        runIterationOnItem(chestStack, (holder, level) -> holder.value().collectAttributes(level, builder::add));
     }
 
     public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {

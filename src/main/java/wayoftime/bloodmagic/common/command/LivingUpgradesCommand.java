@@ -69,7 +69,8 @@ public class LivingUpgradesCommand {
             throw ERROR_NO_LIVING_HOLDER.create(target.getName());
         }
         ItemStack chest = LivingHelper.getChest(target);
-        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = new Object2FloatOpenHashMap<>();
+        map.putAll(chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades());
         map.put(id, exp);
         chest.set(BMDataComponents.UPGRADES, new LivingStats(map));
 
