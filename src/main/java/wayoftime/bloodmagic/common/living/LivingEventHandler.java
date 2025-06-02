@@ -7,16 +7,19 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -24,6 +27,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.tag.BMTags;
 
@@ -193,25 +197,46 @@ public class LivingEventHandler {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
+        if (player.level().isClientSide) {
+            BloodMagic.LOGGER.info("\"This event is fired on Server-Side only\"");
+        }
 
         ItemStack fromStack = event.getFrom();
         ItemStack toStack = event.getTo();
         EquipmentSlot slot = event.getSlot();
-        if (!(fromStack.is(BMTags.Items.LIVING_UPGRADE_SET) || toStack.is(BMTags.Items.LIVING_UPGRADE_SET))) {
+        boolean from = fromStack.is(BMTags.Items.LIVING_UPGRADE_SET);
+        boolean to = toStack.is(BMTags.Items.LIVING_UPGRADE_SET);
+
+        BloodMagic.LOGGER.info("[{}] to: {} ({}), from: {} ({})", slot, toStack.getDescriptionId(), to, fromStack.getDescriptionId(), from);
+
+        if (!fromStack.is(BMTags.Items.LIVING_UPGRADE_SET) && !toStack.is(BMTags.Items.LIVING_UPGRADE_SET)) {
             // no upgrades involved, bye
             return;
         }
 
-        if (slot == EquipmentSlot.CHEST && fromStack.is(BMTags.Items.LIVING_UPGRADE_SET)) {
-            // if plate was removed, need to remove its attributes
-            LivingHelper.removeAttributes(fromStack);
+        ItemStack chestStack = LivingHelper.getChest(player);
+        if (chestStack.isEmpty()) {
+            return;
         }
 
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        // include the armour points
+        chestStack.getItem().getDefaultAttributeModifiers().forEach(EquipmentSlot.CHEST, (holder, modifier) -> builder.add(holder, modifier, EquipmentSlotGroup.CHEST));
         if (LivingHelper.hasFullSet(player)) {
-            // the adding *should* update the "worn" attributes. more difficult when one is missing
-            LivingHelper.addAttributes(player);
-        } else {
-            LivingHelper.removeAttributes(player);
+            // add from upgrades if full set
+            LivingHelper.getAttributes(chestStack, builder);
+        }
+
+        chestStack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
+    }
+
+    @SubscribeEvent
+    public static void onAttributeNonsense(ItemAttributeModifierEvent event) {
+        ItemStack chestStack = event.getItemStack();
+        if (chestStack.is(BMTags.Items.LIVING_UPGRADE_SET) && !LivingHelper.isNeverValid(chestStack)) {
+            if (chestStack.getOrDefault(BMDataComponents.FULL_SET_MARKER, false)) {
+                // add all attributes
+            }
         }
     }
 

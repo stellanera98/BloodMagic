@@ -19,7 +19,7 @@ public record ValueBasedExp(Holder<LivingUpgrade> upgrade) implements LivingValu
     public float process(int level, LootContext lootContext, float value) {
         Player player = (Player) lootContext.getParam(LootContextParams.THIS_ENTITY);
         LivingHelper.applyExp(player, upgrade, value);
-        return 0;
+        return value;
     }
 
     @Override
