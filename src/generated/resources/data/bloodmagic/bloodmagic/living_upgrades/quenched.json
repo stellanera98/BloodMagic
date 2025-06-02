@@ -2,10 +2,12 @@
   "effects": {
     "bloodmagic:quenched": {}
   },
-  "levels": [
-    {
-      "cost": -100,
-      "xp": 1
+  "levels": {
+    "exp_to_level": {
+      "1": 1
+    },
+    "level_to_cost": {
+      "1": -100
     }
-  ]
+  }
 }

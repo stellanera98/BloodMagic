@@ -1,0 +1,20 @@
+{
+  "effects": {
+    "bloodmagic:exp_pickup": [
+      {
+        "effect": {
+          "type": "bloodmagic:living_exp",
+          "upgrade": "bloodmagic:experienced"
+        }
+      }
+    ]
+  },
+  "levels": {
+    "exp_to_level": {
+      "0": 1
+    },
+    "level_to_cost": {
+      "1": 0
+    }
+  }
+}

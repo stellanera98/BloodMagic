@@ -1,32 +1,34 @@
 package wayoftime.bloodmagic.common.living;
 
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.commons.lang3.mutable.MutableFloat;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.LivingStats;
-import wayoftime.bloodmagic.common.item.LivingArmourItem;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
+import wayoftime.bloodmagic.util.ChatUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class LivingHelper {
@@ -34,6 +36,9 @@ public class LivingHelper {
         ItemStack chestStack = getChest(player);
         TagKey<Item> set = chestStack.get(BMDataComponents.REQUIRED_SET);
         if (set == null) {
+            return false;
+        }
+        if (chestStack.getDamageValue() +1 >= chestStack.getMaxDamage()) {
             return false;
         }
 
@@ -47,7 +52,11 @@ public class LivingHelper {
     }
 
     public static boolean isNeverValid(Player player) {
-        return !getChest(player).has(BMDataComponents.REQUIRED_SET);
+        return isNeverValid(getChest(player));
+    }
+
+    public static boolean isNeverValid(ItemStack plate) {
+        return !plate.has(BMDataComponents.REQUIRED_SET);
     }
 
     public static ItemStack getChest(Player player) {
@@ -72,79 +81,96 @@ public class LivingHelper {
         runIterationOnItem(getChest(player), visitor);
     }
 
+    public static final Object2FloatOpenHashMap<Holder<LivingUpgrade>> EMPTY_UPGRADE_MAP = new Object2FloatOpenHashMap<>();
     public static void runIterationOnItem(ItemStack stack, BiConsumer<Holder<LivingUpgrade>, Integer> visitor) {
-        LivingStats upgrades = stack.getOrDefault(BMDataComponents.LIVING_UPGRADES, LivingStats.EMPTY);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgrades = stack.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades();
 
-        for (Object2FloatMap.Entry<Holder<LivingUpgrade>> entry : upgrades.entrySet()) {
+        for (Object2FloatMap.Entry<Holder<LivingUpgrade>> entry : upgrades.object2FloatEntrySet()) {
             int level = getLevelFromXp(entry.getKey(), entry.getFloatValue());
+            if (level < 1) {
+                continue;
+            }
             visitor.accept(entry.getKey(), level);
         }
     }
 
     private static int getLevelFromXp(Holder<LivingUpgrade> upgrade, float exp) {
-        int level = 0;
-        for (LivingUpgrade.Level upgradeLevel : upgrade.value().levels()) {
-            if (upgradeLevel.xpNeeded() >= exp) {
-                level++;
-            }
-        }
-
-        return level;
+        Map.Entry<Integer, Integer> level = upgrade.value().levels().expToLevel().floorEntry((int) exp);
+        return level == null ? 0 : level.getValue();
     }
 
     private static int nextLevelExp(Holder<LivingUpgrade> upgrade, float exp) {
-        int level = getLevelFromXp(upgrade, exp);
-        List<LivingUpgrade.Level> levels = upgrade.value().levels();
-        if (level + 1 >= levels.size()) {
-            return levels.getLast().xpNeeded();
-        }
-
-        return levels.get(level + 1).xpNeeded();
+        Map.Entry<Integer, Integer> level = upgrade.value().levels().expToLevel().ceilingEntry((int) exp + 1); // otherwise it'll get the same level again
+        return level == null ? 0 : level.getKey();
     }
 
-    // TODO all these are to be implemented
-    public static float modifyKnockback(Level level, Player player, DamageSource lastDamageSource, float originalStrength) {
-        return originalStrength;
+    public static float modifyKnockback(Player player, LivingEntity victim, DamageSource damageSource, float knockback) {
+        MutableFloat mutablefloat = new MutableFloat(knockback);
+        runIterationOnPlayer(player, (holder, level) -> holder.value().modifyKnockback(level, victim, damageSource, mutablefloat));
+        return mutablefloat.floatValue();
     }
 
-    public static int modifyExperience(Level level, Player entity, int value) {
-        return value;
+    public static int modifyExperience(Player player, int startingValue) {
+        MutableFloat value = new MutableFloat(startingValue);
+        runIterationOnPlayer(player, (holder, level) -> holder.value().modifyExperience(level, player, value));
+        float xp = value.floatValue();
+        return xp + player.level().random.nextFloat() < xp % 1 ? 1 : 0;
     }
 
-    public static float modifyHealing(Level level, Player player, float amount) {
-        return amount;
+    public static float modifyHealing(Player player, float amount) {
+        MutableFloat value = new MutableFloat(amount);
+        runIterationOnPlayer(player, (holder, level) -> holder.value().modifyHealing(level, player, value));
+        return value.getValue();
     }
 
-    public static float modifyDamageDealt(Player playerCauser, Entity victim, DamageSource source, float originalDamage) {
-        return 0;
+    public static float modifyDamageDealt(Player playerCauser, LivingEntity victim, DamageSource source, float originalDamage) {
+        MutableFloat value = new MutableFloat(originalDamage);
+        runIterationOnPlayer(playerCauser, (holder, level) -> holder.value().modifyDamageDealt(level, victim, source, value));
+        return value.getValue();
     }
 
     public static float modifyDamageTaken(Player playerVictim, DamageSource source, float newDamage) {
-        return 0;
+        MutableFloat value = new MutableFloat(newDamage);
+        runIterationOnPlayer(playerVictim, (holder, level) -> holder.value().modifyDamageTaken(level, playerVictim, source, value));
+        return value.getValue();
     }
 
-    public static void reactToDamageDealt(Player playerCauser, Entity victim, DamageSource source, float newDamage) {
+    public static void reactToDamageDealt(Player playerCauser, LivingEntity victim, DamageSource source, float newDamage) {
+        runIterationOnPlayer(playerCauser, (holder, level) -> holder.value().reactToDamageDealt(level, victim, source, newDamage));
     }
 
     public static void reactToDamageTaken(Player playerVictim, DamageSource source, float newDamage) {
+        runIterationOnPlayer(playerVictim, (holder, level) -> holder.value().reactToDamageTaken(level, playerVictim, source, newDamage));
     }
 
     public static void runBlockBroken(Player player, BlockState state) {
+        runIterationOnPlayer(player, (holder, level) -> holder.value().blockBroken(level, player, state));
     }
 
-    public static void runTick(Player entity) {
+    public static void runTick(Player player) {
+        runIterationOnPlayer(player, (holder, level) -> holder.value().tick(level, player));
     }
 
     public static void runProjectile(Player player, Projectile projectile) {
+        runIterationOnPlayer(player, (holder, level) -> holder.value().modifyProjectile(level, player, projectile));
     }
 
-    public static void removeAttributes(RegistryAccess registryAccess, ItemStack chestStack) {
+    public static void removeAttributes(ItemStack chestStack) {
+        runIterationOnItem(chestStack, (holder, level) -> holder.value().removeAttribute(chestStack));
+    }
+
+    public static void removeAttributes(Player player) {
+        removeAttributes(LivingHelper.getChest(player));
     }
 
     public static void addAttributes(Player player) {
+        ItemStack chestStack = LivingHelper.getChest(player);
+        runIterationOnItem(chestStack, (holder, level) -> holder.value().addAttribute(level, chestStack));
     }
 
-    public static void applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
+    public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
+
+        return 0;
     }
 
     public static Component getTooltip(Holder<LivingUpgrade> upgrade, float exp, boolean hasShiftDown) {
@@ -156,11 +182,27 @@ public class LivingHelper {
         }
 
         if (hasShiftDown) {
-            mutable.append(CommonComponents.SPACE).append(Component.translatable("living_upgrade.bloodmagic.exp", exp, nextLevelExp(upgrade, exp)));
+            mutable.append(CommonComponents.SPACE).append(Component.literal("%s/%s".formatted((int) exp, nextLevelExp(upgrade, exp))));
         } else {
-            mutable.append(CommonComponents.SPACE).append(Component.translatable("living_upgrade.bloodmagic.level", getLevelFromXp(upgrade, exp)));
+            mutable.append(CommonComponents.SPACE).append(Component.literal(ChatUtil.toRoman(getLevelFromXp(upgrade, exp))));
         }
 
         return mutable;
+    }
+
+    public static Object2FloatOpenHashMap<Holder<LivingUpgrade>> fromHolderSet(HolderSet<LivingUpgrade> template) {
+        return fromHolderSet(template, 0);
+    }
+
+    public static Object2FloatOpenHashMap<Holder<LivingUpgrade>> fromHolderSet(HolderSet<LivingUpgrade> template, float val) {
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> ret = new Object2FloatOpenHashMap<>();
+        template.forEach(holder -> ret.put(holder, val));
+        return ret;
+    }
+
+    public static void setDefaultLiving(ItemStack livingPlate, HolderLookup.Provider holders) {
+        HolderSet<LivingUpgrade> set = holders.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.LIVING_START).orElseThrow();
+        livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set)));
+        livingPlate.set(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, BloodMagic.SERVER_CONFIG.DEFAULT_UPGRADE_POINTS.get());
     }
 }

@@ -3,7 +3,6 @@ package wayoftime.bloodmagic.common.living.effects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
@@ -16,7 +15,7 @@ public record EatingExpEffect(Holder<LivingUpgrade> upgrade) implements LivingEn
     ).apply(builder, EatingExpEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         Player wearer = (Player) entity;
         int last = wearer.getFoodData().getLastFoodLevel();
         int current = wearer.getFoodData().getFoodLevel();

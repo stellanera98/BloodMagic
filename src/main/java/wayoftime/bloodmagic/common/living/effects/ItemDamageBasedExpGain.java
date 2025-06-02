@@ -3,7 +3,6 @@ package wayoftime.bloodmagic.common.living.effects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +17,7 @@ public record ItemDamageBasedExpGain(Holder<LivingUpgrade> upgrade) implements L
     ).apply(builder, ItemDamageBasedExpGain::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         Player wearer = (Player) entity;
         ItemStack chestStack = LivingHelper.getChest(wearer);
         if (chestStack.has(BMDataComponents.PREVIOUS_DAMAGE)) {

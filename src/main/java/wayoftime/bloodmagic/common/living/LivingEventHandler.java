@@ -7,18 +7,16 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.VanillaGameEvent;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -26,9 +24,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.item.BMItems;
-import wayoftime.bloodmagic.common.item.LivingArmourItem;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.List;
 
@@ -37,17 +34,26 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onTotemUse(LivingUseTotemEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            if (LivingHelper.hasFullSet(player) && event.getHandHolding() == InteractionHand.OFF_HAND) {
-                if (LivingHelper.has(player, LivingEffectComponents.CRIPPLED_ARM.get())) {
-                    event.setCanceled(true);
-                }
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+        if (player.level().isClientSide) {
+            return;
+        }
+
+        if (LivingHelper.hasFullSet(player) && event.getHandHolding() == InteractionHand.OFF_HAND) {
+            if (LivingHelper.has(player, LivingEffectComponents.CRIPPLED_ARM.get())) {
+                event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickItem event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (LivingHelper.hasFullSet(event.getEntity())) {
             boolean cancel = false;
             if (event.getHand() == InteractionHand.OFF_HAND && LivingHelper.has(event.getEntity(), LivingEffectComponents.CRIPPLED_ARM.get())) {
@@ -66,6 +72,10 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (LivingHelper.hasFullSet(event.getEntity()) && event.getHand() == InteractionHand.OFF_HAND) {
             if (LivingHelper.has(event.getEntity(), LivingEffectComponents.CRIPPLED_ARM.get())) {
                 event.setCancellationResult(InteractionResult.FAIL);
@@ -76,6 +86,10 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onKnockback(LivingKnockBackEvent event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         DamageSource source = event.getEntity().getLastDamageSource();
         if (source == null) {
             return;
@@ -83,7 +97,7 @@ public class LivingEventHandler {
         Entity causer = event.getEntity().getLastDamageSource().getEntity();
         if (causer instanceof Player player) {
             if (LivingHelper.hasFullSet(player)) {
-                float changed = LivingHelper.modifyKnockback(player.level(), player, event.getEntity().getLastDamageSource(), event.getOriginalStrength());
+                float changed = LivingHelper.modifyKnockback(player, event.getEntity(), event.getEntity().getLastDamageSource(), event.getStrength());
                 event.setStrength(changed);
             }
         }
@@ -91,16 +105,24 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onExpPickup(PlayerXpEvent.PickupXp event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (LivingHelper.hasFullSet(event.getEntity())) {
-            event.getOrb().value = LivingHelper.modifyExperience(event.getEntity().level(), event.getEntity(), event.getOrb().value);
+            event.getOrb().value = LivingHelper.modifyExperience(event.getEntity(), event.getOrb().value);
         }
     }
 
     @SubscribeEvent
     public static void onHeal(LivingHealEvent event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (event.getEntity() instanceof Player player) {
             if (LivingHelper.hasFullSet(player)) {
-                float changed = LivingHelper.modifyHealing(player.level(), player, event.getAmount());
+                float changed = LivingHelper.modifyHealing(player, event.getAmount());
                 event.setAmount(changed);
             }
         }
@@ -108,28 +130,45 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent.Pre event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         Entity causer = event.getSource().getEntity();
-        Entity victim = event.getEntity();
+        LivingEntity victim = event.getEntity();
 
         if (causer instanceof Player playerCauser) {
             if (LivingHelper.hasFullSet(playerCauser)) {
-                float newDamage = LivingHelper.modifyDamageDealt(playerCauser, victim, event.getSource(), event.getOriginalDamage());
+                float newDamage = LivingHelper.modifyDamageDealt(playerCauser, victim, event.getSource(), event.getNewDamage());
                 event.setNewDamage(newDamage);
-                LivingHelper.reactToDamageDealt(playerCauser, victim, event.getSource(), newDamage);
+                LivingHelper.reactToDamageDealt(playerCauser, victim, event.getSource(), event.getNewDamage()); // here we want the damage included
             }
         }
 
         if (victim instanceof Player playerVictim) {
             if (LivingHelper.hasFullSet(playerVictim)) {
+                LivingHelper.reactToDamageTaken(playerVictim, event.getSource(), relevantDamage(event)); // here we do not so though etc arent as grindy as they were
                 float newDamage = LivingHelper.modifyDamageTaken(playerVictim, event.getSource(), event.getNewDamage());
                 event.setNewDamage(newDamage);
-                LivingHelper.reactToDamageTaken(playerVictim, event.getSource(), newDamage);
             }
         }
     }
 
+    private static float relevantDamage(LivingDamageEvent.Pre event) {
+        float taken = event.getNewDamage();
+        float reduced = event.getContainer().getReduction(DamageContainer.Reduction.ARMOR); // exclude armour reduction as well. its the thing learning after all
+        // TODO theres a case to be made to exclude enchantments here as well, gather feedback on that at some point
+        float ret = taken + reduced;
+        BloodMagic.LOGGER.info("taken: {}, reduced: {}, exp basing value: {}", taken, reduced, ret);
+        return ret;
+    }
+
     @SubscribeEvent
     public static void onBlockBroken(BlockEvent.BreakEvent event) {
+        if (event.getLevel().isClientSide()) {
+            return;
+        }
+
         if (LivingHelper.hasFullSet(event.getPlayer())) {
             LivingHelper.runBlockBroken(event.getPlayer(), event.getState());
         }
@@ -137,6 +176,10 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (LivingHelper.hasFullSet(event.getEntity())) {
             LivingHelper.runTick(event.getEntity());
         }
@@ -152,36 +195,32 @@ public class LivingEventHandler {
         }
 
         ItemStack fromStack = event.getFrom();
-        if (fromStack.getItem() instanceof LivingArmourItem) {
-            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestStack.getItem() instanceof LivingArmourItem) {
-                LivingHelper.removeAttributes(player.level().registryAccess(), chestStack);
-            }
+        ItemStack toStack = event.getTo();
+        EquipmentSlot slot = event.getSlot();
+        if (!(fromStack.is(BMTags.Items.LIVING_UPGRADE_SET) || toStack.is(BMTags.Items.LIVING_UPGRADE_SET))) {
+            // no upgrades involved, bye
+            return;
+        }
+
+        if (slot == EquipmentSlot.CHEST && fromStack.is(BMTags.Items.LIVING_UPGRADE_SET)) {
+            // if plate was removed, need to remove its attributes
+            LivingHelper.removeAttributes(fromStack);
         }
 
         if (LivingHelper.hasFullSet(player)) {
+            // the adding *should* update the "worn" attributes. more difficult when one is missing
             LivingHelper.addAttributes(player);
-        }
-    }
-
-    @SubscribeEvent
-    public static void vanillaEvents(VanillaGameEvent event) {
-        if (!(event.getCause() instanceof Player player)) {
-            return;
-        }
-        if (!LivingHelper.hasFullSet(player)) {
-            return;
-        }
-
-        if (event.getVanillaEvent() == GameEvent.DRINK) {
-            if (LivingHelper.has(player, LivingEffectComponents.QUENCHED.get())) {
-                event.setCanceled(true);
-            }
+        } else {
+            LivingHelper.removeAttributes(player);
         }
     }
 
     @SubscribeEvent
     public static void entityJoin(EntityJoinLevelEvent event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
         if (event.getEntity() instanceof Projectile projectile) {
             if (projectile.getOwner() instanceof Player player) {
                 if (LivingHelper.hasFullSet(player)) {
@@ -191,7 +230,8 @@ public class LivingEventHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+    // TODO decide whether to use this or the "old" behaviour of just not getting destroyed is the way to go (and do it in LAI#hurt instead of here if going with it)
+    //@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public static void armourBreak(ArmorHurtEvent event) {
         ItemStack stack = event.getArmorItemStack(EquipmentSlot.CHEST);
         float damage = event.getNewDamage(EquipmentSlot.CHEST);

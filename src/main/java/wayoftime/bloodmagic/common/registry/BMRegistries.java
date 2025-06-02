@@ -7,9 +7,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.living.LivingEffectComponents;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.living.LivingValueEffect;
@@ -24,24 +23,17 @@ public class BMRegistries {
         public static final ResourceKey<Registry<MapCodec<? extends LivingEntityEffect>>> ENTITY_EFFECT_TYPE = ResourceKey.createRegistryKey(bm("entity_effect_type"));
     }
 
-    public static final Registry<DataComponentType<?>> LIVING_EFFECT_COMPONENTS_REGISTRY = new RegistryBuilder<>(Keys.LIVING_EFFECT_COMPONENTS).create();
-    public static final Registry<MapCodec<? extends LivingValueEffect>> VALUE_BASED_EFFECT_TYPE_REGISTRY = new RegistryBuilder<>(Keys.VALUE_BASED_EFFECT_TYPE).create();
-    public static final Registry<MapCodec<? extends LivingEntityEffect>> ENTITY_EFFECT_TYPE_REGISTRY = new RegistryBuilder<>(Keys.ENTITY_EFFECT_TYPE).create();
-
     private static void registerPack(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(Keys.ALTAR_TIER_KEY, AltarTier.CODEC);
         event.dataPackRegistry(Keys.LIVING_UPGRADES, LivingUpgrade.CODEC, LivingUpgrade.CODEC);
     }
 
-    private static void registerBuiltIn(NewRegistryEvent event) {
-        event.register(LIVING_EFFECT_COMPONENTS_REGISTRY);
-        event.register(VALUE_BASED_EFFECT_TYPE_REGISTRY);
-        event.register(ENTITY_EFFECT_TYPE_REGISTRY);
-    }
-
     public static void register(IEventBus modBus) {
         modBus.addListener(BMRegistries::registerPack);
-        modBus.addListener(BMRegistries::registerBuiltIn);
+
+        LivingEffectComponents.register(modBus);
+        LivingValueEffect.register(modBus);
+        LivingEntityEffect.register(modBus);
     }
 
     private static ResourceLocation bm(String path) {

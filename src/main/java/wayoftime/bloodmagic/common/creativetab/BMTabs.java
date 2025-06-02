@@ -1,48 +1,38 @@
 package wayoftime.bloodmagic.common.creativetab;
 
-import net.minecraft.core.HolderSet;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.common.datacomponent.LivingStats;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
-import wayoftime.bloodmagic.common.living.LivingUpgrade;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
-import wayoftime.bloodmagic.common.tag.BMTags;
+import wayoftime.bloodmagic.common.living.LivingHelper;
 
 import java.util.function.Consumer;
 
 public class BMTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BloodMagic.MODID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN = TABS.register(
+    public static final Holder<CreativeModeTab> MAIN = TABS.register(
             "main",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(BMBlocks.BLOOD_ALTAR))
                     .title(Component.translatable("item_group.bloodmagic.main"))
                     .displayItems((parameters, output) -> {
                         addAll(BMBlocks.BLOCK_ITEMS, output::accept);
+
                         ItemStack living_plate = new ItemStack(BMItems.LIVING_PLATE);
-                        if (living_plate.has(BMDataComponents.REQUIRED_SET)) {
-                            BloodMagic.LOGGER.info("has the tag");
-                        } else {
-                            BloodMagic.LOGGER.info("does not have the tag... how");
-                            living_plate.set(BMDataComponents.REQUIRED_SET, BMTags.Items.IS_LIVING_SET);
-                        }
-                        HolderSet<LivingUpgrade> start = parameters.holders().lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.LIVING_START).orElseThrow();
-                        LivingStats stats = LivingStats.fromHolderSet(start);
-                        living_plate.set(BMDataComponents.LIVING_UPGRADES, stats);
+                        LivingHelper.setDefaultLiving(living_plate, parameters.holders());
                         output.accept(living_plate);
+
                         addAll(BMItems.BASIC_ITEMS, output::accept);
                         addAll(BMItems.ITEMS, output::accept);
                         addAll(BMFluids.BUCKETS, output::accept);

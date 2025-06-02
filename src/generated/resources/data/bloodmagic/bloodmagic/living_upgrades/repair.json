@@ -27,10 +27,12 @@
       }
     ]
   },
-  "levels": [
-    {
-      "cost": 25,
-      "xp": 10
+  "levels": {
+    "exp_to_level": {
+      "10": 1
+    },
+    "level_to_cost": {
+      "1": 25
     }
-  ]
+  }
 }

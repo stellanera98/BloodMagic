@@ -2,7 +2,6 @@ package wayoftime.bloodmagic.common.living.effects;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -18,10 +17,10 @@ public record RandomArmourDamageEffect(LevelBasedValue amounts) implements Livin
     ).apply(builder, RandomArmourDamageEffect::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         List<ItemStack> stacks = new ArrayList<>();
         ((LivingEntity) entity).getArmorSlots().forEach(stacks::add);
-        ItemStack chosen = stacks.get(level.random.nextInt(stacks.size()));
+        ItemStack chosen = stacks.get(entity.level().random.nextInt(stacks.size()));
         chosen.setDamageValue(chosen.getDamageValue() + (int) amounts.calculate(upgradeLevel));
     }
 

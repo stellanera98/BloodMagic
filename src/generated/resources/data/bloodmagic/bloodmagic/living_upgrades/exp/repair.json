@@ -1,0 +1,16 @@
+{
+  "effects": {
+    "bloodmagic:tick": [
+      {
+        "effect": {
+          "type": "bloodmagic:repairing_living_exp",
+          "upgrade": "bloodmagic:repair"
+        }
+      }
+    ]
+  },
+  "levels": {
+    "exp_to_level": {},
+    "level_to_cost": {}
+  }
+}

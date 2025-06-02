@@ -14,8 +14,9 @@ public record MovementModifier(LevelBasedValue amounts) implements LivingEntityE
     ).apply(builder, MovementModifier::new));
 
     @Override
-    public void apply(ServerLevel level, int upgradeLevel, Entity entity) {
+    public void apply(int upgradeLevel, Entity entity) {
         Vec3 delta = entity.getDeltaMovement();
+        ServerLevel level = (ServerLevel) entity.level();
         double variation = amounts.calculate(upgradeLevel) * Math.sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) * 2;
         Vec3 motion = delta.add(rand(level) * variation, rand(level) * variation, rand(level) * variation);
         entity.setDeltaMovement(motion);
