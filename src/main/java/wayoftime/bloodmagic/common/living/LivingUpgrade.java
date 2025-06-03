@@ -3,10 +3,12 @@ package wayoftime.bloodmagic.common.living;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,7 +23,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.logging.log4j.util.TriConsumer;
-import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.living.effects.AttributeEffect;
 import wayoftime.bloodmagic.common.living.effects.ConditionalEffect;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -35,6 +36,10 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
             Levels.CODEC.fieldOf("levels").forGetter(LivingUpgrade::levels),
             LivingEffectComponents.CODEC.fieldOf("effects").forGetter(LivingUpgrade::effects)
     ).apply(builder, LivingUpgrade::new));
+
+    public static String descriptionId(ResourceKey<LivingUpgrade> key) {
+        return Util.makeDescriptionId("living_upgrade", key.location());
+    }
 
     public static final Codec<Holder<LivingUpgrade>> HOLDER_CODEC = RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES);
 

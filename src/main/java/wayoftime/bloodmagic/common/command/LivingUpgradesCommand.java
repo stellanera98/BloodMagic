@@ -19,12 +19,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.LivingStats;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 
+import javax.swing.text.html.CSS;
 import java.util.Optional;
 
 public class LivingUpgradesCommand {
@@ -37,31 +39,104 @@ public class LivingUpgradesCommand {
                         .then(
                                 Commands.argument("target", EntityArgument.player())
                                         .then(
-                                                Commands.literal("set")
+                                                Commands.literal("upgrade")
                                                         .then(
-                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                Commands.literal("set")
                                                                         .then(
-                                                                                Commands.argument("exp", IntegerArgumentType.integer(0))
+                                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                                        .then(
+                                                                                                Commands.argument("exp", IntegerArgumentType.integer(0))
+                                                                                                        .executes(
+                                                                                                                context -> setUpgrade(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES), IntegerArgumentType.getInteger(context, "exp"))
+                                                                                                        )
+                                                                                        )
+                                                                        )
+                                                        )
+                                                        .then(
+                                                                Commands.literal("get")
+                                                                        .executes(
+                                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.empty())
+                                                                        )
+                                                                        .then(
+                                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
                                                                                         .executes(
-                                                                                                context -> setUpgrade(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES), IntegerArgumentType.getInteger(context, "exp"))
+                                                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.of(ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
                                                                                         )
                                                                         )
                                                         )
                                         )
                                         .then(
-                                                Commands.literal("get")
-                                                        .executes(
-                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.empty())
+                                                Commands.literal("limits")
+                                                        .then(
+                                                                Commands.literal("set")
+                                                                        .then(
+                                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                                        .then(
+                                                                                                Commands.argument("exp", IntegerArgumentType.integer(0))
+                                                                                                        .executes(
+                                                                                                                context -> setLimit(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES), IntegerArgumentType.getInteger(context, "exp"))
+                                                                                                        )
+                                                                                        )
+                                                                        )
                                                         )
                                                         .then(
-                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                Commands.literal("get")
                                                                         .executes(
-                                                                                context -> getUpgrades(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.of(ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
+                                                                                context -> getLimit(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.empty())
+                                                                        )
+                                                                        .then(
+                                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                                        .executes(
+                                                                                                context -> getLimit(context.getSource(), EntityArgument.getPlayer(context, "target"), Optional.of(ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
+                                                                                        )
+                                                                        )
+                                                        )
+                                        )
+                                        .then(
+                                                Commands.literal("points")
+                                                        .then(
+                                                                Commands.literal("recalc")
+                                                                        .executes(context -> recalcPoints(context.getSource(), EntityArgument.getPlayer(context, "target")))
+                                                        )
+                                                        .then(
+                                                                Commands.literal("set-cap")
+                                                                        .then(
+                                                                                Commands.argument("cap", IntegerArgumentType.integer(0))
+                                                                                        .executes(context -> setCap(context.getSource(), EntityArgument.getPlayer(context, "target"), IntegerArgumentType.getInteger(context, "cap")))
+                                                                        )
+                                                                        .then(
+                                                                                Commands.literal("default")
+                                                                                        .executes(context -> setCap(context.getSource(), EntityArgument.getPlayer(context, "target"), BloodMagic.SERVER_CONFIG.DEFAULT_UPGRADE_POINTS.get()))
+                                                                        )
+                                                                        .then(
+                                                                                Commands.literal("evolved")
+                                                                                        .executes(context -> setCap(context.getSource(), EntityArgument.getPlayer(context, "target"), BloodMagic.SERVER_CONFIG.EVOLUTION_UPGRADE_POINTS.get()))
                                                                         )
                                                         )
                                         )
                         )
         );
+    }
+
+    private static int setCap(CommandSourceStack source, ServerPlayer target, int amount) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        ItemStack chest = LivingHelper.getChest(target);
+        chest.set(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, amount);
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.cap.success", amount), true);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int recalcPoints(CommandSourceStack source, ServerPlayer target) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        int calculated = LivingHelper.recalcPoints(target);
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.recalc.success", calculated), true);
+
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int setUpgrade(CommandSourceStack source, ServerPlayer target, Holder<LivingUpgrade> id, int exp) throws CommandSyntaxException {
@@ -74,7 +149,7 @@ public class LivingUpgradesCommand {
         map.put(id, exp);
         chest.set(BMDataComponents.UPGRADES, new LivingStats(map));
 
-        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.set", Component.translatable(Util.makeDescriptionId("living_upgrade", id.getKey().location())), exp, target.getName()), true);
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.set", Component.translatable(LivingUpgrade.descriptionId(id.getKey())), exp, target.getName()), true);
 
         return Command.SINGLE_SUCCESS;
     }
@@ -89,15 +164,52 @@ public class LivingUpgradesCommand {
         MutableComponent result = Component.empty();
         if (filter.isEmpty()) {
             stats.object2FloatEntrySet().forEach(entry -> {
-                result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", entry.getKey().getKey().location())));
+                result.append(Component.translatable(LivingUpgrade.descriptionId(entry.getKey().getKey())));
                 result.append(Component.literal(": " + entry.getFloatValue() + "exp\n"));
             });
         } else {
-            result.append(Component.translatable(Util.makeDescriptionId("living_upgrade", filter.get().getKey().location())));
+            result.append(Component.translatable(LivingUpgrade.descriptionId(filter.get().getKey())));
             result.append(Component.literal(": " + stats.upgrades().getFloat(filter.get()) + "exp"));
         }
 
         source.sendSuccess(() -> Component.translatable("commands.bloodmagic.upgrade.get", target.getName()).append(result), true);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int setLimit(CommandSourceStack source, ServerPlayer target, Holder<LivingUpgrade> id, int exp) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        ItemStack chest = LivingHelper.getChest(target);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = new Object2FloatOpenHashMap<>();
+        map.putAll(chest.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP));
+        map.put(id, exp);
+        chest.set(BMDataComponents.LIMITS, map);
+
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.limit.set", Component.translatable(LivingUpgrade.descriptionId(id.getKey())), exp, target.getName()), true);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int getLimit(CommandSourceStack source, Player target, Optional<Holder<LivingUpgrade>> filter) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) { // if this check fails the applied upgrades can never take effect
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+
+        ItemStack chestStack = LivingHelper.getChest(target);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> stats = chestStack.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP);
+        MutableComponent result = Component.empty();
+        if (filter.isEmpty()) {
+            stats.object2FloatEntrySet().forEach(entry -> {
+                result.append(Component.translatable(LivingUpgrade.descriptionId(entry.getKey().getKey())));
+                result.append(Component.literal(": " + entry.getFloatValue() + "exp\n"));
+            });
+        } else {
+            result.append(Component.translatable(LivingUpgrade.descriptionId(filter.get().getKey())));
+            result.append(Component.literal(": " + stats.getFloat(filter.get()) + "exp"));
+        }
+
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.limit.get", target.getName()).append(result), true);
         return Command.SINGLE_SUCCESS;
     }
 }

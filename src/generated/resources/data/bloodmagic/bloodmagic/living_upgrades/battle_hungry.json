@@ -8,7 +8,7 @@
             "type": "bloodmagic:reset_cooldown",
             "amounts": {
               "type": "minecraft:lookup",
-              "fallback": 600.0,
+              "fallback": 300.0,
               "values": [
                 600.0,
                 600.0,
