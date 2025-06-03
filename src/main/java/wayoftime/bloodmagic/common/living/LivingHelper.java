@@ -173,24 +173,38 @@ public class LivingHelper {
     }
 
     public static Component getTooltip(Holder<LivingUpgrade> upgrade, float exp, boolean hasShiftDown) {
-        MutableComponent mutable = Component.translatable(Util.makeDescriptionId("living_upgrade", upgrade.getKey().location()));
-        if (upgrade.is(BMTags.Living.IS_DOWNGRADE)) {
-            ComponentUtils.mergeStyles(mutable, Style.EMPTY.withColor(ChatFormatting.RED));
-        } else {
-            ComponentUtils.mergeStyles(mutable, Style.EMPTY.withColor(ChatFormatting.GRAY));
+        int level = getLevelFromXp(upgrade, exp);
+        int nextExp = nextLevelExp(upgrade, exp);
+        Component levelComp = Component.literal(ChatUtil.toRoman(level));
+        Component expComp = Component.literal("%s/%s".formatted((int) exp, nextExp));
+        if (nextExp == 0) {
+            expComp = Component.literal("%s/".formatted((int) exp)).append(Component.literal(Integer.toString((int) exp)).withStyle(ChatFormatting.OBFUSCATED));
         }
 
+        ChatFormatting colour = ChatFormatting.YELLOW;
+        if (upgrade.is(BMTags.Living.IS_DOWNGRADE)) {
+            colour = ChatFormatting.RED;
+        }
+
+        ChatFormatting style = colour;
+        if (level < 1) {
+            style = ChatFormatting.ITALIC;
+            levelComp = Component.literal("0").withStyle(ChatFormatting.OBFUSCATED);
+        }
+
+        MutableComponent mutable = Component.translatable(Util.makeDescriptionId("living_upgrade", upgrade.getKey().location())).withStyle(style, colour);
+
         if (hasShiftDown) {
-            mutable.append(CommonComponents.SPACE).append(Component.literal("%s/%s".formatted((int) exp, nextLevelExp(upgrade, exp))));
+            mutable.append(CommonComponents.SPACE).append(expComp);
         } else {
-            mutable.append(CommonComponents.SPACE).append(Component.literal(ChatUtil.toRoman(getLevelFromXp(upgrade, exp))));
+            mutable.append(CommonComponents.SPACE).append(levelComp);
         }
 
         return mutable;
     }
 
     public static Object2FloatOpenHashMap<Holder<LivingUpgrade>> fromHolderSet(HolderSet<LivingUpgrade> template) {
-        return fromHolderSet(template, 0);
+        return fromHolderSet(template, 1);
     }
 
     public static Object2FloatOpenHashMap<Holder<LivingUpgrade>> fromHolderSet(HolderSet<LivingUpgrade> template, float val) {
@@ -201,7 +215,7 @@ public class LivingHelper {
 
     public static void setDefaultLiving(ItemStack livingPlate, HolderLookup.Provider holders) {
         HolderSet<LivingUpgrade> set = holders.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.LIVING_START).orElseThrow();
-        livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set, 1)));
+        livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set)));
         livingPlate.set(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, BloodMagic.SERVER_CONFIG.DEFAULT_UPGRADE_POINTS.get());
     }
 }
