@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.*;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -164,12 +165,51 @@ public class LivingHelper {
 
     public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
         ItemStack chest = getChest(wearer);
-        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
-        // TODO respect limits, check available points, show popup on levelup, etc
-        map.computeFloat(upgrade, (holder, value) -> value == null ? amount : amount + value);
-        chest.set(BMDataComponents.UPGRADES, new LivingStats(map));
-        // TODO return amount that was added (so tomes dont vanish for no reason)
-        return amount;
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgrades = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> limits = chest.getOrDefault(BMDataComponents.LIMITS, EMPTY_UPGRADE_MAP).clone();
+        int maxPoints = chest.getOrDefault(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, 0);
+        int currentPoints = chest.getOrDefault(BMDataComponents.CURRENT_UPGRADE_POINTS, 0);
+
+        MutableFloat toAdd = new MutableFloat(amount);
+        // TODO LIVING EXP GAIN EVENT FOR CHONKY, AND MAKE IT WORK THIS TIME
+        upgrades.computeFloat(upgrade, (holder, exp) -> {
+            exp = exp == null ? 0f : exp;
+            float maxExp = limits.getOrDefault(upgrade, -1);
+            if (maxExp != -1) {
+                toAdd.setValue(Math.min(maxExp - exp, toAdd.floatValue())); // if there is a limit, respect it
+                if (toAdd.floatValue() <= 0) {
+                    // limit is reached or overshot, not modifying
+                    toAdd.setValue(0);
+                    return exp;
+                }
+            }
+
+            int currLevel = getLevelFromXp(upgrade, exp);
+            int currCost = upgrade.value().levels().levelToCost().getOrDefault(currLevel, 0); // can be level 0, dont have an entry for that
+            int nextCost = upgrade.value().levels().levelToCost().get(currLevel + 1);
+            float nextExp = nextLevelExp(upgrade, exp);
+            if (exp + toAdd.floatValue() >= nextExp) {
+                // enough exp to reach next level
+                int theoreticalPoints = currentPoints - currCost + nextCost;
+                BloodMagic.LOGGER.info("{} - {} + {} = {} <= {}", currentPoints, currCost, nextCost, theoreticalPoints, maxPoints);
+                if (theoreticalPoints <= maxPoints) {
+                    // enough points, so do it
+                    toAdd.setValue(nextExp - exp);
+                    BloodMagic.LOGGER.info("levelling up: stored {}, maxGain {}, limit {}, adding {}", exp, amount, maxExp, toAdd.floatValue());
+                    chest.set(BMDataComponents.CURRENT_UPGRADE_POINTS, theoreticalPoints);
+                    // there used to be a level up event too? TODO is this needed?
+                    wearer.displayClientMessage(Component.translatable("chat.bloodmagic.living_upgrade.level_up", Component.translatable(LivingUpgrade.descriptionId(upgrade.getKey())), currLevel + 1), true);
+                    return exp + toAdd.floatValue();
+                }
+                // if we're here we did not have enough points
+                float maxAdd = (nextExp - 1) - exp; // parenthesis because I dont want to come back here later because of shenanigans with math interpretation
+                toAdd.setValue(Math.min(maxAdd, toAdd.floatValue()));
+            }
+
+            return exp + toAdd.floatValue();
+        });
+        chest.set(BMDataComponents.UPGRADES, new LivingStats(upgrades));
+        return toAdd.floatValue();
     }
 
     public static Component getTooltip(Holder<LivingUpgrade> upgrade, float exp, boolean hasShiftDown) {
@@ -192,7 +232,7 @@ public class LivingHelper {
             levelComp = Component.literal("0").withStyle(ChatFormatting.OBFUSCATED);
         }
 
-        MutableComponent mutable = Component.translatable(Util.makeDescriptionId("living_upgrade", upgrade.getKey().location())).withStyle(style, colour);
+        MutableComponent mutable = Component.translatable(LivingUpgrade.descriptionId(upgrade.getKey())).withStyle(style, colour);
 
         if (hasShiftDown) {
             mutable.append(CommonComponents.SPACE).append(expComp);
@@ -217,5 +257,19 @@ public class LivingHelper {
         HolderSet<LivingUpgrade> set = holders.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.LIVING_START).orElseThrow();
         livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set)));
         livingPlate.set(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, BloodMagic.SERVER_CONFIG.DEFAULT_UPGRADE_POINTS.get());
+    }
+
+    public static int recalcPoints(Player player) {
+        ItemStack chest = getChest(player);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgrades = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades();
+
+        int total = 0;
+        for (Map.Entry<Holder<LivingUpgrade>, Float> entry : upgrades.object2FloatEntrySet()) {
+            total += entry.getKey().value().levels().levelToCost().getOrDefault(getLevelFromXp(entry.getKey(), entry.getValue()), 0);
+        }
+
+        chest.set(BMDataComponents.CURRENT_UPGRADE_POINTS, total);
+
+        return total;
     }
 }

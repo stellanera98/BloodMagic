@@ -115,8 +115,13 @@ public class BMLanguageProvider extends LanguageProvider {
         addCommand("upgrade.get", "%s has the following upgrades:\n");
         addCommand("upgrade.set", "Set %s to %s exp for %s");
         addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a required_set component set. Upgrades cannot take effect like this");
+        addCommand("cap.success", "Set max upgrade points to %s");
+        addCommand("recalc.success", "Upgrades use up %s points");
+        addCommand("limit.get", "%s has the following limits:\n");
+        addCommand("limit.set", "Set limit of %s to %s exp for %s");
 
         addTooltip("upgrade_points", "Upgrade Points: %s/%s");
+        add("chat.bloodmagic.living_upgrade.level_up", "%s has levelled up to %s!");
 
         LivingUpgrades.translations(this::add);
     }
