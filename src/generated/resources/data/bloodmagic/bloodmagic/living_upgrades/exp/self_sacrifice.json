@@ -4,7 +4,8 @@
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrade": "bloodmagic:self_sacrifice"
+          "upgrade": "bloodmagic:self_sacrifice",
+          "victim": true
         },
         "requirements": {
           "condition": "minecraft:damage_source_properties",
@@ -21,7 +22,11 @@
     ]
   },
   "levels": {
-    "exp_to_level": {},
-    "level_to_cost": {}
+    "exp_to_level": {
+      "1": 1
+    },
+    "level_to_cost": {
+      "1": 0
+    }
   }
 }

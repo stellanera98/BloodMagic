@@ -9,12 +9,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -30,8 +28,6 @@ import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.ChatUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -118,7 +114,10 @@ public class LivingHelper {
         MutableFloat value = new MutableFloat(startingValue);
         runIterationOnPlayer(player, (holder, level) -> holder.value().modifyExperience(level, player, value));
         float xp = value.floatValue();
-        return xp + player.level().random.nextFloat() < xp % 1 ? 1 : 0;
+        float mod = xp % 1;
+        int toAdd = player.level().random.nextFloat() < mod ? 1 : 0;
+        int ret = (int) Math.floor(xp) + toAdd;
+        return ret;
     }
 
     public static float modifyHealing(Player player, float amount) {
@@ -159,26 +158,18 @@ public class LivingHelper {
         runIterationOnPlayer(player, (holder, level) -> holder.value().modifyProjectile(level, player, projectile));
     }
 
-    public static void removeAttributes(ItemStack chestStack) {
-        runIterationOnItem(chestStack, (holder, level) -> holder.value().removeAttribute(chestStack));
-    }
-
-    public static void removeAttributes(Player player) {
-        removeAttributes(LivingHelper.getChest(player));
-    }
-
-    public static void addAttributes(Player player) {
-        ItemStack chestStack = LivingHelper.getChest(player);
-        runIterationOnItem(chestStack, (holder, level) -> holder.value().addAttribute(level, chestStack));
-    }
-
     public static void getAttributes(ItemStack chestStack, ItemAttributeModifiers.Builder builder) {
         runIterationOnItem(chestStack, (holder, level) -> holder.value().collectAttributes(level, builder::add));
     }
 
     public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
-
-        return 0;
+        ItemStack chest = getChest(wearer);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
+        // TODO respect limits, check available points, show popup on levelup, etc
+        map.computeFloat(upgrade, (holder, value) -> value == null ? amount : amount + value);
+        chest.set(BMDataComponents.UPGRADES, new LivingStats(map));
+        // TODO return amount that was added (so tomes dont vanish for no reason)
+        return amount;
     }
 
     public static Component getTooltip(Holder<LivingUpgrade> upgrade, float exp, boolean hasShiftDown) {
@@ -210,7 +201,7 @@ public class LivingHelper {
 
     public static void setDefaultLiving(ItemStack livingPlate, HolderLookup.Provider holders) {
         HolderSet<LivingUpgrade> set = holders.lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.LIVING_START).orElseThrow();
-        livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set)));
+        livingPlate.set(BMDataComponents.UPGRADES, new LivingStats(fromHolderSet(set, 1)));
         livingPlate.set(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, BloodMagic.SERVER_CONFIG.DEFAULT_UPGRADE_POINTS.get());
     }
 }

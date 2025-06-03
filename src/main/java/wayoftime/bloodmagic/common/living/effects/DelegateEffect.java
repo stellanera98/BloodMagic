@@ -14,7 +14,7 @@ public record DelegateEffect(LivingEntityEffect effect) implements LivingValueEf
 
     @Override
     public float process(int level, LootContext lootContext, float value) {
-        effect.apply(level, lootContext.getParam(LootContextParams.THIS_ENTITY));
+        effect.apply(level, lootContext.getParam(LootContextParams.ATTACKING_ENTITY));
         return value;
     }
 
