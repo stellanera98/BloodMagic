@@ -16,9 +16,9 @@ public record CooldownEffect(ResourceLocation id) implements LivingEntityEffect 
 
     @Override
     public void apply(int upgradeLevel, Entity entity) {
-        Map<ResourceLocation, Integer> data = entity.getData(BMDataAttachments.LIVING_COOLDOWN.get());
-        data.compute(id, (key, amount) -> amount == null ? 20 * 60 : amount + 1);
-        entity.setData(BMDataAttachments.LIVING_COOLDOWN.get(), data);
+        Map<ResourceLocation, Double> data = entity.getData(BMDataAttachments.LIVING_ADDITIONAL.get());
+        data.compute(id, (key, amount) -> amount == null ? 20 * 60 : Math.max(amount - 1, 0));
+        entity.setData(BMDataAttachments.LIVING_ADDITIONAL.get(), data);
     }
 
     @Override

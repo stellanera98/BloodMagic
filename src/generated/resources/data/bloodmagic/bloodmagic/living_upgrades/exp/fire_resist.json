@@ -20,7 +20,7 @@
   },
   "levels": {
     "exp_to_level": {
-      "0": 1
+      "1": 1
     },
     "level_to_cost": {
       "1": 0

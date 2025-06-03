@@ -4,11 +4,12 @@
       {
         "effect": {
           "type": "bloodmagic:living_exp",
-          "upgrade": "bloodmagic:sprint_attack"
+          "upgrade": "bloodmagic:sprint_attack",
+          "victim": false
         },
         "requirements": {
           "condition": "minecraft:entity_properties",
-          "entity": "this",
+          "entity": "attacker",
           "predicate": {
             "flags": {
               "is_sprinting": true
@@ -19,7 +20,11 @@
     ]
   },
   "levels": {
-    "exp_to_level": {},
-    "level_to_cost": {}
+    "exp_to_level": {
+      "1": 1
+    },
+    "level_to_cost": {
+      "1": 0
+    }
   }
 }

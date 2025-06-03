@@ -20,9 +20,9 @@ public record ResetCooldownEffect(ResourceLocation id, LevelBasedValue amounts, 
 
     @Override
     public void apply(int upgradeLevel, Entity entity) {
-        Map<ResourceLocation, Integer> data = entity.getData(BMDataAttachments.LIVING_COOLDOWN);
-        data.compute(id, (key, amount) -> 0);
-        entity.setData(BMDataAttachments.LIVING_COOLDOWN, data);
+        Map<ResourceLocation, Double> data = entity.getData(BMDataAttachments.LIVING_ADDITIONAL);
+        data.compute(id, (key, amount) -> (double) amounts.calculate(upgradeLevel));
+        entity.setData(BMDataAttachments.LIVING_ADDITIONAL, data);
         effect.ifPresent(livingEntityEffect -> livingEntityEffect.apply(upgradeLevel, entity));
     }
 

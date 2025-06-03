@@ -4,7 +4,7 @@
       {
         "amounts": {
           "type": "minecraft:lookup",
-          "fallback": -0.8,
+          "fallback": -0.9,
           "values": [
             -0.1,
             -0.2,
@@ -18,8 +18,8 @@
             -0.8
           ]
         },
-        "attribute": "minecraft:generic.attack_damage",
-        "id": "bloodmagic:melee_decrease",
+        "attribute": "neoforge:swim_speed",
+        "id": "bloodmagic:swim_decrease",
         "operation": "add_multiplied_base"
       }
     ]

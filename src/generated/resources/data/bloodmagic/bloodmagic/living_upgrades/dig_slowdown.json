@@ -18,7 +18,7 @@
             -0.8
           ]
         },
-        "attribute": "minecraft:player.mining_efficiency",
+        "attribute": "minecraft:player.block_break_speed",
         "id": "bloodmagic:dig_slowdown",
         "operation": "add_multiplied_base"
       }

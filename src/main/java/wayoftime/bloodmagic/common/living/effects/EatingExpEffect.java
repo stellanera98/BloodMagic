@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
@@ -19,7 +20,8 @@ public record EatingExpEffect(Holder<LivingUpgrade> upgrade) implements LivingEn
         Player wearer = (Player) entity;
         int last = wearer.getFoodData().getLastFoodLevel();
         int current = wearer.getFoodData().getFoodLevel();
-        LivingHelper.applyExp(wearer, upgrade, Math.max(current - last, 0));
+        int exp = Math.max(last - current, 0);
+        LivingHelper.applyExp(wearer, upgrade, exp);
     }
 
     @Override

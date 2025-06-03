@@ -1,21 +1,14 @@
 package wayoftime.bloodmagic.common.living.effects;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import org.apache.logging.log4j.util.TriConsumer;
-import wayoftime.bloodmagic.BloodMagic;
-
-import java.util.List;
 
 public record AttributeEffect(ResourceLocation id, Holder<Attribute> attribute, AttributeModifier.Operation operation, LevelBasedValue amounts) {
     public static final MapCodec<AttributeEffect> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
@@ -26,30 +19,10 @@ public record AttributeEffect(ResourceLocation id, Holder<Attribute> attribute, 
     ).apply(builder, AttributeEffect::new));
 
     public void getModifier(int level, TriConsumer<Holder<Attribute>, AttributeModifier, EquipmentSlotGroup> modifierList) {
-        BloodMagic.LOGGER.info("{}: {} {}", id, operation.getSerializedName(), amounts.calculate(level));
         modifierList.accept(
                 attribute,
                 new AttributeModifier(id, amounts.calculate(level), operation),
                 EquipmentSlotGroup.CHEST
         );
-    }
-
-    public void addModifier(int level, ItemStack chestStack) {
-        BloodMagic.LOGGER.info("addModifier");
-        ItemAttributeModifiers mods = chestStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        //ItemAttributeModifiers apply = mods.withModifierAdded(attribute, getModifier(level), EquipmentSlotGroup.CHEST);
-        //chestStack.set(DataComponents.ATTRIBUTE_MODIFIERS, apply);
-    }
-
-    public void removeModifier(ItemStack chestStack) {
-        BloodMagic.LOGGER.info("removeModifier {}", id);
-        ItemAttributeModifiers mods = chestStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        ItemAttributeModifiers.Builder buider = ItemAttributeModifiers.builder();
-        for (ItemAttributeModifiers.Entry entry : mods.modifiers()) {
-            if (!entry.modifier().id().equals(id)) {
-                buider.add(entry.attribute(), entry.modifier(), entry.slot());
-            }
-        }
-        chestStack.set(DataComponents.ATTRIBUTE_MODIFIERS, buider.build());
     }
 }

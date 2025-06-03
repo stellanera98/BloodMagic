@@ -67,6 +67,7 @@ public class BMTags {
 
     public static class DamageTypes {
         public static final TagKey<DamageType> SELF_SACRIFICE = TagKey.create(Registries.DAMAGE_TYPE, bm("self_sacrifice"));
+        public static final TagKey<DamageType> TOUGH_IGNORED = TagKey.create(Registries.DAMAGE_TYPE, bm("tough_ignored"));
     }
 
     public static class Tiers {

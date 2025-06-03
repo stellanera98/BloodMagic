@@ -6,9 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
@@ -19,13 +16,12 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.logging.log4j.util.TriConsumer;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.living.effects.AttributeEffect;
 import wayoftime.bloodmagic.common.living.effects.ConditionalEffect;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -47,7 +43,7 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     }
 
     private void modifyFilteredDamageValue(DataComponentType<List<ConditionalEffect<LivingValueEffect>>> type, Integer level, LivingEntity victim, DamageSource source, MutableFloat mutablefloat) {
-        LootContext context = LivingContextParamSets.damageBased(victim, source);
+        LootContext context = LivingContextParamSets.damageBased(victim, source, level);
         applyEffects(
                 getEffects(type),
                 context,
@@ -60,7 +56,7 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     }
 
     private void modifyFilteredValue(DataComponentType<List<ConditionalEffect<LivingValueEffect>>> type, int level, Player player, MutableFloat value) {
-        LootContext context = LivingContextParamSets.tick(player);
+        LootContext context = LivingContextParamSets.tick(player, level);
         applyEffects(
                 getEffects(type),
                 context,
@@ -99,7 +95,7 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     public void blockBroken(Integer level, Player player, BlockState state) {
         applyEffects(
                 getEffects(LivingEffectComponents.BREAK_BLOCK.get()),
-                LivingContextParamSets.breakBlock(player, state, player.getItemInHand(InteractionHand.MAIN_HAND)),
+                LivingContextParamSets.breakBlock(player, state, player.getItemInHand(InteractionHand.MAIN_HAND), level),
                 effect -> effect.apply(level, player)
         );
     }
@@ -107,7 +103,7 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     public void tick(Integer level, Player player) {
         applyEffects(
                 getEffects(LivingEffectComponents.TICK.get()),
-                LivingContextParamSets.tick(player),
+                LivingContextParamSets.tick(player, level),
                 effect -> effect.apply(level, player)
         );
     }
@@ -115,21 +111,9 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
     public void modifyProjectile(Integer level, Player player, Projectile projectile) {
         applyEffects(
                 getEffects(LivingEffectComponents.PROJECTILE_SHOT.get()),
-                LivingContextParamSets.projectile(player, projectile),
+                LivingContextParamSets.projectile(player, projectile, level),
                 effect -> effect.apply(level, projectile)
         );
-    }
-
-    public void removeAttribute(ItemStack chestStack) {
-        for (AttributeEffect effect : getEffects(LivingEffectComponents.ATTRIBUTES.get())) {
-            effect.removeModifier(chestStack);
-        }
-    }
-
-    public void addAttribute(Integer level, ItemStack chestStack) {
-        for (AttributeEffect effect : getEffects(LivingEffectComponents.ATTRIBUTES.get())) {
-            effect.addModifier(level, chestStack);
-        }
     }
 
     public void collectAttributes(Integer level, TriConsumer<Holder<Attribute>, AttributeModifier, EquipmentSlotGroup> consumer) {

@@ -28,6 +28,10 @@
               {
                 "expected": false,
                 "id": "minecraft:bypasses_invulnerability"
+              },
+              {
+                "expected": false,
+                "id": "bloodmagic:tough_ignored"
               }
             ]
           }

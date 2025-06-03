@@ -6,7 +6,7 @@
           "type": "bloodmagic:multiply_reduce",
           "amounts": {
             "type": "minecraft:lookup",
-            "fallback": 0.0,
+            "fallback": 0.9,
             "values": [
               0.1,
               0.2,

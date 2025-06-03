@@ -114,7 +114,9 @@ public class LivingEventHandler {
         }
 
         if (LivingHelper.hasFullSet(event.getEntity())) {
-            event.getOrb().value = LivingHelper.modifyExperience(event.getEntity(), event.getOrb().value);
+            int starting = event.getOrb().getValue();
+            int ending = LivingHelper.modifyExperience(event.getEntity(), starting);
+            event.getOrb().value = ending;
         }
     }
 
@@ -144,6 +146,7 @@ public class LivingEventHandler {
         if (causer instanceof Player playerCauser) {
             if (LivingHelper.hasFullSet(playerCauser)) {
                 float newDamage = LivingHelper.modifyDamageDealt(playerCauser, victim, event.getSource(), event.getNewDamage());
+                BloodMagic.LOGGER.info("{} -> {}", event.getNewDamage(), newDamage);
                 event.setNewDamage(newDamage);
                 LivingHelper.reactToDamageDealt(playerCauser, victim, event.getSource(), event.getNewDamage()); // here we want the damage included
             }
@@ -163,7 +166,6 @@ public class LivingEventHandler {
         float reduced = event.getContainer().getReduction(DamageContainer.Reduction.ARMOR); // exclude armour reduction as well. its the thing learning after all
         // TODO theres a case to be made to exclude enchantments here as well, gather feedback on that at some point
         float ret = taken + reduced;
-        BloodMagic.LOGGER.info("taken: {}, reduced: {}, exp basing value: {}", taken, reduced, ret);
         return ret;
     }
 
@@ -197,17 +199,12 @@ public class LivingEventHandler {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (player.level().isClientSide) {
-            BloodMagic.LOGGER.info("\"This event is fired on Server-Side only\"");
-        }
 
         ItemStack fromStack = event.getFrom();
         ItemStack toStack = event.getTo();
         EquipmentSlot slot = event.getSlot();
         boolean from = fromStack.is(BMTags.Items.LIVING_UPGRADE_SET);
         boolean to = toStack.is(BMTags.Items.LIVING_UPGRADE_SET);
-
-        BloodMagic.LOGGER.info("[{}] to: {} ({}), from: {} ({})", slot, toStack.getDescriptionId(), to, fromStack.getDescriptionId(), from);
 
         if (!fromStack.is(BMTags.Items.LIVING_UPGRADE_SET) && !toStack.is(BMTags.Items.LIVING_UPGRADE_SET)) {
             // no upgrades involved, bye

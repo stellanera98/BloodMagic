@@ -46,7 +46,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:fire_resist\":0}}}"
+                "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:fire_resist\":0.0d}}}"
               }
             },
             {

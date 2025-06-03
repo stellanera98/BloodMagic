@@ -53,7 +53,7 @@
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:battle_hungry\":0}}}"
+            "nbt": "{\"neoforge:attachments\":{\"bloodmagic:living_cooldown\":{\"bloodmagic:battle_hungry\":0.0d}}}"
           }
         }
       }
