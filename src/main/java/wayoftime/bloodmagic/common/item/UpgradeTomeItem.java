@@ -1,0 +1,79 @@
+package wayoftime.bloodmagic.common.item;
+
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.apache.commons.lang3.function.TriConsumer;
+import org.apache.commons.lang3.function.TriFunction;
+import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.UpgradeTome;
+import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
+
+import java.util.List;
+
+public class UpgradeTomeItem extends Item {
+    public UpgradeTomeItem() {
+        super(new Properties());
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack tomeStack = player.getItemInHand(usedHand);
+        UpgradeTome tome = tomeStack.get(BMDataComponents.UPGRADE_TOME_DATA);
+        if (tome == null) {
+            return InteractionResultHolder.pass(tomeStack);
+        }
+
+        TriFunction<Player, Holder<LivingUpgrade>, Float, Float> expAdder = LivingHelper::applyExp;
+        if (player.isShiftKeyDown()) {
+            expAdder = LivingHelper::applyExpToCap;
+        }
+
+        float consumed = expAdder.apply(player, tome.upgrade(), tome.exp());
+        if (player.hasInfiniteMaterials()) { // creative, no consume item/exp >:
+            return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
+        }
+
+        BloodMagic.LOGGER.info("used: {} had: {}", consumed, tome.exp());
+        if (consumed >= tome.exp()) {
+            BloodMagic.LOGGER.info("none left");
+            return InteractionResultHolder.sidedSuccess(ItemStack.EMPTY, level.isClientSide);
+        }
+
+        BloodMagic.LOGGER.info("some left");
+        tomeStack.set(BMDataComponents.UPGRADE_TOME_DATA, new UpgradeTome(tome.upgrade(), tome.exp() - consumed));
+        return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        UpgradeTome tome = stack.get(BMDataComponents.UPGRADE_TOME_DATA);
+        if (tome != null) {
+            tome.addToTooltip(context, tooltipComponents::add, tooltipFlag);
+        }
+    }
+
+    // TODO display progress to next level?
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        return super.isBarVisible(stack);
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        return super.getBarWidth(stack);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        return super.getBarColor(stack);
+    }
+}

@@ -91,6 +91,13 @@ public class LivingUpgradesCommand {
                                                                                         )
                                                                         )
                                                         )
+                                                        .then(
+                                                                Commands.literal("remove")
+                                                                        .then(
+                                                                                Commands.argument("id", ResourceArgument.resource(buildContext, BMRegistries.Keys.LIVING_UPGRADES))
+                                                                                        .executes(context -> removeLimit(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
+                                                                        )
+                                                        )
                                         )
                                         .then(
                                                 Commands.literal("points")
@@ -116,6 +123,18 @@ public class LivingUpgradesCommand {
                                         )
                         )
         );
+    }
+
+    private static int removeLimit(CommandSourceStack source, ServerPlayer target, Holder<LivingUpgrade> id) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        ItemStack chest = LivingHelper.getChest(target);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> limits = chest.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP);
+        limits.removeFloat(id);
+        chest.set(BMDataComponents.LIMITS, limits);
+
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int setCap(CommandSourceStack source, ServerPlayer target, int amount) throws CommandSyntaxException {

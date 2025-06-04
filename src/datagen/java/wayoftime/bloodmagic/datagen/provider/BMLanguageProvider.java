@@ -103,11 +103,14 @@ public class BMLanguageProvider extends LanguageProvider {
             addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
         }
         add("item_group.bloodmagic.main", "Blood Magic");
+        add("item_group.bloodmagic.tomes", "Blood Magic Upgrade Tomes");
+        add("item_group.bloodmagic.trainers", "Blood Magic Trainer Tomes");
 
         add(BMItems.LIVING_HELMET.get(), "Living Helmet");
         add(BMItems.LIVING_PLATE.get(), "Living Plate");
         add(BMItems.LIVING_LEGGINGS.get(), "Living Leggings");
         add(BMItems.LIVING_BOOTS.get(), "Living Boots");
+        add(BMItems.UPGRADE_TOME.get(), "Upgrade Tome");
 
         add("item.bloodmagic.living_plate.dead", "Formerly Living Plate");
         addTooltip("has_living_stats", "Theres some kind of notes, but you cant decipher them");
