@@ -66,8 +66,8 @@ public class LivingHelper {
 
     public static boolean has(ItemStack stack, DataComponentType<?> type) {
         MutableBoolean found = new MutableBoolean(false);
-        runIterationOnItem(stack, (p_344620_, p_344621_) -> {
-            if (p_344620_.value().effects().has(type)) {
+        runIterationOnItem(stack, (upgrade, level) -> {
+            if (upgrade.value().effects().has(type)) {
                 found.setTrue();
             }
         });
@@ -163,6 +163,18 @@ public class LivingHelper {
         runIterationOnItem(chestStack, (holder, level) -> holder.value().collectAttributes(level, builder::add));
     }
 
+    public static float applyExpToCap(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
+        float rest = amount;
+        float previous;
+        do {
+            previous = rest;
+            rest -= applyExp(wearer, upgrade, rest);
+            BloodMagic.LOGGER.info("rest {}, previous {}", rest, previous); // no way I get this working first try
+        } while (rest != 0 && rest != previous);
+
+        return amount - rest;
+    }
+
     public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
         ItemStack chest = getChest(wearer);
         Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgrades = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
@@ -186,7 +198,12 @@ public class LivingHelper {
 
             int currLevel = getLevelFromXp(upgrade, exp);
             int currCost = upgrade.value().levels().levelToCost().getOrDefault(currLevel, 0); // can be level 0, dont have an entry for that
-            int nextCost = upgrade.value().levels().levelToCost().get(currLevel + 1);
+            int nextCost = upgrade.value().levels().levelToCost().getOrDefault(currLevel + 1, -1); // can be level max + 1, dont have an entry for that either
+            if (nextCost == -1) {
+                // we have reached max level and are trying to add exp. abort
+                toAdd.setValue(0);
+                return exp;
+            }
             float nextExp = nextLevelExp(upgrade, exp);
             if (exp + toAdd.floatValue() >= nextExp) {
                 // enough exp to reach next level

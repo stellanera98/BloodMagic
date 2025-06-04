@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.common.creativetab;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -12,9 +13,13 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datacomponent.UpgradeTome;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.common.living.LivingUpgrade;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.function.Consumer;
 
@@ -47,6 +52,39 @@ public class BMTabs {
                     })
                     .build()
     );
+
+    public static final Holder<CreativeModeTab> TOMES = TABS.register(
+            "tomes",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(BMItems.UPGRADE_TOME))
+                    .title(Component.translatable("item_group.bloodmagic.tomes"))
+                    .displayItems((params, output) -> {
+                        // TODO maybe have actual tags for up/downgrade to use? idk, this is probably fine
+                        addAll(params.holders().lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.TOOLTIP_ORDER).orElseThrow(), output::accept);
+                    })
+                    .build()
+    );
+
+    public static final Holder<CreativeModeTab> TRAINERS = TABS.register(
+            "trainers",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(BMItems.UPGRADE_TOME))
+                    .title(Component.translatable("item_group.bloodmagic.trainers"))
+                    .displayItems((params, output) -> {
+                        addAll(params.holders().lookupOrThrow(BMRegistries.Keys.LIVING_UPGRADES).get(BMTags.Living.TRAINERS).orElseThrow(), output::accept);
+                    })
+                    .build()
+    );
+
+    private static void addAll(HolderSet<LivingUpgrade> set, Consumer<ItemStack> tab) {
+        ItemStack tome = new ItemStack(BMItems.UPGRADE_TOME);
+        set.forEach(upgrade -> {
+            upgrade.value().levels().expToLevel().forEach((exp, cost) -> {
+                tome.set(BMDataComponents.UPGRADE_TOME_DATA, new UpgradeTome(upgrade, exp));
+                tab.accept(tome.copy());
+            });
+        });
+    }
 
     private static void addAll(DeferredRegister<Item> register, Consumer<ItemStack> tab) {
         register.getEntries().forEach(holder -> {

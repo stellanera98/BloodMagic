@@ -659,7 +659,6 @@ public class LivingUpgrades {
         attachmentTag.put(BMDataAttachments.LIVING_ADDITIONAL.getId().toString(), resTag);
         CompoundTag playerTag = new CompoundTag();
         playerTag.put(AttachmentHolder.ATTACHMENTS_NBT_KEY, attachmentTag);
-        BloodMagic.LOGGER.info(playerTag.toString());
         return playerTag;
     }
 
