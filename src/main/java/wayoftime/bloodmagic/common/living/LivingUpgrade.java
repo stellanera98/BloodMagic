@@ -7,6 +7,9 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
@@ -36,6 +39,13 @@ public record LivingUpgrade(Levels levels, DataComponentMap effects) {
             Levels.CODEC.fieldOf("levels").forGetter(LivingUpgrade::levels),
             LivingEffectComponents.CODEC.fieldOf("effects").forGetter(LivingUpgrade::effects)
     ).apply(builder, LivingUpgrade::new));
+
+    public static final Codec<LivingUpgrade> CLIENT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
+            Levels.CODEC.fieldOf("levels").forGetter(LivingUpgrade::levels),
+            Codec.unit(DataComponentMap.EMPTY).fieldOf("effects").forGetter(LivingUpgrade::effects)
+    ).apply(builder, LivingUpgrade::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<LivingUpgrade>> HOLDER_STREAM_CODEC = ByteBufCodecs.holderRegistry(BMRegistries.Keys.LIVING_UPGRADES);
 
     public static String descriptionId(ResourceKey<LivingUpgrade> key) {
         return Util.makeDescriptionId("living_upgrade", key.location());

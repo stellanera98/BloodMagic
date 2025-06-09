@@ -6,14 +6,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.menu.ARCMenu;
+import wayoftime.bloodmagic.common.menu.LivingStationMenu;
 
-public class ARCScreen extends AbstractContainerScreen<ARCMenu> {
-    private final ResourceLocation background = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "textures/gui/arc_gui.png");
-    public ARCScreen(ARCMenu menu, Inventory playerInventory, Component title) {
+public class LivingStationScreen extends AbstractContainerScreen<LivingStationMenu> {
+    private final ResourceLocation background = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "textures/gui/living_station.png");
+    public LivingStationScreen(LivingStationMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 176;
-        this.imageHeight = 205;
+        this.imageHeight = 231;
+
+        this.inventoryLabelY = 137;
     }
 
     @Override
@@ -23,16 +25,9 @@ public class ARCScreen extends AbstractContainerScreen<ARCMenu> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, this.title, 8, 5, 4210752, false);
-        guiGraphics.drawString(this.font, this.playerInventoryTitle, 8, 111, 4210752, false);
-    }
-
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(background, left, top, 0, 0, imageWidth, imageHeight);
-        guiGraphics.blit(background, left + 63, top + 44, 176, 90, menu.tile.getProgressForGui(), 23);
     }
 }

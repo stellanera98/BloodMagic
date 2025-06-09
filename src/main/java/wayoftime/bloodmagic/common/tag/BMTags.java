@@ -80,6 +80,7 @@ public class BMTags {
         public static final TagKey<LivingUpgrade> IS_DOWNGRADE = tag(bm("is_downgrade"));
         public static final TagKey<LivingUpgrade> LIVING_START = tag(bm("living_start"));
         public static final TagKey<LivingUpgrade> TRAINERS = tag(bm("trainer"));
+        public static final TagKey<LivingUpgrade> IS_SCRAPPABLE = tag(bm("is_scrappable"));
 
         private static TagKey<LivingUpgrade> tag(ResourceLocation id) {
             return TagKey.create(BMRegistries.Keys.LIVING_UPGRADES, id);

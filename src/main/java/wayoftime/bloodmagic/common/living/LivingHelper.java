@@ -1,5 +1,6 @@
 package wayoftime.bloodmagic.common.living;
 
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.ChatFormatting;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.LivingStats;
+import wayoftime.bloodmagic.common.datacomponent.UpgradeTome;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.ChatUtil;
@@ -95,12 +97,12 @@ public class LivingHelper {
         }
     }
 
-    private static int getLevelFromXp(Holder<LivingUpgrade> upgrade, float exp) {
+    public static int getLevelFromXp(Holder<LivingUpgrade> upgrade, float exp) {
         Map.Entry<Integer, Integer> level = upgrade.value().levels().expToLevel().floorEntry((int) exp);
         return level == null ? 0 : level.getValue();
     }
 
-    private static int nextLevelExp(Holder<LivingUpgrade> upgrade, float exp) {
+    public static int nextLevelExp(Holder<LivingUpgrade> upgrade, float exp) {
         Map.Entry<Integer, Integer> level = upgrade.value().levels().expToLevel().ceilingEntry((int) exp + 1); // otherwise it'll get the same level again
         return level == null ? 0 : level.getKey();
     }
@@ -288,5 +290,17 @@ public class LivingHelper {
         chest.set(BMDataComponents.CURRENT_UPGRADE_POINTS, total);
 
         return total;
+    }
+
+    public static Pair<Integer, Float> scrapFromTome(UpgradeTome tome) {
+        Map.Entry<Integer, Integer> expEntry = tome.upgrade().value().levels().expToLevel().floorEntry((int) tome.exp());
+        int scrap = 0;
+        float expUsed = 0;
+        if (expEntry != null) {
+            scrap = tome.upgrade().value().levels().levelToCost().getOrDefault(expEntry.getValue(), 0);
+            expUsed = expEntry.getKey();
+        }
+
+        return Pair.of(scrap, expUsed);
     }
 }

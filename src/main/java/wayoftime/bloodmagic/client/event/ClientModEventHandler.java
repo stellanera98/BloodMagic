@@ -3,17 +3,22 @@ package wayoftime.bloodmagic.client.event;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.PlayerSkin;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.menu.BMMenus;
 import wayoftime.bloodmagic.client.render.entity.layer.LivingElytraLayer;
+import wayoftime.bloodmagic.client.screen.ARCScreen;
+import wayoftime.bloodmagic.client.screen.LivingStationScreen;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.item.BMItems;
 
-@EventBusSubscriber(modid = BloodMagic.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = BloodMagic.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ClientModEventHandler {
 
     @SubscribeEvent
@@ -34,5 +39,11 @@ public class ClientModEventHandler {
 
         skin = event.getSkin(PlayerSkin.Model.SLIM);
         skin.addLayer(new LivingElytraLayer<>(skin, event.getEntityModels()));
+    }
+
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(BMMenus.ARC.get(), ARCScreen::new);
+        event.register(BMMenus.LIVING_STATION.get(), LivingStationScreen::new);
     }
 }

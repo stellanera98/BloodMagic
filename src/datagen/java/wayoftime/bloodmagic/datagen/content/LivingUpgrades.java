@@ -602,6 +602,9 @@ public class LivingUpgrades {
         adder.apply(BMTags.Living.IS_DOWNGRADE)
                 .addAll(downgrades);
 
+        adder.apply(BMTags.Living.IS_SCRAPPABLE)
+                        .addAll(upgrades);
+
         adder.apply(BMTags.Living.TOOLTIP_ORDER)
                 .addAll(upgrades)
                 .addAll(downgrades);
@@ -611,39 +614,40 @@ public class LivingUpgrades {
     }
 
     public static void translations(BiConsumer<String, String> translator) {
-        translator.accept(id(BATTLE_HUNGRY), "Battle Hungry");
-        translator.accept(id(CRIPPLED_ARM), "Crippled Arm");
-        translator.accept(id(DIG_SLOWDOWN), "Leadened Pick");
-        translator.accept(id(MELEE_DECREASE), "Dulled Blade");
-        translator.accept(id(QUENCHED), "Quenched");
-        translator.accept(id(SLOW_HEAL), "Slow Heal");
-        translator.accept(id(SPEED_DECREASE), "Limp Leg");
-        translator.accept(id(STORM_TROOPER), "Storm Trooper");
-        translator.accept(id(SWIM_DECREASE), "Concrete Shoes");
+        addUpgrade(BATTLE_HUNGRY.location(), "Battle Hungry", translator);
+        addUpgrade(CRIPPLED_ARM.location(), "Crippled Arm", translator);
+        addUpgrade(DIG_SLOWDOWN.location(), "Leadened Pick", translator);
+        addUpgrade(MELEE_DECREASE.location(), "Dulled Blade", translator);
+        addUpgrade(QUENCHED.location(), "Quenched", translator);
+        addUpgrade(SLOW_HEAL.location(), "Slow Heal", translator);
+        addUpgrade(SPEED_DECREASE.location(), "Limp Leg", translator);
+        addUpgrade(STORM_TROOPER.location(), "Storm Trooper", translator);
+        addUpgrade(SWIM_DECREASE.location(), "Concrete Shoes", translator);
 
-        translator.accept(id(ARROW_PROTECT), "Pin Cushion");
-        translator.accept(id(DIGGING), "Dwarven Might");
-        translator.accept(id(ELYTRA), "Elytra");
-        translator.accept(id(EXPERIENCED), "Experienced");
-        translator.accept(id(FALL_PROTECT), "Soft Fall");
-        translator.accept(id(FIRE_RESIST), "Gift of Ignis");
-        translator.accept(id(GILDED), "Gilded");
-        translator.accept(id(HEALTH), "Healthy");
-        translator.accept(id(JUMP), "Strong Legs");
-        translator.accept(id(KNOCKBACK_RESIST), "Body Builder");
-        translator.accept(id(LUCK), "Skilled");
-        translator.accept(id(MELEE_DAMAGE), "Fierce Strike");
-        translator.accept(id(NETHERITE_PROTECT), "Forgotten");
-        translator.accept(id(PHYSICAL_PROTECT), "Tough");
-        translator.accept(id(POISON_RESIST), "Poison Resistance");
-        translator.accept(id(REPAIR), "Repair");
-        translator.accept(id(SELF_SACRIFICE), "Tough Palms");
-        translator.accept(id(SPEED), "Quick Feet");
-        translator.accept(id(SPRINT_ATTACK), "Charging Strike");
+        addUpgrade(ARROW_PROTECT.location(), "Pin Cushion", translator);
+        addUpgrade(DIGGING.location(), "Dwarven Might", translator);
+        addUpgrade(ELYTRA.location(), "Elytra", translator);
+        addUpgrade(EXPERIENCED.location(), "Experienced", translator);
+        addUpgrade(FALL_PROTECT.location(), "Soft Fall", translator);
+        addUpgrade(FIRE_RESIST.location(), "Gift of Ignis", translator);
+        addUpgrade(GILDED.location(), "Gilded", translator);
+        addUpgrade(HEALTH.location(), "Healthy", translator);
+        addUpgrade(JUMP.location(), "Strong Legs", translator);
+        addUpgrade(KNOCKBACK_RESIST.location(), "Body Builder", translator);
+        addUpgrade(LUCK.location(), "Skilled", translator);
+        addUpgrade(MELEE_DAMAGE.location(), "Fierce Strike", translator);
+        addUpgrade(NETHERITE_PROTECT.location(), "Forgotten", translator);
+        addUpgrade(PHYSICAL_PROTECT.location(), "Tough", translator);
+        addUpgrade(POISON_RESIST.location(), "Poison Resistance", translator);
+        addUpgrade(REPAIR.location(), "Repair", translator);
+        addUpgrade(SELF_SACRIFICE.location(), "Tough Palms", translator);
+        addUpgrade(SPEED.location(), "Quick Feet", translator);
+        addUpgrade(SPRINT_ATTACK.location(), "Charging Strike", translator);
     }
 
-    private static String id(ResourceKey<LivingUpgrade> key) {
-        return "living_upgrade." + key.location().getNamespace() + "." + key.location().getPath();
+    private static void addUpgrade(ResourceLocation key, String translated, BiConsumer<String, String> translator) {
+        translator.accept("living_upgrade.%s.%s".formatted(key.getNamespace(), key.getPath()), translated);
+        translator.accept("item.%s.upgrade_tome.%s".formatted(key.getNamespace(), key.getPath()), "Upgrade Tome (%s)".formatted(translated));
     }
 
     private static LootItemCondition.Builder cooldownCondition(ResourceKey<LivingUpgrade> key) {

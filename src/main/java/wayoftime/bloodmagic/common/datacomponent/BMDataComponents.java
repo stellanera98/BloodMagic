@@ -38,13 +38,16 @@ public class BMDataComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<TagKey<Item>>> REQUIRED_SET = DATA_COMPONENTS.registerComponentType("required_set", builder -> builder.persistent(TagKey.codec(Registries.ITEM)));
 
-    private static final Codec<Object2FloatOpenHashMap<Holder<LivingUpgrade>>> UPGRADE_HOLDER_CODEC = Codec.unboundedMap(RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES), Codec.FLOAT).xmap(Object2FloatOpenHashMap::new, Function.identity());
+    public static final Codec<Object2FloatOpenHashMap<Holder<LivingUpgrade>>> UPGRADE_HOLDER_CODEC = Codec.unboundedMap(RegistryFixedCodec.create(BMRegistries.Keys.LIVING_UPGRADES), Codec.FLOAT).xmap(Object2FloatOpenHashMap::new, Function.identity());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Object2FloatOpenHashMap<Holder<LivingUpgrade>>>> LIMITS = DATA_COMPONENTS.registerComponentType("limits", builder -> builder.persistent(UPGRADE_HOLDER_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<LivingStats>> UPGRADES = DATA_COMPONENTS.registerComponentType("upgrades", builder -> builder.persistent(LivingStats.CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CURRENT_MAX_UPGRADE_POINTS = DATA_COMPONENTS.registerComponentType("max_upgrade_points", builder -> builder.persistent(Codec.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CURRENT_UPGRADE_POINTS = DATA_COMPONENTS.registerComponentType("current_upgrade_points", builder -> builder.persistent(Codec.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> FULL_SET_MARKER = DATA_COMPONENTS.registerComponentType("full_set_marker", builder -> builder.persistent(Codec.BOOL));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<UpgradeTome>> UPGRADE_TOME_DATA = DATA_COMPONENTS.registerComponentType("upgrade_tome_data", builder -> builder.persistent(UpgradeTome.CODEC));
+    // doesnt work with stream codec, doesnt work without
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<UpgradeTome>> UPGRADE_TOME_DATA = DATA_COMPONENTS.registerComponentType("upgrade_tome_data", builder -> builder.persistent(UpgradeTome.CODEC).networkSynchronized(UpgradeTome.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Object2FloatOpenHashMap<Holder<LivingUpgrade>>>> STORED_UPGRADES = DATA_COMPONENTS.registerComponentType("stored_upgrades", builder -> builder.persistent(UPGRADE_HOLDER_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> UPGRADE_SCRAP = DATA_COMPONENTS.registerComponentType("upgrade_scrap", builder -> builder.persistent(Codec.INT));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PREVIOUS_DAMAGE = DATA_COMPONENTS.registerComponentType("previous_damage", builder -> builder.persistent(Codec.INT));
 
