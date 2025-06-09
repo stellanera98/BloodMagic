@@ -31,6 +31,10 @@ public class BMTiles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BloodTankTile>> BLOOD_TANK_TYPE = TILES.register("blood_tank",
             () -> new BlockEntityType<>(BloodTankTile::new, Set.of(BMBlocks.BLOOD_TANK.block().get()), null));
 
+    // TODO item handler cap?
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LivingStationTile>> LIVING_STATION_TYPE = TILES.register("living_station",
+            () -> new BlockEntityType<>(LivingStationTile::new, Set.of(BMBlocks.LIVING_STATION.block().get()), null));
+
     private static void registerTileCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,

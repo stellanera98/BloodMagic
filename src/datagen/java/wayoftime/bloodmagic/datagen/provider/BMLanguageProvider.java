@@ -112,12 +112,17 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMItems.LIVING_BOOTS.get(), "Living Boots");
         add(BMItems.UPGRADE_TOME.get(), "Upgrade Tome");
 
+        add(BMBlocks.LIVING_STATION, "Living Upgrade Station");
+        add(BMItems.UPGRADE_SCRAP.get(), "Upgrade Tome Scrap");
+        add(BMItems.SYNTHETIC_POINT.get(), "Synthetic Upgrade Points");
+        addTooltip("scrap", "Contained Upgrade Points: %s");
+
         add("item.bloodmagic.living_plate.dead", "Formerly Living Plate");
         addTooltip("has_living_stats", "Theres some kind of notes, but you cant decipher them");
 
         addCommand("upgrade.get", "%s has the following upgrades:\n");
         addCommand("upgrade.set", "Set %s to %s exp for %s");
-        addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a required_set component set. Upgrades cannot take effect like this");
+        addCommand("upgrade.no_armour", "The chestplate %s is wearing does not have a bloodmagic:required_set component set. Upgrades cannot take effect like this");
         addCommand("cap.success", "Set max upgrade points to %s");
         addCommand("recalc.success", "Upgrades use up %s points");
         addCommand("limit.get", "%s has the following limits:\n");

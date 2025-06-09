@@ -7,16 +7,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-@EventBusSubscriber
+@EventBusSubscriber(value = Dist.CLIENT, modid = BloodMagic.MODID)
 public class ClientEventHandler {
 
     @SubscribeEvent

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class UpgradeTomeItem extends Item {
     public UpgradeTomeItem() {
-        super(new Properties());
+        super(new Properties().stacksTo(1));
     }
 
     @Override
@@ -42,15 +42,18 @@ public class UpgradeTomeItem extends Item {
             return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
         }
 
-        BloodMagic.LOGGER.info("used: {} had: {}", consumed, tome.exp());
         if (consumed >= tome.exp()) {
-            BloodMagic.LOGGER.info("none left");
             return InteractionResultHolder.sidedSuccess(ItemStack.EMPTY, level.isClientSide);
         }
 
-        BloodMagic.LOGGER.info("some left");
         tomeStack.set(BMDataComponents.UPGRADE_TOME_DATA, new UpgradeTome(tome.upgrade(), tome.exp() - consumed));
         return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack stack) {
+        UpgradeTome tome = stack.get(BMDataComponents.UPGRADE_TOME_DATA);
+        return tome == null ? getDescriptionId() : getDescriptionId() + "." + tome.upgrade().getKey().location().getPath();
     }
 
     @Override
