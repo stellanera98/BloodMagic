@@ -30,6 +30,9 @@ import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.common.tag.TagsCache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LivingStationTile extends BaseTile implements MenuProvider {
 
     public Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgradeData;
@@ -152,12 +155,13 @@ public class LivingStationTile extends BaseTile implements MenuProvider {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
+            UpgradeTome tome = stack.get(BMDataComponents.UPGRADE_TOME_DATA);
             if (slot == 0) {
-                return stack.is(BMItems.UPGRADE_TOME);
+                return stack.is(BMItems.UPGRADE_TOME) && (tome != null && tome.upgrade().is(BMTags.Living.TOOLTIP_ORDER));
             } else if (slot == 1) {
                 return stack.is(BMItems.SYNTHETIC_POINT)
                         || stack.is(BMItems.UPGRADE_SCRAP)
-                        || (stack.is(BMItems.UPGRADE_TOME) && scrappingAutomationEnabled());
+                        || (stack.is(BMItems.UPGRADE_TOME) && (tome != null && tome.upgrade().is(BMTags.Living.IS_SCRAPPABLE)));
             }
 
             return false;
@@ -176,9 +180,6 @@ public class LivingStationTile extends BaseTile implements MenuProvider {
             BloodMagic.LOGGER.info("{}, {}, {}", slot, stack, simulate);
 
             if (!simulate) {
-                if (stack.is(BMItems.UPGRADE_TOME)) {
-                    slot = scrappingAutomationEnabled() ? 1 : 0;
-                }
                 inv.setStackInSlot(slot, stack);
             }
 
@@ -195,10 +196,6 @@ public class LivingStationTile extends BaseTile implements MenuProvider {
             return inv.getStackInSlot(slot);
         }
     };
-
-    public boolean scrappingAutomationEnabled() {
-        return level.getBlockState(getBlockPos().below()).is(BMTags.Blocks.SOUL_NETWORK_COMPARATOR);
-    }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
