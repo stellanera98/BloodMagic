@@ -1,11 +1,13 @@
 package wayoftime.bloodmagic.common.blockentity;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
@@ -68,7 +70,15 @@ public class BMTiles {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 LIVING_STATION_TYPE.get(),
-                (tile, side) -> tile.itemCap
+                (tile, side) -> {
+                    int start = 0;
+                    int end = 1;
+                    if (side == Direction.UP) { // top = scrap
+                        start++;
+                        end++;
+                    }
+                    return new RangedWrapper(tile.itemCap, start, end);
+                }
         );
     }
 
