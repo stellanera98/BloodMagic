@@ -198,7 +198,7 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
             if (binding.isEmpty() || orb == null) {
                 return;
             }
-            if (orb.tier() >= tile.tier && tile.mainTank > 0) {
+            if (tile.mainTank > 0) {
                 int available = Math.min(tile.mainTank, (int) (orb.fillRate() * (1 + tile.consumptionMod)));
                 int drained = SoulNetworkHelper.getSoulNetwork(binding.uuid()).add(SoulTicket.block(level, pos, available), (int) (orb.capacity() * (1 + tile.orbCapMod)));
                 tile.mainTank -= drained;

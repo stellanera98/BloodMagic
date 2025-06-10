@@ -9,7 +9,6 @@ Altar
 - datapackable structure, by default looking at tags (bloodmagic:altar/runes, bloodmagic:altar/tN_capstones, bloodmagic:altar/pillars) with the pillars tag being special in that when its empty it just requires solid blocks
 - should be working exactly like the old one from user perspective
 - the blocks to enable redstone pulse on crafting and reading the soul network instead of the altar fill level are based on the block tags bloodmagic:altar/pulse_on_crafting and bloodmagic:altar/soul_network_comparator
-- orbs are fillable only on the same or higher altar tier
 - now has its 2 in/out put tanks visible for jade
 
 Blood Tank
@@ -18,7 +17,7 @@ Blood Tank
 - should also work with fluid pipes
 - retains fluid when broken
 - havent managed to put the upgrade recipe in jei since its a special one, but its the "same" recipe as the base tank except the glass is replaced by 2 tanks of the same tier to make a next tier tank
- - tiers are the same as the blood tanks from 1.12 but there is talk about changeing how fluid (and item) handlers work in NF and they might change the default capacity from using ints to longs which would mean I could expand it to a lot more tiers and an ungodly amount of storage easily
+ - tiers are the same as the blood tanks from 1.12 but there is talk about changing how fluid (and item) handlers work in NF and they might change the default capacity from using ints to longs which would mean I could expand it to a lot more tiers and an ungodly amount of storage easily
 
 Hellfire forge
 - recipes can require a will type (none of the old recipes will but I might add some for the demon stone types)
@@ -34,7 +33,7 @@ ARC
 - putting an empty item fluid handler into the input bucket slot fills it with fluid from the input tank
 - putting a filled item fluid handler into the input bucket slot empties it into the tank (if same fluid should some be present)
 - putting an empty item fluid handler into the output bucket slot fills it with fluid from the output tank
-- debating whether or not to have it keep the fluids when mined, currently does not (but would be a simple change)
+- debating whether to have it keep the fluids when mined, currently does not (but would be a simple change)
 
 Blood Orbs
 - anything can be a blood orb as long as its in the blood orb data map and has the binding component set
