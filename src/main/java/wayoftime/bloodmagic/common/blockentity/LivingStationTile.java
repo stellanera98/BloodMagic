@@ -2,10 +2,12 @@ package wayoftime.bloodmagic.common.blockentity;
 
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,7 +16,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.menu.LivingStationMenu;
@@ -25,7 +29,6 @@ import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.common.tag.TagsCache;
-import java.util.function.Function;
 
 public class LivingStationTile extends BaseTile implements MenuProvider {
 
@@ -140,6 +143,62 @@ public class LivingStationTile extends BaseTile implements MenuProvider {
             setChanged();
         }
     };
+
+    public ItemStackHandler itemCap = new ItemStackHandler() {
+        @Override
+        public int getSlots() {
+            return 2;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (slot == 0) {
+                return stack.is(BMItems.UPGRADE_TOME);
+            } else if (slot == 1) {
+                return stack.is(BMItems.SYNTHETIC_POINT)
+                        || stack.is(BMItems.UPGRADE_SCRAP)
+                        || (stack.is(BMItems.UPGRADE_TOME) && scrappingAutomationEnabled());
+            }
+
+            return false;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return inv.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (!isItemValid(slot, stack)) {
+                return stack;
+            }
+            BloodMagic.LOGGER.info("{}, {}, {}", slot, stack, simulate);
+
+            if (!simulate) {
+                if (stack.is(BMItems.UPGRADE_TOME)) {
+                    slot = scrappingAutomationEnabled() ? 1 : 0;
+                }
+                inv.setStackInSlot(slot, stack);
+            }
+
+            return ItemStack.EMPTY;
+        }
+
+        @Override
+        public void setStackInSlot(int slot, ItemStack stack) {
+            inv.setStackInSlot(slot, stack);
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return inv.getStackInSlot(slot);
+        }
+    };
+
+    public boolean scrappingAutomationEnabled() {
+        return level.getBlockState(getBlockPos().below()).is(BMTags.Blocks.SOUL_NETWORK_COMPARATOR);
+    }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {

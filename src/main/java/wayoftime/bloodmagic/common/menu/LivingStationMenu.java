@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.blockentity.LivingStationTile;
+import wayoftime.bloodmagic.common.item.BMItems;
 
 public class LivingStationMenu extends AbstractContainerMenu {
 
@@ -78,8 +79,15 @@ public class LivingStationMenu extends AbstractContainerMenu {
              */
 
             if (index >= playerInvStart) {
-                if (!this.moveItemStackTo(rawStack, 0, 2, false)) { // only inputs are 0 and 1
-                    return ItemStack.EMPTY;
+                if (rawStack.is(BMItems.UPGRADE_TOME)) { // only insert tomes into store slot
+                    if (!this.moveItemStackTo(rawStack, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                if (rawStack.is(BMItems.UPGRADE_SCRAP) || rawStack.is(BMItems.SYNTHETIC_POINT)) { // those go into the scrap slot
+                    if (!this.moveItemStackTo(rawStack, 1, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
             }
 
