@@ -46,3 +46,8 @@ Living Armour
 Tartaric gems
 - similar to blood orbs, as of now at least, anything can be a tartaric gem as long as its in the tartaric gem data map
 - currently no way of filling it, just here because I needed something for the hellfire forge
+
+Training Bracelet
+- will allow at most the minimum exp required for the selected level for each of the set tomes
+ - in deny others mode all others are limited to 0 exp
+ - in allow others mode nothing else goes on the nope list
