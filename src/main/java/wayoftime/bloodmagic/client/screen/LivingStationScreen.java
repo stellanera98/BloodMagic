@@ -26,8 +26,6 @@ public class LivingStationScreen extends AbstractContainerScreen<LivingStationMe
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        int left = (this.width - this.imageWidth) / 2;
-        int top = (this.height - this.imageHeight) / 2;
-        guiGraphics.blit(background, left, top, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(background, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
 }

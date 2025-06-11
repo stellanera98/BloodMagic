@@ -303,4 +303,8 @@ public class LivingHelper {
 
         return Pair.of(scrap, expUsed);
     }
+
+    public static int getExpForLevel(Holder<LivingUpgrade> upgrade, int level) {
+        return upgrade.value().levels().levelToCost().getOrDefault(level, -1);
+    }
 }
