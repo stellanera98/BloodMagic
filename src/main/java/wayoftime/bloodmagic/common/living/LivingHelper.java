@@ -4,13 +4,11 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,12 +24,14 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.LivingStats;
+import wayoftime.bloodmagic.common.datacomponent.UpgradeLimits;
 import wayoftime.bloodmagic.common.datacomponent.UpgradeTome;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.common.tag.BMTags;
 import wayoftime.bloodmagic.util.ChatUtil;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 public class LivingHelper {
@@ -102,6 +102,18 @@ public class LivingHelper {
         return level == null ? 0 : level.getValue();
     }
 
+    public static int getLevelFromXp(ItemStack tomeStack) {
+        if (tomeStack.isEmpty()) {
+            return 0;
+        }
+        UpgradeTome tome = tomeStack.get(BMDataComponents.UPGRADE_TOME_DATA);
+        if (tome == null) {
+            return 0;
+        }
+
+        return getLevelFromXp(tome.upgrade(), tome.exp());
+    }
+
     public static int nextLevelExp(Holder<LivingUpgrade> upgrade, float exp) {
         Map.Entry<Integer, Integer> level = upgrade.value().levels().expToLevel().ceilingEntry((int) exp + 1); // otherwise it'll get the same level again
         return level == null ? 0 : level.getKey();
@@ -165,22 +177,26 @@ public class LivingHelper {
         runIterationOnItem(chestStack, (holder, level) -> holder.value().collectAttributes(level, builder::add));
     }
 
-    public static float applyExpToCap(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
+    public static float applyExpToCap(Player wearer, Holder<LivingUpgrade> upgrade, float amount, boolean fromTome) {
         float rest = amount;
         float previous;
         do {
             previous = rest;
-            rest -= applyExp(wearer, upgrade, rest);
-            BloodMagic.LOGGER.info("rest {}, previous {}", rest, previous); // no way I get this working first try
+            rest -= applyExp(wearer, upgrade, rest, fromTome);
         } while (rest != 0 && rest != previous);
 
         return amount - rest;
     }
 
     public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount) {
+        return applyExp(wearer, upgrade, amount, false);
+    }
+
+    // TODO pass a boolean for "natural" gain vs from tomes
+    public static float applyExp(Player wearer, Holder<LivingUpgrade> upgrade, float amount, boolean fromTome) {
         ItemStack chest = getChest(wearer);
         Object2FloatOpenHashMap<Holder<LivingUpgrade>> upgrades = chest.getOrDefault(BMDataComponents.UPGRADES, LivingStats.EMPTY).upgrades().clone();
-        Object2FloatOpenHashMap<Holder<LivingUpgrade>> limits = chest.getOrDefault(BMDataComponents.LIMITS, EMPTY_UPGRADE_MAP).clone();
+        UpgradeLimits limits = chest.getOrDefault(BMDataComponents.LIMITS, UpgradeLimits.EMPTY);
         int maxPoints = chest.getOrDefault(BMDataComponents.CURRENT_MAX_UPGRADE_POINTS, 0);
         int currentPoints = chest.getOrDefault(BMDataComponents.CURRENT_UPGRADE_POINTS, 0);
 
@@ -188,7 +204,7 @@ public class LivingHelper {
         // TODO LIVING EXP GAIN EVENT FOR CHONKY, AND MAKE IT WORK THIS TIME
         upgrades.computeFloat(upgrade, (holder, exp) -> {
             exp = exp == null ? 0f : exp;
-            float maxExp = limits.getOrDefault(upgrade, -1);
+            float maxExp = limits.getLimit(upgrade);
             if (maxExp != -1) {
                 toAdd.setValue(Math.min(maxExp - exp, toAdd.floatValue())); // if there is a limit, respect it
                 if (toAdd.floatValue() <= 0) {
@@ -202,9 +218,9 @@ public class LivingHelper {
             int currCost = upgrade.value().levels().levelToCost().getOrDefault(currLevel, 0); // can be level 0, dont have an entry for that
             int nextCost = upgrade.value().levels().levelToCost().getOrDefault(currLevel + 1, -1); // can be level max + 1, dont have an entry for that either
             if (nextCost == -1) {
-                // we have reached max level and are trying to add exp. abort
-                toAdd.setValue(0);
-                return exp;
+                // we have reached max level and are trying to add exp.
+                // so we just do that?
+                return exp + toAdd.floatValue();
             }
             float nextExp = nextLevelExp(upgrade, exp);
             if (exp + toAdd.floatValue() >= nextExp) {
@@ -305,6 +321,17 @@ public class LivingHelper {
     }
 
     public static int getExpForLevel(Holder<LivingUpgrade> upgrade, int level) {
-        return upgrade.value().levels().levelToCost().getOrDefault(level, -1);
+        AtomicInteger exp = new AtomicInteger(-1);
+        upgrade.value().levels().expToLevel().forEach((k, v) -> {
+            if (v == level) {
+                exp.set(k);
+            }
+        });
+
+        return exp.get();
+    }
+
+    public static int getMaxLevel(Holder<LivingUpgrade> upgrade) {
+        return upgrade.value().levels().levelToCost().size();
     }
 }

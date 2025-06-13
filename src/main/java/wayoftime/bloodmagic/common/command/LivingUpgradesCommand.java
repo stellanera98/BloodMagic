@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.LivingStats;
+import wayoftime.bloodmagic.common.datacomponent.UpgradeLimits;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
@@ -98,6 +99,17 @@ public class LivingUpgradesCommand {
                                                                                         .executes(context -> removeLimit(context.getSource(), EntityArgument.getPlayer(context, "target"), ResourceArgument.getResource(context, "id", BMRegistries.Keys.LIVING_UPGRADES)))
                                                                         )
                                                         )
+                                                        .then(
+                                                                Commands.literal("mode")
+                                                                        .then(
+                                                                                Commands.literal("allow")
+                                                                                        .executes(context -> setMode(context.getSource(), EntityArgument.getPlayer(context, "target"), true))
+                                                                        )
+                                                                        .then(
+                                                                                Commands.literal("deny")
+                                                                                        .executes(context -> setMode(context.getSource(), EntityArgument.getPlayer(context, "target"), false))
+                                                                        )
+                                                        )
                                         )
                                         .then(
                                                 Commands.literal("points")
@@ -125,14 +137,26 @@ public class LivingUpgradesCommand {
         );
     }
 
+    private static int setMode(CommandSourceStack source, ServerPlayer target, boolean mode) throws CommandSyntaxException {
+        if (LivingHelper.isNeverValid(target)) {
+            throw ERROR_NO_LIVING_HOLDER.create(target.getName());
+        }
+        ItemStack chest = LivingHelper.getChest(target);
+        UpgradeLimits limits = chest.getOrDefault(BMDataComponents.LIMITS, UpgradeLimits.EMPTY);
+        chest.set(BMDataComponents.LIMITS, new UpgradeLimits(mode, limits.limits().clone()));
+
+        return Command.SINGLE_SUCCESS;
+    }
+
     private static int removeLimit(CommandSourceStack source, ServerPlayer target, Holder<LivingUpgrade> id) throws CommandSyntaxException {
         if (LivingHelper.isNeverValid(target)) {
             throw ERROR_NO_LIVING_HOLDER.create(target.getName());
         }
         ItemStack chest = LivingHelper.getChest(target);
-        Object2FloatOpenHashMap<Holder<LivingUpgrade>> limits = chest.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP);
-        limits.removeFloat(id);
-        chest.set(BMDataComponents.LIMITS, limits);
+        UpgradeLimits limits = chest.getOrDefault(BMDataComponents.LIMITS, UpgradeLimits.EMPTY);
+        Object2FloatOpenHashMap<Holder<LivingUpgrade>> limitMap = limits.limits().clone();
+        limitMap.removeFloat(id);
+        chest.set(BMDataComponents.LIMITS, new UpgradeLimits(limits.allowOthers(), limitMap));
 
         return Command.SINGLE_SUCCESS;
     }
@@ -201,9 +225,10 @@ public class LivingUpgradesCommand {
         }
         ItemStack chest = LivingHelper.getChest(target);
         Object2FloatOpenHashMap<Holder<LivingUpgrade>> map = new Object2FloatOpenHashMap<>();
-        map.putAll(chest.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP));
+        UpgradeLimits limits = chest.getOrDefault(BMDataComponents.LIMITS, UpgradeLimits.EMPTY);
+        map.putAll(limits.limits());
         map.put(id, exp);
-        chest.set(BMDataComponents.LIMITS, map);
+        chest.set(BMDataComponents.LIMITS, new UpgradeLimits(limits.allowOthers(), map));
 
         source.sendSuccess(() -> Component.translatable("commands.bloodmagic.limit.set", Component.translatable(LivingUpgrade.descriptionId(id.getKey())), exp, target.getName()), true);
 
@@ -216,19 +241,20 @@ public class LivingUpgradesCommand {
         }
 
         ItemStack chestStack = LivingHelper.getChest(target);
-        Object2FloatOpenHashMap<Holder<LivingUpgrade>> stats = chestStack.getOrDefault(BMDataComponents.LIMITS, LivingHelper.EMPTY_UPGRADE_MAP);
+        UpgradeLimits stats = chestStack.getOrDefault(BMDataComponents.LIMITS, UpgradeLimits.EMPTY);
         MutableComponent result = Component.empty();
+        Component mode = Component.translatable("commands.bloodmagic.limit.mode." + (stats.allowOthers() ? "allow" : "deny"));
         if (filter.isEmpty()) {
-            stats.object2FloatEntrySet().forEach(entry -> {
+            stats.limits().object2FloatEntrySet().forEach(entry -> {
                 result.append(Component.translatable(LivingUpgrade.descriptionId(entry.getKey().getKey())));
                 result.append(Component.literal(": " + entry.getFloatValue() + "exp\n"));
             });
         } else {
             result.append(Component.translatable(LivingUpgrade.descriptionId(filter.get().getKey())));
-            result.append(Component.literal(": " + stats.getFloat(filter.get()) + "exp"));
+            result.append(Component.literal(": " + stats.getLimit(filter.get()) + "exp"));
         }
 
-        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.limit.get", target.getName()).append(result), true);
+        source.sendSuccess(() -> Component.translatable("commands.bloodmagic.limit.get", target.getName(), mode).append(result), true);
         return Command.SINGLE_SUCCESS;
     }
 }

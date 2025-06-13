@@ -25,8 +25,12 @@ public class BMRegistries {
 
     private static void registerPack(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(Keys.ALTAR_TIER_KEY, AltarTier.CODEC);
-        // doesnt work passing client or regular codec for the network one. builder is used
-        event.dataPackRegistry(Keys.LIVING_UPGRADES, LivingUpgrade.CODEC, LivingUpgrade.CODEC, builder -> builder.sync(true).onAdd((registry, id, key, value) -> BloodMagic.LOGGER.info("{}: {} added", key, id)));
+        event.dataPackRegistry(
+                Keys.LIVING_UPGRADES,
+                LivingUpgrade.CODEC,
+                LivingUpgrade.CLIENT_CODEC,
+                builder -> builder.sync(true)
+        );
     }
 
     public static void register(IEventBus modBus) {
