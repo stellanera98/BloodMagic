@@ -6,12 +6,8 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.client.widgets.ToggleButton;
-import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
-import wayoftime.bloodmagic.common.datacomponent.UpgradeTome;
-import wayoftime.bloodmagic.common.living.LivingHelper;
+import wayoftime.bloodmagic.client.widgets.MultiIconButton;
 import wayoftime.bloodmagic.common.menu.TrainerMenu;
 
 public class TrainerScreen extends AbstractGhostScreen<TrainerMenu> {
@@ -22,81 +18,48 @@ public class TrainerScreen extends AbstractGhostScreen<TrainerMenu> {
         this.imageHeight = 187;
     }
 
-    private static final Tooltip allowTooltip = Tooltip.create(Component.translatable("trainer.bloodmagic.allow_others"));
-    private static final Tooltip denyTooltip = Tooltip.create(Component.translatable("trainer.bloodmagic.deny_others"));
-    private static final ResourceLocation allow = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "trainer/allow_others");
-    private static final ResourceLocation deny = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "trainer/deny_others");
+    private static final Component allowTooltip = Component.translatable("trainer.bloodmagic.allow_others");
+    private static final Component denyTooltip = Component.translatable("trainer.bloodmagic.deny_others");
     @Override
     protected void init() {
         super.init();
 
-        addRenderableWidget(Button.builder(Component.literal("<"), button -> changeLevel(-1))
+        addRenderableWidget(Button.builder(Component.literal("<"), button -> sendButtonClick(1))
                 .pos(leftPos + 16, topPos + 34)
                 .size(8, 20)
                 .build()
         );
-        addRenderableWidget(Button.builder(Component.literal(">"), button -> changeLevel(1))
+        addRenderableWidget(Button.builder(Component.literal(">"), button -> sendButtonClick(2))
                 .pos(leftPos + 44, topPos + 34)
                 .size(8, 20)
                 .build()
         );
 
-        addRenderableWidget(ToggleButton.builder(button -> this.menu.setData(0, button.getState() ? 1 : 0))
-                .tooltip(allowTooltip, denyTooltip)
-                .icon(allow, deny)
+        addMultiIconButton(1, MultiIconButton.builder(button -> sendButtonClick(3))
+                .icons(allow, deny)
+                .tooltips(allowTooltip, denyTooltip)
                 .pos(leftPos + 24, topPos + 55)
                 .size(20, 20)
-                .state(this.menu.isWhitelist())
+                .build()
+        );
+
+        addRenderableWidget(Button.builder(Component.translatable("trainer.bloodmagic.save"), button -> sendButtonClick(4))
+                .pos(leftPos + 50, topPos + 55)
+                .size(30, 20)
                 .build()
         );
     }
 
-    private void changeLevel(int amount) {
-        int slotId = this.menu.getLastGhostSlotClicked();
-        if (slotId < 0) {
-            BloodMagic.LOGGER.info("No slot selected ({}), cannot change level", slotId);
-            return;
-        }
-
-        ItemStack tomeStack = this.menu.getSlot(slotId).getItem();
-        if (tomeStack.isEmpty()) {
-            return;
-        }
-        UpgradeTome tome = tomeStack.get(BMDataComponents.UPGRADE_TOME_DATA);
-        if (tome == null) {
-            return;
-        }
-
-        int currLevel = LivingHelper.getLevelFromXp(tome.upgrade(), tome.exp());
-        int changedExp = LivingHelper.getExpForLevel(tome.upgrade(), currLevel + amount);
-        if (changedExp == -1) {
-            return;
-        }
-
-        tomeStack.set(BMDataComponents.UPGRADE_TOME_DATA, new UpgradeTome(tome.upgrade(), changedExp));
-        this.menu.getSlot(slotId).set(tomeStack);
+    private void sendButtonClick(int buttonId) {
+        this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, buttonId);
     }
 
     public String getLevelString() {
-        int slotId = this.menu.getLastGhostSlotClicked();
-        if (slotId < 0) {
-            BloodMagic.LOGGER.info("No slot selected ({}), cannot get level", slotId);
-            return "";
-        }
-
-        ItemStack tomeStack = this.menu.getSlot(slotId).getItem();
-        if (tomeStack.isEmpty()) {
-            return "";
-        }
-        UpgradeTome tome = tomeStack.get(BMDataComponents.UPGRADE_TOME_DATA);
-        if (tome == null) {
-            return "";
-        }
-
-        int currLevel = LivingHelper.getLevelFromXp(tome.upgrade(), tome.exp());
-        return currLevel == -1 ? "" : "" + currLevel;
+        return "" + getMenu().getData(3 + this.menu.getLastGhostSlotClicked());
     }
 
+    private static final ResourceLocation allow = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "container/trainer/allow_others");
+    private static final ResourceLocation deny = ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "container/trainer/deny_others");
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -115,6 +78,6 @@ public class TrainerScreen extends AbstractGhostScreen<TrainerMenu> {
 
     @Override
     public ResourceLocation background() {
-        return BloodMagic.rl("gui/container/training_bracelet.png");
+        return BloodMagic.rl("textures/gui/container/training_bracelet.png");
     }
 }

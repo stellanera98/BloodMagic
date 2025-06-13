@@ -7,49 +7,45 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nullable;
+public class MultiIconButton extends AbstractButton {
 
-public class ToggleButton extends AbstractButton {
-
-    private final ResourceLocation iconOn;
-    private final ResourceLocation iconOff;
-    private final Tooltip tooltipOn;
-    private final Tooltip tooltipOff;
+    private final ResourceLocation[] icons;
+    private final Component[] tooltips;
     private final OnPress onPress;
-    private boolean state;
-    public ToggleButton(int x, int y, int width, int height, Tooltip tOn, Tooltip tOff, ResourceLocation rOn, ResourceLocation rOff, OnPress onPress, boolean initialState) {
+    public MultiIconButton(int x, int y, int width, int height, Component[] tooltips, ResourceLocation[] icons, OnPress onPress) {
         super(x, y, width, height, Component.literal(""));
-        this.iconOn = rOn;
-        this.iconOff = rOff;
-        this.tooltipOn = tOn;
-        this.tooltipOff = tOff;
         this.onPress = onPress;
-        this.state = initialState;
+        this.icons = icons;
+        this.tooltips = tooltips;
     }
 
-    public ToggleButton(Builder builder) {
-        this(builder.x, builder.y, builder.width, builder.height, builder.tooltipOn, builder.tooltipOff, builder.iconOn, builder.iconOff, builder.onPress, builder.initialState);
+    public MultiIconButton(Builder builder) {
+        this(builder.x, builder.y, builder.width, builder.height, builder.tooltips, builder.icons, builder.onPress);
     }
 
-    public boolean getState() {
+    private int state = 0;
+    // TODO upgrade this to potentially multiple and find a way to make it acceptable as slot listener so it can change itself based on a DataSlot
+    public int getState() {
         return this.state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override
     public void onPress() {
-        this.state = !this.state;
         onPress.onPress(this);
     }
 
-    @Override
-    public @Nullable Tooltip getTooltip() {
-        return this.state ? tooltipOn : tooltipOff;
+    public Component getHoverText() {
+        return tooltips[state % tooltips.length];
     }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.blitSprite(this.state ? iconOn : iconOff, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        guiGraphics.blitSprite(icons[state % icons.length], this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     @Override
@@ -63,16 +59,12 @@ public class ToggleButton extends AbstractButton {
 
     public static class Builder {
         private final OnPress onPress;
-        @Nullable
-        private Tooltip tooltipOn;
-        private Tooltip tooltipOff;
-        private ResourceLocation iconOn;
-        private ResourceLocation iconOff;
         private int x;
         private int y;
         private int width = 150;
         private int height = 20;
-        private boolean initialState = true;
+        private ResourceLocation[] icons;
+        private Component[] tooltips;
 
         public Builder(OnPress onPress) {
             this.onPress = onPress;
@@ -99,34 +91,27 @@ public class ToggleButton extends AbstractButton {
             return this.pos(x, y).size(width, height);
         }
 
-        public Builder tooltip(@Nullable Tooltip tooltipOn, @Nullable Tooltip tooltipOff) {
-            this.tooltipOn = tooltipOn;
-            this.tooltipOff = tooltipOff;
+        public Builder tooltips(Component... tooltips) {
+            this.tooltips = tooltips;
             return this;
         }
 
-        public Builder icon(ResourceLocation on, ResourceLocation off) {
-            this.iconOn = on;
-            this.iconOff = off;
+        public Builder icons(ResourceLocation... icons) {
+            this.icons = icons;
             return this;
         }
 
-        public Builder state(boolean initialState) {
-            this.initialState = initialState;
-            return this;
+        public MultiIconButton build() {
+            return build(MultiIconButton::new);
         }
 
-        public ToggleButton build() {
-            return build(ToggleButton::new);
-        }
-
-        public ToggleButton build(java.util.function.Function<Builder, ToggleButton> builder) {
+        public MultiIconButton build(java.util.function.Function<Builder, MultiIconButton> builder) {
             return builder.apply(this);
         }
     }
 
     @FunctionalInterface
     public interface OnPress {
-        void onPress(ToggleButton button);
+        void onPress(MultiIconButton button);
     }
 }

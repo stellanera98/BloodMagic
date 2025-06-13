@@ -32,13 +32,13 @@ public class UpgradeTomeItem extends Item {
             return InteractionResultHolder.pass(tomeStack);
         }
 
-        TriFunction<Player, Holder<LivingUpgrade>, Float, Float> expAdder = LivingHelper::applyExp;
+        XpFunc expAdder = LivingHelper::applyExp;
         if (player.isShiftKeyDown()) {
             expAdder = LivingHelper::applyExpToCap;
         }
 
-        float consumed = expAdder.apply(player, tome.upgrade(), tome.exp());
-        if (player.hasInfiniteMaterials()) { // creative, no consume item/exp >:
+        float consumed = expAdder.apply(player, tome.upgrade(), tome.exp(), true);
+        if (player.hasInfiniteMaterials()) { // creative, no consume item/exp, only add >:
             return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
         }
 
@@ -48,6 +48,11 @@ public class UpgradeTomeItem extends Item {
 
         tomeStack.set(BMDataComponents.UPGRADE_TOME_DATA, new UpgradeTome(tome.upgrade(), tome.exp() - consumed));
         return InteractionResultHolder.sidedSuccess(tomeStack, level.isClientSide);
+    }
+
+    @FunctionalInterface
+    public interface XpFunc {
+        Float apply(Player player, Holder<LivingUpgrade> upgrade, Float exp, boolean fromTome);
     }
 
     @Override

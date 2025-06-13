@@ -34,7 +34,9 @@
   "block.bloodmagic.rune_speed": "Speed Rune",
   "chat.bloodmagic.living_upgrade.level_up": "%s has levelled up to %s!",
   "commands.bloodmagic.cap.success": "Set max upgrade points to %s",
-  "commands.bloodmagic.limit.get": "%s has the following limits:\n",
+  "commands.bloodmagic.limit.get": "%s is in '%s' mode and has the following limits:\n",
+  "commands.bloodmagic.limit.mode.allow": "allow others",
+  "commands.bloodmagic.limit.mode.deny": "deny others",
   "commands.bloodmagic.limit.set": "Set limit of %s to %s exp for %s",
   "commands.bloodmagic.recalc.success": "Upgrades use up %s points",
   "commands.bloodmagic.upgrade.get": "%s has the following upgrades:\n",
@@ -63,6 +65,7 @@
   "item.bloodmagic.soul_gem_lesser": "Lesser Tartaric Gem",
   "item.bloodmagic.soul_gem_petty": "Petty Tartaric Gem",
   "item.bloodmagic.synthetic_point": "Synthetic Upgrade Points",
+  "item.bloodmagic.training_bracelet": "Living Training Bracelet",
   "item.bloodmagic.upgrade_scrap": "Upgrade Tome Scrap",
   "item.bloodmagic.upgrade_tome": "Upgrade Tome",
   "item.bloodmagic.upgrade_tome.arrow_protect": "Upgrade Tome (Pin Cushion)",
@@ -144,5 +147,8 @@
   "tooltip.bloodmagic.soul_gem.soul_gem_lesser": "A gem used to contain some will.",
   "tooltip.bloodmagic.soul_gem.soul_gem_petty": "A gem used to contain a little will.",
   "tooltip.bloodmagic.upgrade_points": "Upgrade Points: %s/%s",
-  "tooltip.bloodmagic.will": "Will Quality: %s"
+  "tooltip.bloodmagic.will": "Will Quality: %s",
+  "trainer.bloodmagic.allow_others": "Allow Others",
+  "trainer.bloodmagic.deny_others": "Deny Others",
+  "trainer.bloodmagic.save": "Save"
 }

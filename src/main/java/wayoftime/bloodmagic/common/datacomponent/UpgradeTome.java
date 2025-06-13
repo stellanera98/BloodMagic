@@ -3,6 +3,7 @@ package wayoftime.bloodmagic.common.datacomponent;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,7 +13,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
+import wayoftime.bloodmagic.common.registry.BMRegistries;
 
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 public record UpgradeTome(Holder<LivingUpgrade> upgrade, float exp) implements TooltipProvider {
