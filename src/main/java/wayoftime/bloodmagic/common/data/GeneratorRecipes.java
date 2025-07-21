@@ -18,6 +18,7 @@ import wayoftime.bloodmagic.common.block.BloodMagicBlocks;
 import wayoftime.bloodmagic.common.data.recipe.BaseRecipeProvider;
 import wayoftime.bloodmagic.common.item.BloodMagicItems;
 import wayoftime.bloodmagic.common.recipe.*;
+import wayoftime.bloodmagic.common.registries.BloodMagicRecipeSerializers;
 import wayoftime.bloodmagic.common.tags.BloodMagicTags;
 import wayoftime.bloodmagic.core.recipe.IngredientBloodOrb;
 
@@ -75,7 +76,7 @@ public class GeneratorRecipes extends BaseRecipeProvider
 //			ShapedRecipeBuilder.shapedRecipe(BloodMagicBlocks.SOUL_FORGE.get()).key('s', Tags.Items.STONE).key('g', Tags.Items.INGOTS_GOLD).key('i', Tags.Items.INGOTS_IRON).key('o', Tags.Items.STORAGE_BLOCKS_IRON).patternLine("i i").patternLine("sgs").patternLine("sos").addCriterion("has_gold", hasItem(Items.GOLD_INGOT)).build(consumer, BloodMagic.rl("soul_forge"));
 		}
 		{
-			ShapedRecipeBuilder.shaped(RecipeCategory.MISC,BloodMagicBlocks.BLOOD_ALTAR.get()).define('a',Tags.Items.STONE).define('b', Items.FURNACE).define('c', Tags.Items.INGOTS_GOLD).pattern("a a").pattern("aba").pattern("ccc").unlockedBy("has_gold", has(Items.GOLD_INGOT)).save(consumer, BloodMagic.rl("blood_altar"));
+			ShapedRecipeBuilder.shaped(RecipeCategory.MISC,BloodMagicBlocks.BLOOD_ALTAR.get()).define('a', Tags.Items.STONE).define('b', Items.FURNACE).define('c', Tags.Items.INGOTS_GOLD).pattern("a a").pattern("aba").pattern("ccc").unlockedBy("has_gold", has(Items.GOLD_INGOT)).save(consumer, BloodMagic.rl("blood_altar"));
 			ShapedRecipeBuilder.shaped(RecipeCategory.MISC,BloodMagicBlocks.ALCHEMY_TABLE.get()).define('b', Tags.Items.INGOTS_IRON).define('s', Tags.Items.STONE).define('w', ItemTags.PLANKS).define('g', Tags.Items.INGOTS_GOLD).define('o', BloodMagicItems.SLATE.get()).pattern("sss").pattern("wbw").pattern("gog").unlockedBy("has_blank_slate", has(BloodMagicItems.SLATE.get())).save(consumer, BloodMagic.rl("alchemy_table"));
 			ShapedRecipeBuilder.shaped(RecipeCategory.MISC,BloodMagicBlocks.SOUL_FORGE.get()).define('s', Tags.Items.STONE).define('S', BloodMagicItems.SLATE.get()).define('i', Tags.Items.INGOTS_IRON).define('o', Tags.Items.STORAGE_BLOCKS_IRON).pattern("i i").pattern("sSs").pattern("sos").unlockedBy("has_blank_slate", has(BloodMagicItems.SLATE.get())).save(consumer, BloodMagic.rl("soul_forge"));
 		}
@@ -85,6 +86,7 @@ public class GeneratorRecipes extends BaseRecipeProvider
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC,BloodMagicBlocks.RAW_HELLFORGED_BLOCK.get()).define('s', BloodMagicItems.DEMONITE_RAW.get()).pattern("sss").pattern("sss").pattern("sss").unlockedBy("has_raw_hellforged", has(BloodMagicItems.DEMONITE_RAW.get())).save(consumer, BloodMagic.rl("raw_hellforged_block"));
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,BloodMagicItems.DEMONITE_RAW.get(), 9).requires(BloodMagicBlocks.RAW_HELLFORGED_BLOCK.get()).unlockedBy("has_raw_hellforged_block", has(BloodMagicBlocks.RAW_HELLFORGED_BLOCK.get())).save(consumer, BloodMagic.rl("raw_hellforged_block_to_item"));
 
+		SpecialRecipeBuilder.special(BloodMagicRecipeSerializers.FILTER_COPY.getRecipeSerializer()).save(consumer, "bloodmagic:filter_copy");
 		clearFilter(BloodMagicItems.ITEM_ROUTER_FILTER.get(), BloodMagic.rl("clear_router_filter"), consumer);
 		clearFilter(BloodMagicItems.ITEM_TAG_FILTER.get(), BloodMagic.rl("clear_tag_filter"), consumer);
 		clearFilter(BloodMagicItems.ITEM_ENCHANT_FILTER.get(), BloodMagic.rl("clear_enchant_filter"), consumer);
