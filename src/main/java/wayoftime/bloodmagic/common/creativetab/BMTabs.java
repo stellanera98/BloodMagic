@@ -38,6 +38,8 @@ public class BMTabs {
                         LivingHelper.setDefaultLiving(living_plate, parameters.holders());
                         output.accept(living_plate);
 
+                        addAll(BMItems.SIGILS, output::accept);
+                        addAll(BMItems.SIGILS_TOGGLEABLE, output::accept);
                         addAll(BMItems.BASIC_ITEMS, output::accept);
                         addAll(BMItems.ITEMS, output::accept);
                         addAll(BMFluids.BUCKETS, output::accept);

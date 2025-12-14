@@ -12,7 +12,7 @@ import wayoftime.bloodmagic.common.tag.BMTags;
 import java.util.function.Function;
 
 public class BloodyDamageSources {
-    public static void bootstrap(BootstrapContext<DamageType> context) {
+    public static void damageSources(BootstrapContext<DamageType> context) {
         context.register(BMDamageSources.SACRIFICE, new DamageType("sacrifice", DamageScaling.NEVER, 0F));
         context.register(BMDamageSources.SELF_SACRIFICE, new DamageType("self_sacrifice", DamageScaling.NEVER, 0F));
     }

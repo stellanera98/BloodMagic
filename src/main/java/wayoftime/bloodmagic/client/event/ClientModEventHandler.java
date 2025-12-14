@@ -10,6 +10,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.client.screen.TrainerScreen;
 import wayoftime.bloodmagic.common.menu.BMMenus;
 import wayoftime.bloodmagic.client.render.entity.layer.LivingElytraLayer;
@@ -26,9 +27,29 @@ public class ClientModEventHandler {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             BMItems.WILL_ITEMS.getEntries().forEach(item -> {
-                ItemProperties.register(item.get(), BloodMagic.TYPE_PROPERTY, (stack, level, player, seed) -> stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT).ordinal());
+                ItemProperties.register(
+                        item.get(),
+                        BMIdentifiers.ItemProperties.DEMON_WILL_TYPE,
+                        (stack, level, player, seed) ->
+                                stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT).ordinal()
+                );
             });
-            ItemProperties.register(BMItems.SACRIFICIAL_DAGGER.get(), BloodMagic.INCENSE_PROPERTY, ((stack, level, entity, seed) -> stack.getOrDefault(BMDataComponents.INCENSE, false) ? 1 : 0));
+
+            ItemProperties.register(
+                    BMItems.SACRIFICIAL_DAGGER.get(),
+                    BMIdentifiers.ItemProperties.HAS_INCENSE,
+                    (stack, level, entity, seed) ->
+                            stack.getOrDefault(BMDataComponents.INCENSE, false) ? 1 : 0
+            );
+
+            BMItems.SIGILS_TOGGLEABLE.getEntries().forEach(sigil -> {
+                ItemProperties.register(
+                        sigil.get(),
+                        BMIdentifiers.ItemProperties.IS_SIGIL_ACTIVE,
+                        (stack, level, player, seed) ->
+                                stack.getOrDefault(BMDataComponents.SIGIL_ACTIVE, false) ? 1 : 0
+                );
+            });
         });
     }
 

@@ -16,17 +16,27 @@ import wayoftime.bloodmagic.common.tag.BMTags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class AltarTiers {
 
-    public static void bootstrap(BootstrapContext<AltarTier> builder) {
+    public static void tiers(BootstrapContext<AltarTier> builder) {
         builder.register(Keys.WEAK, new AltarTier(0, AltarTiers.WEAK));
         builder.register(Keys.APPRENTICE, new AltarTier(1, AltarTiers.APPRENTICE));
         builder.register(Keys.MAGE, new AltarTier(2, AltarTiers.MAGE));
         builder.register(Keys.MASTER, new AltarTier(3, AltarTiers.MASTER));
         builder.register(Keys.ARCHMAGE, new AltarTier(4, AltarTiers.ARCHMAGE));
         builder.register(Keys.TRANSCENDENT, new AltarTier(5, AltarTiers.TRANSCENDENT));
+    }
+
+    public static void translations(BiConsumer<String, String> translator) {
+        translator.accept("altar.bloodmagic.tier_0", "Weak (I)");
+        translator.accept("altar.bloodmagic.tier_1", "Apprentice (II)");
+        translator.accept("altar.bloodmagic.tier_2", "Mage (III)");
+        translator.accept("altar.bloodmagic.tier_3", "Master (IV)");
+        translator.accept("altar.bloodmagic.tier_4", "Archmage (V)");
+        translator.accept("altar.bloodmagic.tier_5", "Transcendent (VI)");
     }
 
     public static void tags(Function<TagKey<AltarTier>, TagsProvider.TagAppender<AltarTier>> setter) {

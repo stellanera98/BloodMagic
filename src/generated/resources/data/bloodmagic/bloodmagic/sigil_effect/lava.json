@@ -1,0 +1,5 @@
+{
+  "type": "bloodmagic:fluid_place_effect",
+  "fluid_type": "minecraft:lava",
+  "tank_fill_amount": 10000
+}

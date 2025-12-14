@@ -20,7 +20,6 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.neoforged.neoforge.attachment.AttachmentHolder;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.attribute.BMAttributes;
@@ -74,7 +73,7 @@ public class LivingUpgrades {
 
     public static final ResourceKey<LivingUpgrade> LUCK = key("luck");
 
-    public static void bootstrap(BootstrapContext<LivingUpgrade> context) {
+    public static void upgrades(BootstrapContext<LivingUpgrade> context) {
         context.register(
                 BATTLE_HUNGRY,
                 new LivingUpgrade.Builder()

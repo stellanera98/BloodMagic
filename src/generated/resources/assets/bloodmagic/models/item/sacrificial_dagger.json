@@ -1,16 +1,14 @@
 {
+  "parent": "minecraft:item/handheld",
   "overrides": [
-    {
-      "model": "bloodmagic:item/variant/sacrificial_dagger_normal",
-      "predicate": {
-        "bloodmagic:incense_type": 0.0
-      }
-    },
     {
       "model": "bloodmagic:item/variant/sacrificial_dagger_charged",
       "predicate": {
-        "bloodmagic:incense_type": 1.0
+        "bloodmagic:has_incense": 1.0
       }
     }
-  ]
+  ],
+  "textures": {
+    "layer0": "bloodmagic:item/sacrificial_dagger"
+  }
 }

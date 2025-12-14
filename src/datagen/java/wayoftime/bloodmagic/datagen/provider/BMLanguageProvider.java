@@ -10,7 +10,9 @@ import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.datagen.content.AltarTiers;
 import wayoftime.bloodmagic.datagen.content.LivingUpgrades;
+import wayoftime.bloodmagic.datagen.content.SigilData;
 import wayoftime.bloodmagic.util.helper.BlockWithItemHolder;
 
 public class BMLanguageProvider extends LanguageProvider {
@@ -86,6 +88,13 @@ public class BMLanguageProvider extends LanguageProvider {
 
         add(BMBlocks.IMPERFECT_RITUAL_BLOCK, "Imperfect Ritual Stone");
 
+        add(BMItems.SIGIL_DIVINATION.get(), "Divination Sigil");
+        add(BMItems.SIGIL_SEER.get(), "Seer Sigil");
+        add(BMItems.SIGIL_LAVA.get(), "Lava Sigil");
+        add(BMItems.SIGIL_WATER.get(), "Water Sigil");
+        add(BMItems.SIGIL_VOID.get(), "Void Sigil");
+        add(BMItems.SIGIL_MINER.get(), "Sigil of the Fast Miner");
+
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
         add(BMItems.RAW_WILL.get(), "Raw Will");
 
@@ -139,8 +148,11 @@ public class BMLanguageProvider extends LanguageProvider {
 
         addTooltip("upgrade_points", "Upgrade Points: %s/%s");
         add("chat.bloodmagic.living_upgrade.level_up", "%s has levelled up to %s!");
+        add("chat.bloodmagic.item_not_bound", "This item is not bound...");
 
         LivingUpgrades.translations(this::add);
+        AltarTiers.translations(this::add);
+        SigilData.translations(this::add);
     }
 
     public void addCommand(String key, String value) {

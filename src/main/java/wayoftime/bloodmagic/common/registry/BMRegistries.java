@@ -8,11 +8,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.common.living.LivingEffectComponents;
 import wayoftime.bloodmagic.common.living.LivingEntityEffect;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 import wayoftime.bloodmagic.common.living.LivingValueEffect;
 import wayoftime.bloodmagic.common.ritual.imperfect.ImperfectRitualEffect;
+import wayoftime.bloodmagic.common.sigil.SigilEffect;
 
 public class BMRegistries {
     public static class Keys {
@@ -41,6 +43,12 @@ public class BMRegistries {
                 ImperfectRitualEffect.CODEC,
                 builder -> builder.sync(true)
         );
+        event.dataPackRegistry(
+                BMIdentifiers.RegistryKeys.SIGIL_EFFECTS,
+                SigilEffect.CODEC,
+                SigilEffect.CODEC,
+                builder -> builder.sync(true)
+        );
     }
 
     public static void register(IEventBus modBus) {
@@ -51,6 +59,7 @@ public class BMRegistries {
         LivingEntityEffect.register(modBus);
 
         ImperfectRitualEffect.register(modBus);
+        SigilEffect.register(modBus);
     }
 
     private static ResourceLocation bm(String path) {

@@ -1,0 +1,4 @@
+{
+  "type": "bloodmagic:fluid_remove_effect",
+  "remove_amount": 1000
+}

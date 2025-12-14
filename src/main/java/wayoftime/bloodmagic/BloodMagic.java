@@ -6,6 +6,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,15 +25,16 @@ import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.item.BMMaterialsAndTiers;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
+import wayoftime.bloodmagic.common.sigil.SigilConfig;
 import wayoftime.bloodmagic.common.structure.BMMultiblock;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Mod(BloodMagic.MODID)
 public class BloodMagic {
     public static final String MODID = "bloodmagic";
     public static final Logger LOGGER = LogUtils.getLogger();
-
-    public static final ResourceLocation TYPE_PROPERTY = rl("will_type");
-    public static final ResourceLocation INCENSE_PROPERTY = rl("incense_type");
 
     public static final ServerConfig SERVER_CONFIG;
     private static final ModConfigSpec SERVER_CONFIG_SPEC;
@@ -59,7 +61,15 @@ public class BloodMagic {
         BMMenus.register(modBus);
         BMTabs.register(modBus);
 
+        /*
+        try {
+            Files.createDirectories(FMLPaths.CONFIGDIR.get().resolve(MODID)); // need config/bloodmagic folder for sigils and perhaps rituals later
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         */
         container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
+        SigilConfig.register(container);
 
         NeoForge.EVENT_BUS.addListener(BMCommands::register);
     }

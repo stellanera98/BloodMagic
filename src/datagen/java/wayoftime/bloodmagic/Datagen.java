@@ -8,11 +8,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
-import wayoftime.bloodmagic.datagen.content.AltarTiers;
-import wayoftime.bloodmagic.datagen.content.BloodyDamageSources;
-import wayoftime.bloodmagic.datagen.content.ImperfectRitualData;
-import wayoftime.bloodmagic.datagen.content.LivingUpgrades;
+import wayoftime.bloodmagic.datagen.content.*;
 import wayoftime.bloodmagic.datagen.provider.*;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
@@ -30,10 +28,11 @@ public class Datagen {
         event.createProvider(BMLanguageProvider::new);
 
         event.createDatapackRegistryObjects(new RegistrySetBuilder()
-                .add(Registries.DAMAGE_TYPE, BloodyDamageSources::bootstrap)
-                .add(BMRegistries.Keys.ALTAR_TIER_KEY, AltarTiers::bootstrap)
-                .add(BMRegistries.Keys.LIVING_UPGRADES, LivingUpgrades::bootstrap)
+                .add(Registries.DAMAGE_TYPE, BloodyDamageSources::damageSources)
+                .add(BMRegistries.Keys.ALTAR_TIER_KEY, AltarTiers::tiers)
+                .add(BMRegistries.Keys.LIVING_UPGRADES, LivingUpgrades::upgrades)
                 .add(BMRegistries.Keys.IMPERFECT_RITUALS, ImperfectRitualData::effects)
+                .add(BMIdentifiers.RegistryKeys.SIGIL_EFFECTS, SigilData::effects)
         );
 
         ProviderHelper helper = new ProviderHelper(fileHelper);
