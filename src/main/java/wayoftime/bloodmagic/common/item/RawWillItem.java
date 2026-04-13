@@ -12,10 +12,14 @@ import wayoftime.bloodmagic.util.ChatUtil;
 import java.util.List;
 import java.util.Locale;
 
-public class RawSoulItem extends Item {
+public class RawWillItem extends Item {
 
-    public RawSoulItem() {
-        super(new Properties().stacksTo(1).component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT).component(BMDataComponents.DEMON_WILL_AMOUNT, 5D));
+    public RawWillItem() {
+        super(new Properties()
+                .stacksTo(1)
+                .component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT)
+                .component(BMDataComponents.DEMON_WILL_AMOUNT, 5D)
+        );
     }
 
     @Override

@@ -18,7 +18,7 @@ public class ForgeSerializer implements RecipeSerializer<ForgeRecipe> {
             Codec.DOUBLE.fieldOf("drain").forGetter(ForgeRecipe::getDrain),
             Codec.list(Ingredient.CODEC_NONEMPTY).fieldOf("inputs").forGetter(ForgeRecipe::getCraftingIngredients),
             ItemStack.CODEC.fieldOf("output").forGetter(ForgeRecipe::getOutput),
-            EnumWillType.CODEC.optionalFieldOf("willType").forGetter(ForgeRecipe::getWillType)
+            EnumWillType.CODEC.optionalFieldOf("willType").forGetter(ForgeRecipe::willType)
     ).apply(instance, ForgeRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -26,7 +26,7 @@ public class ForgeSerializer implements RecipeSerializer<ForgeRecipe> {
             ByteBufCodecs.DOUBLE, ForgeRecipe::getDrain,
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), ForgeRecipe::getCraftingIngredients,
             ItemStack.STREAM_CODEC, ForgeRecipe::getOutput,
-            EnumWillType.STREAM_CODEC.apply(ByteBufCodecs::optional), ForgeRecipe::getWillType,
+            EnumWillType.STREAM_CODEC.apply(ByteBufCodecs::optional), ForgeRecipe::willType,
             ForgeRecipe::new
     );
 

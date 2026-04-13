@@ -2,6 +2,7 @@ package wayoftime.bloodmagic.common.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import wayoftime.bloodmagic.api.BMTags;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
@@ -19,15 +21,52 @@ import wayoftime.bloodmagic.util.ChatUtil;
 
 import java.util.List;
 
-public class SoulGemItem extends Item {
+public class TartaricGemItem extends Item {
 
-    public SoulGemItem() {
-        super(new Properties().stacksTo(1).component(BMDataComponents.DEMON_WILL_AMOUNT, 0D).component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT));
+    public TartaricGemItem() {
+        super(new Properties()
+                .stacksTo(1)
+                .component(BMDataComponents.DEMON_WILL_AMOUNT, 0D)
+                .component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT)
+        );
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        // TODO: implement
+        NonNullList<ItemStack> inv = player.getInventory().items;
+        inv.addAll(player.getInventory().offhand);
+        ItemStack gem = player.getItemInHand(usedHand);
+        EnumWillType type = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        double amount = gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
+        Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
+        double limit = max - amount;
+        for (int i = 0; i < inv.size(); i++) {
+            if (usedHand == InteractionHand.MAIN_HAND && i == player.getInventory().selected) {
+                continue;
+            }
+            if (usedHand == InteractionHand.OFF_HAND && i == inv.size()-1) {
+                continue;
+            }
+
+            ItemStack other = inv.get(i);
+            if (other.is(BMTags.Items.TARTARIC_GEM)) {
+                if (type == other.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT)) {
+                    double has = other.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
+                    double toAdd = Math.clamp(has, 0, limit);
+                    limit -= toAdd;
+                    amount += toAdd;
+                    has -= toAdd;
+                    other.set(BMDataComponents.DEMON_WILL_AMOUNT, has);
+                }
+
+                if (limit <= 0) {
+                    break;
+                }
+            }
+        }
+        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, amount);
+        player.getInventory().setChanged();
+
         return super.use(level, player, usedHand);
     }
 

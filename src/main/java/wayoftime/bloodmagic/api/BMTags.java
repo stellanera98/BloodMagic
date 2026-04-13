@@ -13,7 +13,7 @@ import wayoftime.bloodmagic.api.altar.AltarTier;
 
 public class BMTags {
     public static class Items {
-        public static final TagKey<Item> SOUL_GEM = tag(bm("soul_gems"));
+        public static final TagKey<Item> TARTARIC_GEM = tag(bm("soul_gems"));
 
         public static final TagKey<Item> STORAGE_BLOCKS_HELLFORGED = fromBlock(Blocks.STORAGE_BLOCKS_HELLFORGED);
 

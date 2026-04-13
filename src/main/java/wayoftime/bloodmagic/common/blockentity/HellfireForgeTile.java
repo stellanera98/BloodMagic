@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -70,18 +71,21 @@ public class HellfireForgeTile extends BaseTile {
     public static final int MAX_PROGRESS = 200;
     protected int progress = 0;
 
+    private final RecipeManager.CachedCheck<ForgeInput, ForgeRecipe> quickCheck;
+
     public HellfireForgeTile(BlockPos pos, BlockState blockState) {
         super(BMTiles.HELLFIRE_FORGE_TYPE.get(), pos, blockState);
+        this.quickCheck = RecipeManager.createCheck(BMRecipes.HELLFIRE_FORGE_TYPE.get());
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, HellfireForgeTile hellfireForgeTile) {
         ForgeInput input = hellfireForgeTile.getInput();
-        Optional<RecipeHolder<ForgeRecipe>> recipeOptional = level.getRecipeManager().getRecipeFor(BMRecipes.SOUL_FORGE_TYPE.get(), input, level);
+        Optional<RecipeHolder<ForgeRecipe>> recipeOptional = hellfireForgeTile.quickCheck.getRecipeFor(input, level);
         if (recipeOptional.isEmpty()) {
             return;
         }
         ForgeRecipe recipe = recipeOptional.get().value();
-        ItemStack output = recipe.assemble(input, level.registryAccess());
+        ItemStack output = recipe.getResultItem(level.registryAccess());
         if (output.isEmpty()) {
             BloodMagic.LOGGER.info("input matched but no result");
             return;
@@ -93,17 +97,19 @@ public class HellfireForgeTile extends BaseTile {
         }
 
         hellfireForgeTile.progress++;
-        if (!(hellfireForgeTile.progress >= MAX_PROGRESS)) {
+        if (!(hellfireForgeTile.progress < MAX_PROGRESS)) {
             ((ServerLevel) level).sendParticles(ParticleTypes.SNOWFLAKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             return;
         }
+        output = recipe.assemble(input, level.registryAccess());
         BloodMagicCraftedEvent.Forge event = new BloodMagicCraftedEvent.Forge(output, input.asArray());
         NeoForge.EVENT_BUS.post(event);
 
         ItemStack gemStack = hellfireForgeTile.inv.getStackInSlot(GEM_SLOT);
+
         if (!gemStack.isEmpty()) {
             double will = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
-            will -= recipe.usedWill;
+            will -= recipe.getDrain();
             if (will == 0 && gemStack.is(BMItems.RAW_WILL)) {
                 hellfireForgeTile.inv.setStackInSlot(GEM_SLOT, ItemStack.EMPTY);
             } else {
@@ -134,7 +140,7 @@ public class HellfireForgeTile extends BaseTile {
         for (int i = SOUTH; i < GEM_SLOT; i++) {
             ItemStack testStack = inv.getStackInSlot(i);
             stacks.add(testStack);
-            if (testStack.is(BMTags.Items.SOUL_GEM)) {
+            if (testStack.is(BMTags.Items.TARTARIC_GEM)) {
                 gemStack = testStack;
                 gemIndex = i;
             }

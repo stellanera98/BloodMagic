@@ -51,13 +51,13 @@ public class BMItems {
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
 
-    public static final DeferredHolder<Item, RawSoulItem> RAW_WILL = WILL_ITEMS.register("raw_will", RawSoulItem::new);
+    public static final DeferredHolder<Item, RawWillItem> RAW_WILL = WILL_ITEMS.register("raw_will", RawWillItem::new);
 
-    public static final DeferredHolder<Item, SoulGemItem> SOUL_GEM_PETTY = WILL_ITEMS.register("soul_gem_petty", SoulGemItem::new);
-    public static final DeferredHolder<Item, SoulGemItem> SOUL_GEM_LESSER = WILL_ITEMS.register("soul_gem_lesser", SoulGemItem::new);
-    public static final DeferredHolder<Item, SoulGemItem> SOUL_GEM_COMMON = WILL_ITEMS.register("soul_gem_common", SoulGemItem::new);
-    public static final DeferredHolder<Item, SoulGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", SoulGemItem::new);
-    public static final DeferredHolder<Item, SoulGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", SoulGemItem::new);
+    public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_PETTY = WILL_ITEMS.register("soul_gem_petty", TartaricGemItem::new);
+    public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_LESSER = WILL_ITEMS.register("soul_gem_lesser", TartaricGemItem::new);
+    public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_COMMON = WILL_ITEMS.register("soul_gem_common", TartaricGemItem::new);
+    public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", TartaricGemItem::new);
+    public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", TartaricGemItem::new);
 
     public static void register(IEventBus modBus) {
         BASIC_ITEMS.register(modBus);

@@ -14,21 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ForgeRecipe implements Recipe<ForgeInput> {
+public record ForgeRecipe(double minWill, double usedWill, List<Ingredient> ingredients, ItemStack resultItem, Optional<EnumWillType> willType)
+        implements Recipe<ForgeInput> {
 
-    public static final String RECIPE_TYPE_NAME = "soul_forge";
-    public final double minWill;
-    public final double usedWill;
-    public final List<Ingredient> ingredients;
-    public final ItemStack resultItem;
-    public final Optional<EnumWillType> willType;
-    public ForgeRecipe(double minWill, double usedWill, List<Ingredient> ingredients, ItemStack resultItem, Optional<EnumWillType> willType) {
-        this.minWill = minWill;
-        this.usedWill = usedWill;
-        this.ingredients = ingredients;
-        this.resultItem = resultItem;
-        this.willType = willType;
-    }
+    public static final String RECIPE_TYPE_NAME = "hellfire_forge";
 
     @Override
     public boolean matches(ForgeInput input, Level level) {
@@ -66,7 +55,7 @@ public class ForgeRecipe implements Recipe<ForgeInput> {
             return ItemStack.EMPTY;
         }
         ItemStack outStack = resultItem.copy();
-        if (outStack.is(BMTags.Items.SOUL_GEM) && input.getGemIndex() != HellfireForgeTile.GEM_SLOT) {
+        if (outStack.is(BMTags.Items.TARTARIC_GEM) && input.getGemIndex() != HellfireForgeTile.GEM_SLOT) {
             outStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will - usedWill);
             outStack.set(BMDataComponents.DEMON_WILL_TYPE, gemStack.get(BMDataComponents.DEMON_WILL_TYPE));
         }
@@ -86,12 +75,12 @@ public class ForgeRecipe implements Recipe<ForgeInput> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return BMRecipes.SOUL_FORGE_SERIALIZER.get();
+        return BMRecipes.HELLFIRE_FORGE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return BMRecipes.SOUL_FORGE_TYPE.get();
+        return BMRecipes.HELLFIRE_FORGE_TYPE.get();
     }
 
     public Double getMinWill() {
@@ -108,9 +97,5 @@ public class ForgeRecipe implements Recipe<ForgeInput> {
 
     public ItemStack getOutput() {
         return resultItem;
-    }
-
-    public Optional<EnumWillType> getWillType() {
-        return willType;
     }
 }
