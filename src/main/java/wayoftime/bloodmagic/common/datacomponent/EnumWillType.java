@@ -13,7 +13,7 @@ import java.util.function.IntFunction;
 
 public enum EnumWillType implements StringRepresentable {
 
-    DEFAULT,
+    RAW,
     CORROSIVE,
     DESTRUCTIVE,
     STEADFAST,
@@ -27,6 +27,10 @@ public enum EnumWillType implements StringRepresentable {
 
     public static final Codec<EnumWillType> CODEC = StringRepresentable.fromEnum(EnumWillType::values);
     public static final StreamCodec<ByteBuf, EnumWillType> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, EnumWillType::ordinal);
+
+    public static EnumWillType[] types() {
+        return new EnumWillType[] {RAW, CORROSIVE, DESTRUCTIVE, STEADFAST, VENGEFUL};
+    }
 
     @Override
     public String getSerializedName() {

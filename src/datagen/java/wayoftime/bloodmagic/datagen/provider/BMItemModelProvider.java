@@ -28,7 +28,7 @@ public class BMItemModelProvider extends ItemModelProvider {
         BMItems.WILL_ITEMS.getEntries().forEach(item -> {
             String path = item.getId().getPath();
             ItemModelBuilder builder = getBuilder(path);
-            for (EnumWillType type : EnumWillType.values()) {
+            for (EnumWillType type : EnumWillType.types()) {
                 ModelFile modelFile = singleTexture(String.format("item/variant/%s_%s", path, type.getSerializedName()), mcLoc("item/handheld"), "layer0", modLoc(String.format("item/%s_%s", path, type.getSerializedName())));
                 builder.override().predicate(BloodMagic.TYPE_PROPERTY, type.ordinal()).model(modelFile).end();
             }

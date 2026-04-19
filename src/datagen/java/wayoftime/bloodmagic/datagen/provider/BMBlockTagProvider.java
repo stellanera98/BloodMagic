@@ -37,8 +37,7 @@ public class BMBlockTagProvider extends BlockTagsProvider {
         this.tag(BMTags.Blocks.T6_CAPSTONES)
                 .addAll(BlockGroups.CRYSTAL_CLUSTER);
 
-        this.tag(BMTags.Blocks.PILLARS)
-                .add(Blocks.STONE_BRICKS); // TODO implement empty pillar tag = 1.20 behaviour-ish. perhaps isFaceSturdy shenanigans can help here too
+        this.tag(BMTags.Blocks.PILLARS);
 
         this.tag(BMTags.Blocks.SOUL_NETWORK_COMPARATOR)
                 .addAll(BlockGroups.BLOODSTONE);
@@ -51,6 +50,54 @@ public class BMBlockTagProvider extends BlockTagsProvider {
 
         this.tag(BlockTags.BEACON_BASE_BLOCKS)
                 .addAll(BlockGroups.HELLFORGED_BLOCK);
+
+        this.tag(BMTags.Blocks.CATALYST_TARGET_RAW)
+                .addAll(BlockGroups.BUDS_RAW)
+                .add(BMBlocks.WILL_CLUSTER_RAW.block().getKey());
+
+        this.tag(BMTags.Blocks.CATALYST_TARGET_CORROSIVE)
+                .addAll(BlockGroups.BUDS_CORROSIVE)
+                .add(BMBlocks.WILL_CLUSTER_CORROSIVE.block().getKey());
+
+        this.tag(BMTags.Blocks.CATALYST_TARGET_DESTRUCTIVE)
+                .addAll(BlockGroups.BUDS_DESTRUCTIVE)
+                .add(BMBlocks.WILL_CLUSTER_DESTRUCTIVE.block().getKey());
+
+        this.tag(BMTags.Blocks.CATALYST_TARGET_STEADFAST)
+                .addAll(BlockGroups.BUDS_STEADFAST)
+                .add(BMBlocks.WILL_CLUSTER_STEADFAST.block().getKey());
+
+        this.tag(BMTags.Blocks.CATALYST_TARGET_VENGEFUL)
+                .addAll(BlockGroups.BUDS_VENGEFUL)
+                .add(BMBlocks.WILL_CLUSTER_VENGEFUL.block().getKey());
+
+        this.tag(BMTags.Blocks.WILL_BUD_RAW)
+                .addAll(BlockGroups.BUDS_RAW);
+
+        this.tag(BMTags.Blocks.WILL_BUD_CORROSIVE)
+                .addAll(BlockGroups.BUDS_CORROSIVE);
+
+        this.tag(BMTags.Blocks.WILL_BUD_DESTRUCTIVE)
+                .addAll(BlockGroups.BUDS_DESTRUCTIVE);
+
+        this.tag(BMTags.Blocks.WILL_BUD_STEADFAST)
+                .addAll(BlockGroups.BUDS_STEADFAST);
+
+        this.tag(BMTags.Blocks.WILL_BUD_VENGEFUL)
+                .addAll(BlockGroups.BUDS_VENGEFUL);
+
+        this.tag(Tags.Blocks.BUDS)
+                .addTag(BMTags.Blocks.WILL_BUD_RAW)
+                .addTag(BMTags.Blocks.WILL_BUD_CORROSIVE)
+                .addTag(BMTags.Blocks.WILL_BUD_DESTRUCTIVE)
+                .addTag(BMTags.Blocks.WILL_BUD_STEADFAST)
+                .addTag(BMTags.Blocks.WILL_BUD_VENGEFUL);
+
+        this.tag(Tags.Blocks.CLUSTERS)
+                .addAll(BlockGroups.CLUSTERS);
+
+        this.tag(Tags.Blocks.BUDDING_BLOCKS)
+                .addAll(BlockGroups.BUDDING_BLOCKS);
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(BMBlocks.BLOOD_ALTAR.block().getKey(), BMBlocks.BLOOD_TANK.block().getKey(), BMBlocks.ALCHEMY_TABLE.block().getKey());

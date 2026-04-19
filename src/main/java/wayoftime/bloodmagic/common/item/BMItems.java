@@ -3,9 +3,12 @@ package wayoftime.bloodmagic.common.item;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMTags;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 
 import java.util.function.Supplier;
@@ -51,13 +54,45 @@ public class BMItems {
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
 
-    public static final DeferredHolder<Item, RawWillItem> RAW_WILL = WILL_ITEMS.register("raw_will", RawWillItem::new);
+    public static final DeferredHolder<Item, ManifestedWillItem> MANIFESTED_WILL = WILL_ITEMS.register("manifested_will", ManifestedWillItem::new);
 
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_PETTY = WILL_ITEMS.register("soul_gem_petty", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_LESSER = WILL_ITEMS.register("soul_gem_lesser", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_COMMON = WILL_ITEMS.register("soul_gem_common", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", TartaricGemItem::new);
+
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DEFAULT = BASIC_ITEMS.register("will_catalyst_default", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_CORROSIVE = BASIC_ITEMS.register("will_catalyst_corrosive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_CORROSIVE));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DESTRUCTIVE = BASIC_ITEMS.register("will_catalyst_destructive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_DESTRUCTIVE));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_STEADFAST = BASIC_ITEMS.register("will_catalyst_steadfast", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_STEADFAST));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_VENGEFUL = BASIC_ITEMS.register("will_catalyst_vengeful", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_VENGEFUL));
+
+    public static final DeferredHolder<Item, Item> WILL_SHARD_RAW = BASIC_ITEMS.register("will_shard_default", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_CORROSIVE = BASIC_ITEMS.register("will_shard_corrosive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_DESTRUCTIVE = BASIC_ITEMS.register("will_shard_destructive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_STEADFAST = BASIC_ITEMS.register("will_shard_steadfast", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_VENGEFUL = BASIC_ITEMS.register("will_shard_vengeful", () -> new Item(new Item.Properties()));
+
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_RAW = BASIC_ITEMS.register("will_crystal_default", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_CORROSIVE = BASIC_ITEMS.register("will_crystal_corrosive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_DESTRUCTIVE = BASIC_ITEMS.register("will_crystal_destructive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_STEADFAST = BASIC_ITEMS.register("will_crystal_steadfast", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_VENGEFUL = BASIC_ITEMS.register("will_crystal_vengeful", () -> new Item(new Item.Properties()));
+
+    private static void registerItemCaps(RegisterCapabilitiesEvent event) {
+        event.registerItem(
+                BMCaps.ITEM_WILL_HANDLER,
+                TartaricGemItem::getWillHandler,
+                SOUL_GEM_PETTY.get(), SOUL_GEM_LESSER.get(), SOUL_GEM_COMMON.get(), SOUL_GEM_GREATER.get(), SOUL_GEM_GRAND.get()
+        );
+        // unsure if needed. keeping it for now
+        event.registerItem(
+                BMCaps.ITEM_WILL_HANDLER,
+                ManifestedWillItem::getWillHandler,
+                MANIFESTED_WILL.get()
+        );
+    }
 
     public static void register(IEventBus modBus) {
         BASIC_ITEMS.register(modBus);

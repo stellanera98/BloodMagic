@@ -17,7 +17,7 @@ public class BMMaterialsAndTiers {
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> LIVING_ARMOR_MATERIAL = ARMOR_MATERIALS.register("living", () -> new ArmorMaterial(
             ArmorMaterials.IRON.value().defense(), ArmorMaterials.IRON.value().enchantmentValue(),
-            ArmorMaterials.IRON.value().equipSound(), () -> Ingredient.of(BMItems.RAW_WILL.get()),
+            ArmorMaterials.IRON.value().equipSound(), () -> Ingredient.of(BMItems.MANIFESTED_WILL.get()),
             List.of(new ArmorMaterial.Layer(bm("living"))), 0, 0
     ));
 

@@ -48,7 +48,7 @@ public class BMTabs {
                         addAll(BMItems.ITEMS, output::accept);
                         addAll(BMFluids.BUCKETS, output::accept);
                         BMItems.WILL_ITEMS.getEntries().forEach(holder -> {
-                            for (EnumWillType type : EnumWillType.values()) {
+                            for (EnumWillType type : EnumWillType.types()) {
                                 ItemStack stack = new ItemStack(holder.get());
                                 stack.set(BMDataComponents.DEMON_WILL_TYPE, type);
                                 output.accept(stack);

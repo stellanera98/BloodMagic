@@ -17,9 +17,11 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.event.BloodMagicCraftedEvent;
-import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.forge.ForgeInput;
 import wayoftime.bloodmagic.common.recipe.forge.ForgeRecipe;
@@ -38,7 +40,7 @@ public class HellfireForgeTile extends BaseTile {
                 return false;
             }
 
-            if (slot == GEM_SLOT && !stack.has(BMDataComponents.DEMON_WILL_AMOUNT)) {
+            if (slot == GEM_SLOT && stack.getCapability(BMCaps.ITEM_WILL_HANDLER) == null) {
                 return false;
             }
 
@@ -106,14 +108,16 @@ public class HellfireForgeTile extends BaseTile {
         NeoForge.EVENT_BUS.post(event);
 
         ItemStack gemStack = hellfireForgeTile.inv.getStackInSlot(GEM_SLOT);
+        IWillHandler gemHandler = gemStack.getCapability(BMCaps.ITEM_WILL_HANDLER);
 
         if (!gemStack.isEmpty()) {
-            double will = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
-            will -= recipe.getDrain();
-            if (will == 0 && gemStack.is(BMItems.RAW_WILL)) {
+            EnumWillType requiredType = recipe.willType().orElse(null);
+            if (requiredType == null) {
+                requiredType = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
+            }
+            gemHandler.drain(requiredType, recipe.usedWill(), true);
+            if (gemStack.isEmpty()) {
                 hellfireForgeTile.inv.setStackInSlot(GEM_SLOT, ItemStack.EMPTY);
-            } else {
-                gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, will);
             }
         }
 

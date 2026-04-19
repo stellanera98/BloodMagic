@@ -1,16 +1,13 @@
 package wayoftime.bloodmagic.datagen.content.datamap;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.datamap.BloodOrb;
 import wayoftime.bloodmagic.common.item.BMItems;
-
-import java.util.function.Function;
+import wayoftime.bloodmagic.datagen.provider.DataMapBuilder;
 
 public class BloodOrbStats {
-        public static void bootstrap(Function<DataMapType<Item, BloodOrb>, DataMapProvider.Builder<BloodOrb, Item>> setup) {
+        public static void bootstrap(DataMapBuilder<Item, BloodOrb> setup) {
                 setup.apply(BMDataMaps.BLOOD_ORB_STATS)
                         .add(BMItems.ORB_WEAK, new BloodOrb(0, 5_000, 2), false)
                         .add(BMItems.ORB_APPRENTICE, new BloodOrb(1, 25_000, 5), false)

@@ -6,6 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.item.BMMaterialsAndTiers;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
@@ -19,26 +20,26 @@ public class BMTags {
 
         public static final TagKey<Item> ARC_TOOL = tag(bm("arc_tool"));
 
-        public static final TagKey<Item> REVERTER = withParent(ARC_TOOL, bm("reverter"));
-        public static final TagKey<Item> RESONATOR = withParent(ARC_TOOL, bm("resonator"));
-        public static final TagKey<Item> EXPLOSIVES = withParent(ARC_TOOL, bm("explosives"));
-        public static final TagKey<Item> CUTTING_FLUIDS = withParent(ARC_TOOL, bm("cutting_fluids"));
-        public static final TagKey<Item> HYDRATION = withParent(ARC_TOOL, bm("hydration"));
+        public static final TagKey<Item> REVERTER = withParent(ARC_TOOL, "reverter");
+        public static final TagKey<Item> RESONATOR = withParent(ARC_TOOL, "resonator");
+        public static final TagKey<Item> EXPLOSIVES = withParent(ARC_TOOL, "explosives");
+        public static final TagKey<Item> CUTTING_FLUIDS = withParent(ARC_TOOL, "cutting_fluids");
+        public static final TagKey<Item> HYDRATION = withParent(ARC_TOOL, "hydration");
 
-        public static final TagKey<Item> ARC_FURNACE = withParent(ARC_TOOL, bm("furnace"));
-        public static final TagKey<Item> ARC_BLASTING = withParent(ARC_FURNACE, bm("blasting"));
-        public static final TagKey<Item> ARC_SMELTING = withParent(ARC_FURNACE, bm("smelting"));
-        public static final TagKey<Item> ARC_SMOKING = withParent(ARC_FURNACE, bm("smoking"));
+        public static final TagKey<Item> ARC_FURNACE = withParent(ARC_TOOL, "furnace");
+        public static final TagKey<Item> ARC_BLASTING = withParent(ARC_FURNACE, "blasting");
+        public static final TagKey<Item> ARC_SMELTING = withParent(ARC_FURNACE, "smelting");
+        public static final TagKey<Item> ARC_SMOKING = withParent(ARC_FURNACE, "smoking");
 
         public static final TagKey<Item> LIVING_UPGRADE_SET = tag(bm("living_upgrade_set"));
-        public static final TagKey<Item> LIVING_SET = withParent(LIVING_UPGRADE_SET, BMMaterialsAndTiers.LIVING_ARMOR_MATERIAL.getId());
+        public static final TagKey<Item> LIVING_SET = withParent(LIVING_UPGRADE_SET, BMMaterialsAndTiers.LIVING_ARMOR_MATERIAL.getId().getPath());
 
         private static TagKey<Item> fromBlock(TagKey<Block> input) {
             return tag(input.location());
         }
 
-        private static TagKey<Item> withParent(TagKey<Item> parent, ResourceLocation location) {
-            return TagKey.create(Registries.ITEM, location.withPrefix(parent.location().getPath()+"/"));
+        private static TagKey<Item> withParent(TagKey<Item> parent, String loc) {
+            return TagKey.create(Registries.ITEM, parent.location().withSuffix("/" + loc));
         }
 
         private static TagKey<Item> tag(ResourceLocation id) {
@@ -59,8 +60,24 @@ public class BMTags {
 
         public static final TagKey<Block> STORAGE_BLOCKS_HELLFORGED = tag(c("storage_blocks/hellforged"));
 
+        public static final TagKey<Block> WILL_BUD_RAW = withParent(Tags.Blocks.BUDS, "will_raw");
+        public static final TagKey<Block> WILL_BUD_CORROSIVE = withParent(Tags.Blocks.BUDS, "will_corrosive");
+        public static final TagKey<Block> WILL_BUD_DESTRUCTIVE = withParent(Tags.Blocks.BUDS, "will_destructive");
+        public static final TagKey<Block> WILL_BUD_STEADFAST = withParent(Tags.Blocks.BUDS, "will_steadfast");
+        public static final TagKey<Block> WILL_BUD_VENGEFUL = withParent(Tags.Blocks.BUDS, "will_vengeful");
+
+        public static final TagKey<Block> CATALYST_TARGET_RAW = tag(bm("catalyst_target/raw"));
+        public static final TagKey<Block> CATALYST_TARGET_CORROSIVE = tag(bm("catalyst_target/corrosive"));
+        public static final TagKey<Block> CATALYST_TARGET_DESTRUCTIVE = tag(bm("catalyst_target/destructive"));
+        public static final TagKey<Block> CATALYST_TARGET_STEADFAST = tag(bm("catalyst_target/steadfast"));
+        public static final TagKey<Block> CATALYST_TARGET_VENGEFUL = tag(bm("catalyst_target/vengeful"));
+
         private static TagKey<Block> tag(ResourceLocation id) {
             return TagKey.create(Registries.BLOCK, id);
+        }
+
+        private static TagKey<Block> withParent(TagKey<Block> parent, String loc) {
+            return TagKey.create(Registries.BLOCK, parent.location().withSuffix("/" + loc));
         }
     }
 

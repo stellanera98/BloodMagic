@@ -1,15 +1,12 @@
 package wayoftime.bloodmagic.datagen.content.datamap;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.item.BMItems;
-
-import java.util.function.Function;
+import wayoftime.bloodmagic.datagen.provider.DataMapBuilder;
 
 public class TartaricGemMax {
-    public static void bootstrap(Function<DataMapType<Item, Double>, DataMapProvider.Builder<Double, Item>> setup) {
+    public static void bootstrap(DataMapBuilder<Item, Double> setup) {
         setup.apply(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS)
                 .add(BMItems.SOUL_GEM_PETTY.getKey(), 64D, false)
                 .add(BMItems.SOUL_GEM_LESSER.getKey(), 256D, false)

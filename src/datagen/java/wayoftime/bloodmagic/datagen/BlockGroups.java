@@ -34,4 +34,32 @@ public class BlockGroups {
     public static List<ResourceKey<Block>> CRYSTAL_CLUSTER = List.of(
             BMBlocks.CRYSTAL_CLUSTER.block().getKey(), BMBlocks.CRYSTAL_CLUSTER_BRICK.block().getKey()
     );
+
+    public static List<ResourceKey<Block>> BUDS_RAW = List.of(
+            BMBlocks.WILL_BUD_SMALL_RAW.block().getKey(), BMBlocks.WILL_BUD_MEDIUM_RAW.block().getKey(), BMBlocks.WILL_BUD_LARGE_RAW.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> BUDS_CORROSIVE = List.of(
+            BMBlocks.WILL_BUD_SMALL_CORROSIVE.block().getKey(), BMBlocks.WILL_BUD_MEDIUM_CORROSIVE.block().getKey(), BMBlocks.WILL_BUD_LARGE_CORROSIVE.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> BUDS_DESTRUCTIVE = List.of(
+            BMBlocks.WILL_BUD_SMALL_DESTRUCTIVE.block().getKey(), BMBlocks.WILL_BUD_MEDIUM_DESTRUCTIVE.block().getKey(), BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> BUDS_STEADFAST = List.of(
+            BMBlocks.WILL_BUD_SMALL_STEADFAST.block().getKey(), BMBlocks.WILL_BUD_MEDIUM_STEADFAST.block().getKey(), BMBlocks.WILL_BUD_LARGE_STEADFAST.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> BUDS_VENGEFUL = List.of(
+            BMBlocks.WILL_BUD_SMALL_VENGEFUL.block().getKey(), BMBlocks.WILL_BUD_MEDIUM_VENGEFUL.block().getKey(), BMBlocks.WILL_BUD_LARGE_VENGEFUL.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> CLUSTERS = List.of(
+            BMBlocks.WILL_CLUSTER_RAW.block().getKey(), BMBlocks.WILL_CLUSTER_CORROSIVE.block().getKey(), BMBlocks.WILL_CLUSTER_DESTRUCTIVE.block().getKey(), BMBlocks.WILL_CLUSTER_STEADFAST.block().getKey(), BMBlocks.WILL_CLUSTER_VENGEFUL.block().getKey()
+    );
+
+    public static List<ResourceKey<Block>> BUDDING_BLOCKS = List.of(
+            BMBlocks.BUDDING_WILL_RAW.block().getKey(), BMBlocks.BUDDING_WILL_CORROSIVE.block().getKey(), BMBlocks.BUDDING_WILL_DESTRUCTIVE.block().getKey(), BMBlocks.BUDDING_WILL_STEADFAST.block().getKey(), BMBlocks.BUDDING_WILL_VENGEFUL.block().getKey()
+    );
 }

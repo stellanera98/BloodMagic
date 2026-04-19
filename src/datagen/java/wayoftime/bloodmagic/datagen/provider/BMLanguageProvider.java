@@ -95,7 +95,7 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.IMPERFECT_RITUAL_BLOCK, "Imperfect Ritual Stone");
 
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
-        add(BMItems.RAW_WILL.get(), "Raw Will");
+        add(BMItems.MANIFESTED_WILL.get(), "Raw Will");
 
         //Soul Gems
         add(BMItems.SOUL_GEM_PETTY.get(), "Petty Tartaric Gem");
@@ -110,7 +110,7 @@ public class BMLanguageProvider extends LanguageProvider {
         addGemDesc(BMItems.SOUL_GEM_GRAND, "a large amount of");
 
         addTooltip("will", "Will Quality: %s");
-        for (EnumWillType type : EnumWillType.values()) {
+        for (EnumWillType type : EnumWillType.types()) {
             addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
         }
 

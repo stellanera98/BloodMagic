@@ -8,10 +8,13 @@ import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMTags;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
@@ -39,6 +42,9 @@ public class BMBlocks {
     public static final BlockWithItemHolder<HellfireForgeBlock, BlockItem> HELLFIRE_FORGE = BLOCK_REG.register("hellfire_forge", HellfireForgeBlock::new);
     public static final BlockWithItemHolder<ARCBlock, BlockItem> ARC_BLOCK = BLOCK_REG.register("arc", ARCBlock::new);
     public static final BlockWithItemHolder<AlchemyTableBlock, BlockItem> ALCHEMY_TABLE = BLOCK_REG.register("alchemy_table", AlchemyTableBlock::new);
+
+    public static final BlockWithItemHolder<InfuserBlock, BlockItem> WILL_INFUSER = BASIC_REG.register("will_infuser", InfuserBlock::new);
+    public static final BlockWithItemHolder<CrucibleBlock, BlockItem> WILL_CRUCIBLE = BASIC_REG.register("will_crucible", CrucibleBlock::new);
 
     // TODO add model/textures for this and change registry to BASIC_REG
     public static final BlockWithItemHolder<LivingStationBlock, BlockItem> LIVING_STATION = BLOCK_REG.register("living_station", LivingStationBlock::new);
@@ -80,6 +86,67 @@ public class BMBlocks {
 
     public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_CLUSTER = BASIC_REG.register("crystal_cluster", rune_properties, decoration_item_properties);
     public static final BlockWithItemHolder<Block, BlockItem> CRYSTAL_CLUSTER_BRICK = BASIC_REG.register("crystal_cluster_brick", rune_properties, decoration_item_properties);
+
+    private static BlockBehaviour.Properties getClusterProp(SoundType type, int light, MapColor color) {
+        return BlockBehaviour.Properties.of()
+                .forceSolidOn()
+                .noOcclusion()
+                .strength(1.5f)
+                .pushReaction(PushReaction.DESTROY)
+                .mapColor(color)
+                .sound(type)
+                .lightLevel(state -> light);
+    }
+
+    private static BlockBehaviour.Properties getWillBlockProp(MapColor color) {
+        return BlockBehaviour.Properties.of()
+                .strength(1.5f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.AMETHYST)
+                .mapColor(color);
+    }
+
+    private static final MapColor MAP_COLOR_RAW = MapColor.COLOR_LIGHT_BLUE;
+    private static final MapColor MAP_COLOR_CORROSIVE = MapColor.COLOR_GREEN;
+    private static final MapColor MAP_COLOR_DESTRUCTIVE = MapColor.COLOR_ORANGE;
+    private static final MapColor MAP_COLOR_STEADFAST = MapColor.COLOR_BLUE;
+    private static final MapColor MAP_COLOR_VENGEFUL = MapColor.COLOR_RED;
+
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_RAW = BASIC_REG.register("will_block_raw", getWillBlockProp(MAP_COLOR_RAW));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_CORROSIVE = BASIC_REG.register("will_block_corrosive", getWillBlockProp(MAP_COLOR_CORROSIVE));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_DESTRUCTIVE = BASIC_REG.register("will_block_destructive", getWillBlockProp(MAP_COLOR_DESTRUCTIVE));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_STEADFAST = BASIC_REG.register("will_block_steadfast", getWillBlockProp(MAP_COLOR_STEADFAST));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_VENGEFUL = BASIC_REG.register("will_block_vengeful", getWillBlockProp(MAP_COLOR_VENGEFUL));
+
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_RAW = BLOCK_REG.register("will_bud_small_raw", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_RAW)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_RAW = BLOCK_REG.register("will_bud_medium_raw", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_RAW)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_RAW = BLOCK_REG.register("will_bud_large_raw", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_RAW)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_RAW = BLOCK_REG.register("will_cluster_raw", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_RAW)));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_RAW = BLOCK_REG.register("budding_will_raw", () -> new BuddingWillBlock(WILL_BUD_SMALL_RAW.block().get(), 1, BMTags.Blocks.WILL_BUD_RAW, MAP_COLOR_RAW));
+
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_CORROSIVE = BLOCK_REG.register("will_bud_small_corrosive", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_CORROSIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_CORROSIVE = BLOCK_REG.register("will_bud_medium_corrosive", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_CORROSIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_CORROSIVE = BLOCK_REG.register("will_bud_large_corrosive", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_CORROSIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_CORROSIVE = BLOCK_REG.register("will_cluster_corrosive", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_CORROSIVE)));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_CORROSIVE = BLOCK_REG.register("budding_will_corrosive", () -> new BuddingWillBlock(WILL_BUD_SMALL_CORROSIVE.block().get(), 25, BMTags.Blocks.WILL_BUD_CORROSIVE, MAP_COLOR_CORROSIVE));
+
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_DESTRUCTIVE = BLOCK_REG.register("will_bud_small_destructive", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_DESTRUCTIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_DESTRUCTIVE = BLOCK_REG.register("will_bud_medium_destructive", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_DESTRUCTIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_DESTRUCTIVE = BLOCK_REG.register("will_bud_large_destructive", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_DESTRUCTIVE)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_DESTRUCTIVE = BLOCK_REG.register("will_cluster_destructive", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_DESTRUCTIVE)));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_DESTRUCTIVE = BLOCK_REG.register("budding_will_destructive", () -> new BuddingWillBlock(WILL_BUD_SMALL_DESTRUCTIVE.block().get(), 25, BMTags.Blocks.WILL_BUD_DESTRUCTIVE, MAP_COLOR_DESTRUCTIVE));
+
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_STEADFAST = BLOCK_REG.register("will_bud_small_steadfast", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_STEADFAST)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_STEADFAST = BLOCK_REG.register("will_bud_medium_steadfast", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_STEADFAST)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_STEADFAST = BLOCK_REG.register("will_bud_large_steadfast", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_STEADFAST)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_STEADFAST = BLOCK_REG.register("will_cluster_steadfast", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_STEADFAST)));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_STEADFAST = BLOCK_REG.register("budding_will_steadfast", () -> new BuddingWillBlock(WILL_BUD_SMALL_STEADFAST.block().get(), 25, BMTags.Blocks.WILL_BUD_STEADFAST, MAP_COLOR_STEADFAST));
+
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_VENGEFUL = BLOCK_REG.register("will_bud_small_vengeful", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_VENGEFUL)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_VENGEFUL = BLOCK_REG.register("will_bud_medium_vengeful", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_VENGEFUL)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_VENGEFUL = BLOCK_REG.register("will_bud_large_vengeful", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_VENGEFUL)));
+    public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_VENGEFUL = BLOCK_REG.register("will_cluster_vengeful", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_VENGEFUL)));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_VENGEFUL = BLOCK_REG.register("budding_will_vengeful", () -> new BuddingWillBlock(WILL_BUD_SMALL_VENGEFUL.block().get(), 25, BMTags.Blocks.WILL_BUD_VENGEFUL, MAP_COLOR_VENGEFUL));
 
     private static void registerBlockCapability(RegisterCapabilitiesEvent event) {
         event.registerBlock(

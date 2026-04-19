@@ -46,7 +46,7 @@ public class ARCBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(LIT, false).setValue(TYPE, EnumWillType.DEFAULT).setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(LIT, false).setValue(TYPE, EnumWillType.RAW).setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override

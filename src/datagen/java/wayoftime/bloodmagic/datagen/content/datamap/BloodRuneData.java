@@ -3,19 +3,17 @@ package wayoftime.bloodmagic.datagen.content.datamap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.datamap.BloodRune;
 import wayoftime.bloodmagic.api.altar.EnumRuneType;
+import wayoftime.bloodmagic.datagen.provider.DataMapBuilder;
 import wayoftime.bloodmagic.util.blockitem.BlockWithItemHolder;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class BloodRuneData {
-    public static void bootstrap(Function<DataMapType<Block, List<BloodRune>>, DataMapProvider.Builder<List<BloodRune>, Block>> setup) {
+    public static void bootstrap(DataMapBuilder<Block, List<BloodRune>> setup) {
         setup.apply(BMDataMaps.BLOOD_RUNES)
                 .add(key(BMBlocks.RUNE_SACRIFICE), List.of(new BloodRune(EnumRuneType.SACRIFICE, 1)), false)
                 .add(key(BMBlocks.RUNE_SELF_SACRIFICE), List.of(new BloodRune(EnumRuneType.SELF_SACRIFICE, 1)), false)

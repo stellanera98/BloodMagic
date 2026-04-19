@@ -15,6 +15,7 @@ import wayoftime.bloodmagic.client.render.blockentity.BloodAltarRenderer;
 import wayoftime.bloodmagic.client.render.blockentity.BloodTankRenderer;
 import wayoftime.bloodmagic.client.render.blockentity.HellfireForgeRenderer;
 import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 
 import java.util.Set;
 
@@ -38,6 +39,15 @@ public class BMTiles {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AlchemyTableTile>> ALCHEMY_TABLE_TYPE = TILES.register("alchemy_table",
             () -> new BlockEntityType<>(AlchemyTableTile::new, Set.of(BMBlocks.ALCHEMY_TABLE.block().get()), null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InfuserTile>> INFUSER_TYPE = TILES.register("will_infuser",
+            () -> new BlockEntityType<>(InfuserTile::new, Set.of(BMBlocks.WILL_INFUSER.block().get()), null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrucibleTile>> CRUCIBLE_TYPE = TILES.register("will_crucible",
+            () -> new BlockEntityType<>(CrucibleTile::new, Set.of(BMBlocks.WILL_CRUCIBLE.block().get()), null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WillConduitTile>> WILL_CONDUIT_TYPE = TILES.register("will_conduit",
+            () -> new BlockEntityType<>(WillConduitTile::new, Set.of(), null)); // TODO add block for this
 
     private static void registerTileCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
@@ -87,6 +97,12 @@ public class BMTiles {
                 Capabilities.ItemHandler.BLOCK,
                 ALCHEMY_TABLE_TYPE.get(),
                 AlchemyTableTile::getItemHandler
+        );
+
+        event.registerBlockEntity(
+                BMCaps.BLOCK_WILL_HANDLER,
+                INFUSER_TYPE.get(),
+                InfuserTile::getWillHandler
         );
     }
 

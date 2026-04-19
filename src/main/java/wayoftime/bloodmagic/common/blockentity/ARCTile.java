@@ -304,7 +304,7 @@ public class ARCTile extends BaseTile implements MenuProvider {
     }
 
     public void updateType() {
-        EnumWillType type = arcInv.getStackInSlot(TOOL_SLOT).getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        EnumWillType type = arcInv.getStackInSlot(TOOL_SLOT).getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         if (getBlockState().getValue(ARCBlock.TYPE) != type) {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState().setValue(ARCBlock.TYPE, type), Block.UPDATE_ALL);
         }

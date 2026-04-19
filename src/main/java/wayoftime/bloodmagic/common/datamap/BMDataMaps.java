@@ -43,6 +43,12 @@ public class BMDataMaps {
             ResourceLocation.CODEC
     ).synced(ResourceLocation.CODEC, true).build();
 
+    public static final DataMapType<Item, WillStack> DEMON_CRUCIBLE = DataMapType.builder(
+            BloodMagic.rl("demon_crucible"),
+            Registries.ITEM,
+            WillStack.CODEC
+    ).synced(WillStack.CODEC, true).build();
+
     public static void register(RegisterDataMapTypesEvent event) {
         event.register(TARTARIC_GEM_MAX_AMOUNTS);
         event.register(BLOOD_ORB_STATS);

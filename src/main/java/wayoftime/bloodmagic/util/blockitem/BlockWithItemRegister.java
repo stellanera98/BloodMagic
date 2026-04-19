@@ -57,4 +57,8 @@ public class BlockWithItemRegister {
     public <I extends BlockItem> BlockWithItemHolder<Block, I> register(String name, BlockBehaviour.Properties blockProperties, Function<Block, I> item) {
         return register(name, () -> new Block(blockProperties), item);
     }
+
+    public BlockWithItemHolder<Block, BlockItem> register(String name, BlockBehaviour.Properties blockProperties) {
+        return register(name, blockProperties, BlockItem::new);
+    }
 }

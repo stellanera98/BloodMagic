@@ -32,7 +32,7 @@ public class ClientModEventHandler {
             BMItems.WILL_ITEMS.getEntries().forEach(item -> {
                 ItemProperties.register(item.get(), BloodMagic.TYPE_PROPERTY,
                         (stack, level, player, seed) ->
-                                stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT).ordinal());
+                                stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW).ordinal());
             });
 
             ItemProperties.register(BMItems.SACRIFICIAL_DAGGER.get(), BloodMagic.INCENSE_PROPERTY,

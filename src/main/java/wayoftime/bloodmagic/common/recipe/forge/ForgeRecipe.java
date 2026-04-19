@@ -24,7 +24,7 @@ public record ForgeRecipe(double minWill, double usedWill, List<Ingredient> ingr
         if (input.size() != ingredients.size()) {
             return false;
         }
-        EnumWillType will = input.getGem().getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        EnumWillType will = input.getGem().getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         if (willType.isPresent() && willType.get() != will) {
             return false;
         }

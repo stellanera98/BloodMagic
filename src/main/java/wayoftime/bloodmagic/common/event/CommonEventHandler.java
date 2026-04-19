@@ -9,10 +9,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.BMTags;
+import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.api.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
@@ -24,12 +27,12 @@ import java.util.Objects;
 public class CommonEventHandler {
 
     @SubscribeEvent
-    public static void itemPickup(ItemEntityPickupEvent event) {
+    public static void itemPickup(ItemEntityPickupEvent.Pre event) {
         ItemStack stack = event.getItemEntity().getItem();
-        if (!stack.is(BMItems.RAW_WILL)) {
+        if (!stack.is(BMItems.MANIFESTED_WILL)) {
             return;
         }
-        EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         double amount = stack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
         NonNullList<ItemStack> inv = event.getPlayer().getInventory().items;
         inv.addAll(event.getPlayer().getInventory().offhand);
@@ -37,12 +40,20 @@ public class CommonEventHandler {
         for (int i = 0; i < inv.size(); i++) {
             ItemStack gemStack = inv.get(i);
             if (gemStack.is(BMTags.Items.TARTARIC_GEM)) {
-                if (gemStack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT) == type) {
-                    double has = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
-                    // TODO you know this is worthless. what happens if the gem is empty and you pick up non-default will? thats right, nothing
-                    probably add WillStack and IWillHandler and use those
+                IWillHandler gemHandler = gemStack.getCapability(BMCaps.ITEM_WILL_HANDLER);
+                if (gemHandler != null) {
+                    amount -= gemHandler.fill(type, amount, true);
+                    if (amount <= 0) {
+                        break;
+                    }
                 }
             }
+        }
+        if (amount <= 0) {
+            stack.shrink(1);
+            event.setCanPickup(TriState.TRUE);
+        } else {
+            stack.set(BMDataComponents.DEMON_WILL_AMOUNT, amount);
         }
     }
 

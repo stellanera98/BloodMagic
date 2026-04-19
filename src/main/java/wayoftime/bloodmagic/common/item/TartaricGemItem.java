@@ -7,13 +7,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.api.BMTags;
+import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
@@ -27,8 +30,13 @@ public class TartaricGemItem extends Item {
         super(new Properties()
                 .stacksTo(1)
                 .component(BMDataComponents.DEMON_WILL_AMOUNT, 0D)
-                .component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT)
+                .component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW)
         );
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        // TODO interact with Block IWillHandlers
     }
 
     @Override
@@ -36,7 +44,7 @@ public class TartaricGemItem extends Item {
         NonNullList<ItemStack> inv = player.getInventory().items;
         inv.addAll(player.getInventory().offhand);
         ItemStack gem = player.getItemInHand(usedHand);
-        EnumWillType type = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        EnumWillType type = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         double amount = gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
         Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
         double limit = max - amount;
@@ -49,15 +57,11 @@ public class TartaricGemItem extends Item {
             }
 
             ItemStack other = inv.get(i);
-            if (other.is(BMTags.Items.TARTARIC_GEM)) {
-                if (type == other.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT)) {
-                    double has = other.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
-                    double toAdd = Math.clamp(has, 0, limit);
-                    limit -= toAdd;
-                    amount += toAdd;
-                    has -= toAdd;
-                    other.set(BMDataComponents.DEMON_WILL_AMOUNT, has);
-                }
+            IWillHandler otherHandler = other.getCapability(BMCaps.ITEM_WILL_HANDLER);
+            if (otherHandler != null) {
+                double drained = otherHandler.drain(type, limit, true);
+                amount += drained;
+                limit -= drained;
 
                 if (limit <= 0) {
                     break;
@@ -93,7 +97,7 @@ public class TartaricGemItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.DEFAULT);
+        EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         double amount = stack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
         ResourceLocation loc = stack.getItemHolder().getKey().location();
 
@@ -102,5 +106,54 @@ public class TartaricGemItem extends Item {
         tooltip.add(Component.translatable("tooltip.bloodmagic.current_type." + type.getSerializedName()).withStyle(ChatFormatting.GRAY));
 
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
+    }
+
+    public static IWillHandler getWillHandler(ItemStack gem, Void unused) {
+        return new IWillHandler() {
+            @Override
+            public double fill(EnumWillType type, double max, boolean doFill) {
+                EnumWillType containedType = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
+                double containedAmount = gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0d);
+                double maxAmount = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS); // if thats called on non-tartaric gem, NPEs are deserved
+                double toFill = Math.clamp(max, 0, maxAmount - containedAmount);
+
+                // if empty we fill regardless and take on filled type
+                if (containedAmount == 0) {
+                    if (doFill) {
+                        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, toFill);
+                        gem.set(BMDataComponents.DEMON_WILL_TYPE, type);
+                    }
+                    return toFill;
+                }
+
+                // if same type we add as much as we can
+                if (containedType == type) {
+                    if (doFill) {
+                        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, containedAmount + toFill);
+                    }
+                    return toFill;
+                }
+
+                // not same type, gem not empty. go away pls
+                return 0;
+            }
+
+            @Override
+            public double drain(EnumWillType type, double max, boolean doDrain) {
+                EnumWillType containedType = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
+                // same type, deal
+                if (containedType == type) {
+                    double containedAmount = gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0d);
+                    double toDrain = Math.clamp(max, 0, containedAmount);
+                    if (doDrain) {
+                        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, containedAmount - toDrain);
+                    }
+                    return toDrain;
+                }
+
+                // not same type, pls go away
+                return 0;
+            }
+        };
     }
 }
