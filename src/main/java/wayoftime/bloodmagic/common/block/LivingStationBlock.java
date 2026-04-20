@@ -17,10 +17,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.block.base.BaseTileBlock;
+import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.LivingStationTile;
 import wayoftime.bloodmagic.common.tag.TagsCache;
 
-public class LivingStationBlock extends Block implements EntityBlock {
+public class LivingStationBlock extends BaseTileBlock<LivingStationTile> implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public LivingStationBlock() {
@@ -28,7 +30,8 @@ public class LivingStationBlock extends Block implements EntityBlock {
                 Properties.of()
                         .strength(2, 5)
                         .sound(SoundType.STONE)
-                        .requiresCorrectToolForDrops()
+                        .requiresCorrectToolForDrops(),
+                BMTiles.LIVING_STATION_TYPE.get()
         );
     }
 
@@ -57,10 +60,5 @@ public class LivingStationBlock extends Block implements EntityBlock {
             return null;
         }
         return tile;
-    }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new LivingStationTile(pos, state);
     }
 }

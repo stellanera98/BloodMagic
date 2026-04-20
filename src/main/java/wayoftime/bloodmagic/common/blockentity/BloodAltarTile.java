@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.common.blockentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,7 +17,11 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
+import wayoftime.bloodmagic.common.blockentity.base.WorldInteractable;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.api.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
@@ -36,7 +41,7 @@ import wayoftime.bloodmagic.api.helper.SoulNetworkHelper;
 import java.util.Map;
 import java.util.Optional;
 
-public class BloodAltarTile extends BaseTile implements IFluidHandler {
+public class BloodAltarTile extends BaseTile implements IFluidHandler, WorldInteractable {
 
     private boolean isActive = false;
     private boolean canFill = false;
@@ -55,10 +60,7 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
     private int mainTank = 0;
     private int chargingTank = 0;
     private boolean isSignaling = false;
-    public ItemStackHandler getInventory() {
-        return inv;
-    }
-    private ItemStackHandler inv = new ItemStackHandler(1) {
+    ItemStackHandler inv = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
@@ -119,6 +121,11 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
         super(BMTiles.BLOOD_ALTAR_TYPE.get(), pos, blockState);
     }
 
+    @Override
+    public @Nullable IItemHandler getItemHandler(@Nullable Direction direction) {
+        return inv;
+    }
+
     private void calculateStats(Map<EnumRuneType, Integer> upgrades) {
         capacityMod = (float) ((1D + 0.2D * upgrades.getOrDefault(EnumRuneType.CAPACITY, 0) * Math.pow(1.075, upgrades.getOrDefault(EnumRuneType.AUGMENTED_CAPACITY, 0))));
         tickRate = Math.max(1, 20 - upgrades.getOrDefault(EnumRuneType.ACCELERATION, 0));
@@ -132,106 +139,107 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
         efficiencyMod = (float) Math.pow(0.85, upgrades.getOrDefault(EnumRuneType.EFFICIENCY, 0));
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, BloodAltarTile tile) {
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide) {
             return;
         }
 
-        if (tile.isSignaling) {
-            tile.isSignaling = false;
+        if (isSignaling) {
+            isSignaling = false;
         }
 
-        tile.ticks++;
-        if (tile.ticks % (20 * 5) == 0) {
-            tile.tier = AltarUtil.getTier(level, pos);
-            Map<EnumRuneType, Integer> newUpgrades = AltarUtil.getUpgrades(tile.tier, level, pos);
-            tile.calculateStats(newUpgrades);
-            tile.setChanged();
-            if (tile.isActive || tile.cooldownAfterCrafting <= 0) {
-                tile.checkAction();
+        ticks++;
+        if (ticks % (20 * 5) == 0) {
+            tier = AltarUtil.getTier(level, pos);
+            Map<EnumRuneType, Integer> newUpgrades = AltarUtil.getUpgrades(tier, level, pos);
+            calculateStats(newUpgrades);
+            setChanged();
+            if (isActive || cooldownAfterCrafting <= 0) {
+                checkAction();
             }
         }
 
-        if (tile.ticks % Math.max(tile.tickRate, 1) == 0) {
-            float ioAmount = 20F * tile.dislocationMod;
-            int input = (int) Math.min(tile.inputTank, ioAmount);
-            input = (int) Math.min(input, tile.getMainCapacity() - tile.mainTank);
-            tile.inputTank -= input;
-            tile.mainTank += input;
+        if (ticks % Math.max(tickRate, 1) == 0) {
+            float ioAmount = 20F * dislocationMod;
+            int input = (int) Math.min(inputTank, ioAmount);
+            input = (int) Math.min(input, getMainCapacity() - mainTank);
+            inputTank -= input;
+            mainTank += input;
 
-            int output = (int) Math.min(tile.mainTank, ioAmount);
-            output = (int) Math.min(output, tile.getIOCapacity() - tile.outputTank);
-            tile.mainTank -= output;
-            tile.outputTank += output;
+            int output = (int) Math.min(mainTank, ioAmount);
+            output = (int) Math.min(output, getIOCapacity() - outputTank);
+            mainTank -= output;
+            outputTank += output;
 
-            if (!tile.isActive) {
-                tile.progress = 0;
-                int charge = (int) Math.min(tile.mainTank, tile.chargeAmount);
-                charge = (int) Math.min(charge, tile.getChargingCapacity() - tile.chargingTank);
-                tile.mainTank -= charge;
-                tile.chargingTank += charge;
+            if (!isActive) {
+                progress = 0;
+                int charge = (int) Math.min(mainTank, chargeAmount);
+                charge = (int) Math.min(charge, getChargingCapacity() - chargingTank);
+                mainTank -= charge;
+                chargingTank += charge;
             }
         }
 
-        if (!tile.isActive && tile.cooldownAfterCrafting > 0) {
-            tile.cooldownAfterCrafting--;
-            if (tile.cooldownAfterCrafting <= 0) {
-                tile.checkAction();
+        if (!isActive && cooldownAfterCrafting > 0) {
+            cooldownAfterCrafting--;
+            if (cooldownAfterCrafting <= 0) {
+                checkAction();
             }
             return;
         }
 
-        if (!tile.canFill && tile.currentRecipe == null) {
-            tile.checkAction();
+        if (!canFill && currentRecipe == null) {
+            checkAction();
             return;
         }
 
-        ItemStack inputStack = tile.inv.getStackInSlot(0);
+        ItemStack inputStack = inv.getStackInSlot(0);
         if (inputStack.isEmpty()) {
             return;
         }
 
-        if (!tile.canFill) {
+        if (!canFill) {
             boolean hasOperated = false;
             int inputSize = inputStack.getCount();
-            if (tile.chargingTank > 0) {
-                int chargeDrained = Math.min(tile.currentRecipe.totalBlood * inputSize - tile.progress, tile.chargingTank);
-                tile.chargingTank -= chargeDrained;
-                tile.progress += chargeDrained;
+            if (chargingTank > 0) {
+                int chargeDrained = Math.min(currentRecipe.totalBlood * inputSize - progress, chargingTank);
+                chargingTank -= chargeDrained;
+                progress += chargeDrained;
                 hasOperated = true;
             }
-            if (tile.mainTank > 0) {
-                int drained = Math.min(tile.mainTank, (int) (tile.currentRecipe.craftSpeed * (1 + tile.consumptionMod)));
-                drained = Math.min(drained, tile.currentRecipe.totalBlood * inputSize - tile.progress);
-                tile.mainTank -= drained;
-                tile.progress += drained;
+            if (mainTank > 0) {
+                int drained = Math.min(mainTank, (int) (currentRecipe.craftSpeed * (1 + consumptionMod)));
+                drained = Math.min(drained, currentRecipe.totalBlood * inputSize - progress);
+                mainTank -= drained;
+                progress += drained;
                 hasOperated = true;
 
-                if (tile.ticks % 4 == 0) {
+                if (ticks % 4 == 0) {
                     ((ServerLevel) level).sendParticles(DustParticleOptions.REDSTONE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 1, 0.2, 1.0, 0.2, 0);
                 }
-            } else if (!hasOperated && tile.progress > 0) {
-                tile.progress -= (int) (tile.currentRecipe.drainSpeed * (1 + tile.efficiencyMod));
-                if (tile.progress < 0) {
-                    tile.progress = 0;
+            } else if (!hasOperated && progress > 0) {
+                progress -= (int) (currentRecipe.drainSpeed * (1 + efficiencyMod));
+                if (progress < 0) {
+                    progress = 0;
                 }
-                if (tile.ticks % 2 == 0) {
+                if (ticks % 2 == 0) {
                     ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 1, 0.1, 1.0, 0.1, 0);
                 }
             }
 
-            if (hasOperated && tile.progress >= tile.currentRecipe.totalBlood * inputSize) {
-                ItemStack result = tile.currentRecipe.getResult().copyWithCount(inputSize);
+            if (hasOperated && progress >= currentRecipe.totalBlood * inputSize) {
+                ItemStack result = currentRecipe.getResult().copyWithCount(inputSize);
                 BloodMagicCraftedEvent.Altar event = new BloodMagicCraftedEvent.Altar(result, inputStack);
                 NeoForge.EVENT_BUS.post(event);
-                tile.inv.setStackInSlot(0, event.getOutput());
+                inv.setStackInSlot(0, event.getOutput());
                 if (level.getBlockState(pos.below()).is(BMTags.Blocks.PULSE_ON_CRAFTING)) {
-                    tile.isSignaling = true;
+                    isSignaling = true;
                 }
-                tile.progress = 0;
-                tile.cooldownAfterCrafting = 30;
-                tile.isActive = false;
-                tile.currentRecipe = null;
+                progress = 0;
+                cooldownAfterCrafting = 30;
+                isActive = false;
+                currentRecipe = null;
                 ((ServerLevel) level).sendParticles(DustParticleOptions.REDSTONE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 40, 0.3, 0.0, 0.3, 0);
             }
         } else {
@@ -240,21 +248,21 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
             if (binding.isEmpty() || orb == null) {
                 return;
             }
-            if (tile.mainTank > 0) {
-                int available = Math.min(tile.mainTank, (int) (orb.fillRate() * (1 + tile.consumptionMod)));
+            if (mainTank > 0) {
+                int available = Math.min(mainTank, (int) (orb.fillRate() * (1 + consumptionMod)));
                 SoulNetwork network = SoulNetworkHelper.getSoulNetwork(binding.uuid());
                 if (network == null) {
                     return;
                 }
-                int drained = network.add(SoulTicket.block(level, pos, available), (int) (orb.capacity() * (1 + tile.orbCapMod)));
-                tile.mainTank -= drained;
+                int drained = network.add(SoulTicket.block(level, pos, available), (int) (orb.capacity() * (1 + orbCapMod)));
+                mainTank -= drained;
                 if (drained > 0) {
                     ((ServerLevel) level).sendParticles(ParticleTypes.WITCH, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 1, 0, 0, 0, 0.001);
                 }
             }
         }
 
-        tile.setChanged();
+        setChanged();
     }
 
     public void sacrificialDaggerCall(int lpAdded, boolean isSacrifice) {

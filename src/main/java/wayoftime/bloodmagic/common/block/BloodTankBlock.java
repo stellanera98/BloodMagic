@@ -26,13 +26,15 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.block.base.BaseTileBlock;
+import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.BloodTankTile;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.util.BlockEntityHelper;
 
 import java.util.List;
 
-public class BloodTankBlock extends Block implements EntityBlock {
+public class BloodTankBlock extends BaseTileBlock<BloodTankTile> implements EntityBlock {
     protected static final VoxelShape BOX = Block.box(3, 0, 3, 13, 14, 13);
 
     public BloodTankBlock() {
@@ -40,7 +42,8 @@ public class BloodTankBlock extends Block implements EntityBlock {
                 .requiresCorrectToolForDrops()
                 .strength(2.0F, 5.0F)
                 .sound(SoundType.GLASS)
-                .forceSolidOn() // This prevents fluids from wiping it away
+                .forceSolidOn(), // This prevents fluids from wiping it away
+                BMTiles.BLOOD_TANK_TYPE.get()
         );
     }
 

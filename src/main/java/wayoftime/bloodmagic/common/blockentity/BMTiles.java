@@ -53,12 +53,12 @@ public class BMTiles {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 HELLFIRE_FORGE_TYPE.get(),
-                HellfireForgeTile::getInventory
+                HellfireForgeTile::getItemHandler
         );
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 BLOOD_ALTAR_TYPE.get(),
-                (tile, side) -> tile.getInventory()
+                BloodAltarTile::getItemHandler
         );
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
@@ -97,6 +97,11 @@ public class BMTiles {
                 Capabilities.ItemHandler.BLOCK,
                 ALCHEMY_TABLE_TYPE.get(),
                 AlchemyTableTile::getItemHandler
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                CRUCIBLE_TYPE.get(),
+                CrucibleTile::getItemHandler
         );
 
         event.registerBlockEntity(

@@ -8,40 +8,30 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.block.base.WorldInteractionBlock;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.HellfireForgeTile;
-import wayoftime.bloodmagic.util.BlockEntityHelper;
+import wayoftime.bloodmagic.common.blockentity.base.WorldInteractable;
 
-public class HellfireForgeBlock extends Block implements EntityBlock {
+public class HellfireForgeBlock extends WorldInteractionBlock<HellfireForgeTile> implements EntityBlock {
     public static final VoxelShape BOX = box(1, 0, 1, 15, 12, 15);
 
     public HellfireForgeBlock() {
         super(Properties.of()
                 .strength(2.0F, 5.0F)
-                .requiresCorrectToolForDrops()
+                .requiresCorrectToolForDrops(),
+                BMTiles.HELLFIRE_FORGE_TYPE.get()
         );
-    }
-
-    @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (level.getBlockEntity(pos) instanceof HellfireForgeTile tile) {
-                BlockEntityHelper.dropContents(level, pos, tile.inv);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
@@ -55,6 +45,7 @@ public class HellfireForgeBlock extends Block implements EntityBlock {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
+        // TODO see if it can be split into take/get from WorldInteraction
         ItemStack forgeStack = forge.inv.getStackInSlot(HellfireForgeTile.OUTPUT_SLOT);
 
         if (player.isShiftKeyDown() && !forgeStack.isEmpty() && stack.isEmpty()) {
@@ -111,12 +102,7 @@ public class HellfireForgeBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, BlockState state) {
         return new HellfireForgeTile(pos, state);
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return BlockEntityHelper.getTicker(blockEntityType, BMTiles.HELLFIRE_FORGE_TYPE.get(), HellfireForgeTile::tick);
     }
 }

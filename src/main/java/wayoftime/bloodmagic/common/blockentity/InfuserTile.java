@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 
 public class InfuserTile extends BaseTile implements IWillHandler {
@@ -14,7 +15,8 @@ public class InfuserTile extends BaseTile implements IWillHandler {
         super(BMTiles.INFUSER_TYPE.get(), pos, blockState);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, InfuserTile infuser) {
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
 
     }
 

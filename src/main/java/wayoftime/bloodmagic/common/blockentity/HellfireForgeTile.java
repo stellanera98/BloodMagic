@@ -18,6 +18,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
@@ -80,9 +81,9 @@ public class HellfireForgeTile extends BaseTile {
         this.quickCheck = RecipeManager.createCheck(BMRecipes.HELLFIRE_FORGE_TYPE.get());
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, HellfireForgeTile hellfireForgeTile) {
-        ForgeInput input = hellfireForgeTile.getInput();
-        Optional<RecipeHolder<ForgeRecipe>> recipeOptional = hellfireForgeTile.quickCheck.getRecipeFor(input, level);
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        ForgeInput input = getInput();
+        Optional<RecipeHolder<ForgeRecipe>> recipeOptional = quickCheck.getRecipeFor(input, level);
         if (recipeOptional.isEmpty()) {
             return;
         }
@@ -92,14 +93,14 @@ public class HellfireForgeTile extends BaseTile {
             BloodMagic.LOGGER.info("input matched but no result");
             return;
         }
-        ItemStack currentOutput = hellfireForgeTile.inv.getStackInSlot(OUTPUT_SLOT);
+        ItemStack currentOutput = inv.getStackInSlot(OUTPUT_SLOT);
         if (!currentOutput.isEmpty() && !ItemStack.isSameItemSameComponents(currentOutput, output)) {
             BloodMagic.LOGGER.info("outputs dont stack!");
             return;
         }
 
-        hellfireForgeTile.progress++;
-        if (!(hellfireForgeTile.progress < MAX_PROGRESS)) {
+        progress++;
+        if (!(progress < MAX_PROGRESS)) {
             ((ServerLevel) level).sendParticles(ParticleTypes.SNOWFLAKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             return;
         }
@@ -107,7 +108,7 @@ public class HellfireForgeTile extends BaseTile {
         BloodMagicCraftedEvent.Forge event = new BloodMagicCraftedEvent.Forge(output, input.asArray());
         NeoForge.EVENT_BUS.post(event);
 
-        ItemStack gemStack = hellfireForgeTile.inv.getStackInSlot(GEM_SLOT);
+        ItemStack gemStack = inv.getStackInSlot(GEM_SLOT);
         IWillHandler gemHandler = gemStack.getCapability(BMCaps.ITEM_WILL_HANDLER);
 
         if (!gemStack.isEmpty()) {
@@ -117,24 +118,24 @@ public class HellfireForgeTile extends BaseTile {
             }
             gemHandler.drain(requiredType, recipe.usedWill(), true);
             if (gemStack.isEmpty()) {
-                hellfireForgeTile.inv.setStackInSlot(GEM_SLOT, ItemStack.EMPTY);
+                inv.setStackInSlot(GEM_SLOT, ItemStack.EMPTY);
             }
         }
 
         for (int i = SOUTH; i < GEM_SLOT; i++) {
-            ItemStack item = hellfireForgeTile.inv.getStackInSlot(i);
+            ItemStack item = inv.getStackInSlot(i);
             if (item.hasCraftingRemainingItem()) {
-                hellfireForgeTile.inv.setStackInSlot(i, item.getCraftingRemainingItem());
+                inv.setStackInSlot(i, item.getCraftingRemainingItem());
                 continue;
             }
             item.shrink(1);
             if (item.isEmpty()) {
-                hellfireForgeTile.inv.setStackInSlot(i, ItemStack.EMPTY);
+                inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
-        hellfireForgeTile.inv.setStackInSlot(OUTPUT_SLOT, event.getOutput());
+        inv.setStackInSlot(OUTPUT_SLOT, event.getOutput());
 
-        hellfireForgeTile.setChanged();
+        setChanged();
     }
 
     public ForgeInput getInput() {
@@ -165,7 +166,8 @@ public class HellfireForgeTile extends BaseTile {
         tag.put("inventory", inventory);
     }
 
-    public @Nullable IItemHandler getInventory(Direction side) {
+    @Override
+    public @org.jetbrains.annotations.Nullable IItemHandler getItemHandler(@Nullable Direction side) {
         if (side == null) {
             return inv;
         }

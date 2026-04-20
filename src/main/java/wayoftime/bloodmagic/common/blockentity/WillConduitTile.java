@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 
@@ -26,7 +27,8 @@ public class WillConduitTile extends BaseTile implements IWillHandler {
         super(BMTiles.WILL_CONDUIT_TYPE.get(), pos, blockState);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, WillConduitTile conduit) {
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
         // TODO implement
     }
 

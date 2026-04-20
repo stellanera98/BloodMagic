@@ -26,6 +26,7 @@ import wayoftime.bloodmagic.api.helper.SoulNetworkHelper;
 import wayoftime.bloodmagic.api.soulnetwork.SoulTicket;
 import wayoftime.bloodmagic.common.block.AlchemyTableBlock;
 import wayoftime.bloodmagic.common.block.BMBlocks;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
@@ -87,6 +88,8 @@ public class AlchemyTableTile extends BaseTile implements MenuProvider {
     public ItemStackHandler inv;
     public int work = 0;
 
+    private RecipeManager.CachedCheck<AlchemyTableInput, AlchemyTableRecipe> recipeCheck = RecipeManager.createCheck(BMRecipes.ALCHEMY_TABLE_TYPE.get());
+
     public AlchemyTableTile(BlockPos pos, BlockState state) {
         super(BMTiles.ALCHEMY_TABLE_TYPE.get(), pos, state);
         FACING = state.getValue(AlchemyTableBlock.FACING);
@@ -122,65 +125,65 @@ public class AlchemyTableTile extends BaseTile implements MenuProvider {
         };
     }
 
-    private RecipeManager.CachedCheck<AlchemyTableInput, AlchemyTableRecipe> recipeCheck = RecipeManager.createCheck(BMRecipes.ALCHEMY_TABLE_TYPE.get());
-    public static void tick(Level level, BlockPos pos, BlockState state, AlchemyTableTile table) {
-        if (table.PART == TablePart.RIGHT) {
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        if (PART == TablePart.RIGHT) {
             return;
         }
-        AlchemyTableInput input = table.getInput();
-        RecipeHolder<AlchemyTableRecipe> recipe = table.recipeCheck.getRecipeFor(input, level).orElse(null);
+        AlchemyTableInput input = getInput();
+        RecipeHolder<AlchemyTableRecipe> recipe = recipeCheck.getRecipeFor(input, level).orElse(null);
         if (recipe == null) {
-            table.work = 0;
+            work = 0;
             return;
         }
-        ItemStack orbStack = table.inv.getStackInSlot(ORB_SLOT);
+        ItemStack orbStack = inv.getStackInSlot(ORB_SLOT);
         Binding binding = orbStack.getOrDefault(BMDataComponents.BINDING, Binding.EMPTY);
         BloodOrb orb = orbStack.getItemHolder().getData(BMDataMaps.BLOOD_ORB_STATS);
         if (orb.tier() < recipe.value().tier()) { // cannot be null, if it is it cant be placed in orb slot in the first place
-            table.data.set(ERROR_FLAG, ERR_ORB);
+            data.set(ERROR_FLAG, ERR_ORB);
             return;
         }
         if (binding.isEmpty()) {
-            table.data.set(ERROR_FLAG, ERR_ORB);
+            data.set(ERROR_FLAG, ERR_ORB);
             return;
         }
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(binding);
         if (network.getCurrentEssence() < recipe.value().essence()) {
-            table.data.set(ERROR_FLAG, ERR_ESSENCE);
+            data.set(ERROR_FLAG, ERR_ESSENCE);
             return;
         }
 
         ItemStack output = recipe.value().assemble(input, level.registryAccess());
-        ItemStack currentOutput = table.inv.getStackInSlot(OUTPUT_SLOT);
+        ItemStack currentOutput = inv.getStackInSlot(OUTPUT_SLOT);
         if (!currentOutput.isEmpty()) {
             if (!ItemStack.isSameItemSameComponents(output, currentOutput)) {
-                table.work = 0;
+                work = 0;
                 return;
             }
         }
-        if (++table.work >= recipe.value().duration()) {
+        if (++work >= recipe.value().duration()) {
             if (currentOutput.isEmpty()) {
-                table.inv.setStackInSlot(OUTPUT_SLOT, output);
+                inv.setStackInSlot(OUTPUT_SLOT, output);
             } else {
-                table.inv.getStackInSlot(OUTPUT_SLOT).grow(output.getCount());
+                inv.getStackInSlot(OUTPUT_SLOT).grow(output.getCount());
             }
-            table.work = 0;
+            work = 0;
             network.syphon(SoulTicket.block(level, pos, recipe.value().essence()));
             for (int i = 0; i < INPUT_COUNT; i++) {
-                ItemStack inputStack = table.inv.getStackInSlot(i);
+                ItemStack inputStack = inv.getStackInSlot(i);
                 if (inputStack.hasCraftingRemainingItem()) {
-                    table.inv.setStackInSlot(i, inputStack.getCraftingRemainingItem());
+                    inv.setStackInSlot(i, inputStack.getCraftingRemainingItem());
                 } else {
                     inputStack.shrink(1);
                 }
                 if (inputStack.isEmpty()) {
-                    table.inv.setStackInSlot(i, ItemStack.EMPTY);
+                    inv.setStackInSlot(i, ItemStack.EMPTY);
                 }
             }
-            table.setChanged();
+            setChanged();
         }
 
-        table.data.set(PROGRESS, (int) Math.clamp((double) table.work / (double) recipe.value().duration() * 90, 0, 90));
+        data.set(PROGRESS, (int) Math.clamp((double) work / (double) recipe.value().duration() * 90, 0, 90));
     }
 
     public AlchemyTableInput getInput() {
@@ -192,7 +195,7 @@ public class AlchemyTableTile extends BaseTile implements MenuProvider {
         return new AlchemyTableInput(inputs);
     }
 
-    public IItemHandler getItemHandler(Direction direction) {
+    public @Nullable IItemHandler getItemHandler(Direction direction) {
         if (PART == TablePart.RIGHT) {
             BlockEntity be = level.getBlockEntity(getBlockPos().relative(FACING.getCounterClockWise()));
             if (be instanceof AlchemyTableTile tile) {

@@ -19,28 +19,19 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.block.base.BaseTileBlock;
 import wayoftime.bloodmagic.common.blockentity.ARCTile;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.util.BlockEntityHelper;
 
-public class ARCBlock extends Block implements EntityBlock {
+public class ARCBlock extends BaseTileBlock<ARCTile> implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final EnumProperty<EnumWillType> TYPE = EnumProperty.create("type", EnumWillType.class);
 
     public ARCBlock() {
-        super(Properties.ofFullCopy(Blocks.FURNACE));
-    }
-
-    @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (level.getBlockEntity(pos) instanceof ARCTile arc) {
-                BlockEntityHelper.dropContents(level, pos, arc.arcInv);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
+        super(Properties.ofFullCopy(Blocks.FURNACE), BMTiles.ARC_TYPE.get());
     }
 
     @Nullable
@@ -70,12 +61,6 @@ public class ARCBlock extends Block implements EntityBlock {
             return null;
         }
         return tile;
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return BlockEntityHelper.getTicker(blockEntityType, BMTiles.ARC_TYPE.get(), ARCTile::tick);
     }
 
     @Nullable

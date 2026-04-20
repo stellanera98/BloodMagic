@@ -25,13 +25,14 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.common.block.base.BaseTileBlock;
 import wayoftime.bloodmagic.common.blockentity.ARCTile;
 import wayoftime.bloodmagic.common.blockentity.AlchemyTableTile;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.util.BlockEntityHelper;
 import wayoftime.bloodmagic.util.TablePart;
 
-public class AlchemyTableBlock extends Block implements EntityBlock {
+public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implements EntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final EnumProperty<TablePart> PART = EnumProperty.create("part", TablePart.class);
@@ -43,7 +44,8 @@ public class AlchemyTableBlock extends Block implements EntityBlock {
                 .isRedstoneConductor((state, level, pos) -> false)
                 .isViewBlocking((state, level, pos) -> false)
                 .requiresCorrectToolForDrops()
-                .forceSolidOn()
+                .forceSolidOn(),
+                BMTiles.ALCHEMY_TABLE_TYPE.get()
         );
     }
 
@@ -93,16 +95,6 @@ public class AlchemyTableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (level.getBlockEntity(pos) instanceof AlchemyTableTile table && state.getValue(PART) == TablePart.LEFT) {
-                BlockEntityHelper.dropContents(level, pos, table.inv);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
-    @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && player.isCreative()) {
             TablePart part = state.getValue(PART);
@@ -143,15 +135,5 @@ public class AlchemyTableBlock extends Block implements EntityBlock {
     public static DoubleBlockCombiner.BlockType getBlockType(BlockState state) {
         TablePart part = state.getValue(PART);
         return part == TablePart.RIGHT ? DoubleBlockCombiner.BlockType.FIRST : DoubleBlockCombiner.BlockType.SECOND;
-    }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new AlchemyTableTile(pos, state);
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return BlockEntityHelper.getTicker(blockEntityType, BMTiles.ALCHEMY_TABLE_TYPE.get(), AlchemyTableTile::tick);
     }
 }

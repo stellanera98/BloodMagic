@@ -29,6 +29,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.menu.ARCMenu;
 import wayoftime.bloodmagic.common.block.ARCBlock;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
@@ -103,7 +104,7 @@ public class ARCTile extends BaseTile implements MenuProvider {
         return (int) (progress * 38);
     }
 
-    public IItemHandler getItemHandler(@Nullable Direction side) {
+    public @org.jetbrains.annotations.Nullable IItemHandler getItemHandler(@Nullable Direction side) {
         if (side == null) {
             return arcInv;
         }
@@ -173,65 +174,66 @@ public class ARCTile extends BaseTile implements MenuProvider {
         return this.inputTank;
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState state, ARCTile arcTile) {
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide) {
             return;
         }
 
         ItemStack[] outputItems = {
-                arcTile.arcInv.getStackInSlot(OUTPUT_SLOT),
-                arcTile.arcInv.getStackInSlot(OUTPUT_SLOT + 1),
-                arcTile.arcInv.getStackInSlot(OUTPUT_SLOT + 2),
-                arcTile.arcInv.getStackInSlot(OUTPUT_SLOT + 3),
-                arcTile.arcInv.getStackInSlot(OUTPUT_SLOT + 4)
+                arcInv.getStackInSlot(OUTPUT_SLOT),
+                arcInv.getStackInSlot(OUTPUT_SLOT + 1),
+                arcInv.getStackInSlot(OUTPUT_SLOT + 2),
+                arcInv.getStackInSlot(OUTPUT_SLOT + 3),
+                arcInv.getStackInSlot(OUTPUT_SLOT + 4)
         };
         ARCOutputHandler itemOutputHandler = new ARCOutputHandler(outputItems, 64);
-        boolean outputChanged = arcTile.handleSlots(itemOutputHandler);
-        arcTile.updateType();
-        ItemStack toolStack = arcTile.arcInv.getStackInSlot(TOOL_SLOT);
-        ItemStack inputStack = arcTile.arcInv.getStackInSlot(INPUT_SLOT);
+        boolean outputChanged = handleSlots(itemOutputHandler);
+        updateType();
+        ItemStack toolStack = arcInv.getStackInSlot(TOOL_SLOT);
+        ItemStack inputStack = arcInv.getStackInSlot(INPUT_SLOT);
         boolean didProgress = false;
         if (toolStack.is(BMTags.Items.ARC_TOOL)) {
             if (toolStack.is(BMTags.Items.ARC_FURNACE)) {
                 Optional<? extends RecipeHolder<? extends AbstractCookingRecipe>> recipe = Optional.empty();
                 SingleRecipeInput input = new SingleRecipeInput(inputStack);
                 if (toolStack.is(BMTags.Items.ARC_SMELTING)) {
-                     recipe = arcTile.quickSmelting.getRecipeFor(input, level);
+                     recipe = quickSmelting.getRecipeFor(input, level);
                 } else if (toolStack.is(BMTags.Items.ARC_BLASTING)) {
-                    recipe = arcTile.quickBlasting.getRecipeFor(input, level);
+                    recipe = quickBlasting.getRecipeFor(input, level);
                 } else if (toolStack.is(BMTags.Items.ARC_SMOKING)) {
-                    recipe = arcTile.quickSmoking.getRecipeFor(input, level);
+                    recipe = quickSmoking.getRecipeFor(input, level);
                 }
-                if (arcTile.canCraftFurnace(recipe, itemOutputHandler)) {
-                    arcTile.progress += DEFAULT_SPEED * ((double) recipe.get().value().getCookingTime() / 200D) * toolStack.getOrDefault(BMDataComponents.ARC_SPEED, 1D);
+                if (canCraftFurnace(recipe, itemOutputHandler)) {
+                    progress += DEFAULT_SPEED * ((double) recipe.get().value().getCookingTime() / 200D) * toolStack.getOrDefault(BMDataComponents.ARC_SPEED, 1D);
                     didProgress = true;
-                    if (arcTile.progress >= 1) {
-                        arcTile.craftFurnace(recipe.get().value(), input, itemOutputHandler);
+                    if (progress >= 1) {
+                        craftFurnace(recipe.get().value(), input, itemOutputHandler);
                         outputChanged = true;
                     }
                 }
             } else {
-                ARCRecipeInput input = new ARCRecipeInput(toolStack, inputStack, arcTile.inputTank.getFluidInTank(0));
-                Optional<RecipeHolder<ARCRecipe>> recipe = arcTile.quickARC.getRecipeFor(input, level);
-                if (arcTile.canCraft(recipe, itemOutputHandler)) {
-                    arcTile.progress += DEFAULT_SPEED * toolStack.getOrDefault(BMDataComponents.ARC_SPEED, 1D);
+                ARCRecipeInput input = new ARCRecipeInput(toolStack, inputStack, inputTank.getFluidInTank(0));
+                Optional<RecipeHolder<ARCRecipe>> recipe = quickARC.getRecipeFor(input, level);
+                if (canCraft(recipe, itemOutputHandler)) {
+                    progress += DEFAULT_SPEED * toolStack.getOrDefault(BMDataComponents.ARC_SPEED, 1D);
                     didProgress = true;
-                    if (arcTile.progress >= 1) {
-                        arcTile.craft(recipe.get().value(), input, itemOutputHandler);
+                    if (progress >= 1) {
+                        craft(recipe.get().value(), input, itemOutputHandler);
                         outputChanged = true;
                     }
                 }
             }
         }
 
-        arcTile.setLit(didProgress);
+        setLit(didProgress);
         if (!didProgress) {
-            arcTile.progress = 0;
+            progress = 0;
         }
 
         if (outputChanged) {
             for (int i = 0; i < NUM_OUTPUTS; i++) {
-                arcTile.arcInv.setStackInSlot(OUTPUT_SLOT + i, itemOutputHandler.getStackInSlot(i));
+                arcInv.setStackInSlot(OUTPUT_SLOT + i, itemOutputHandler.getStackInSlot(i));
             }
         }
     }
