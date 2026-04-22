@@ -107,6 +107,11 @@ public class CrucibleTile extends SingleTargetWillInteractor {
     }
 
     @Override
+    public void toggleWillType(EnumWillType type) {
+        // TODO only have it accept correct type items?
+    }
+
+    @Override
     public @Nullable IItemHandler getItemHandler(@Nullable Direction direction) {
         return inv;
     }

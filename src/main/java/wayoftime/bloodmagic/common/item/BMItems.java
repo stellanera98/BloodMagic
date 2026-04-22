@@ -19,6 +19,9 @@ public class BMItems {
     public static final DeferredRegister<Item> WILL_ITEMS = DeferredRegister.createItems(BloodMagic.MODID);
     public static final DeferredRegister<Item> TAB_REQ = DeferredRegister.createItems(BloodMagic.MODID);
 
+    private static Supplier<ArmorItem> makeLivingArmor(ArmorItem.Type type) {
+        return () -> new ArmorItem(BMMaterialsAndTiers.LIVING_ARMOR_MATERIAL, type, new Item.Properties().durability(type.getDurability(33)));
+    }
     // these go first for creative tab order
     public static final DeferredHolder<Item, ArmorItem> LIVING_HELMET = BASIC_ITEMS.register("living_helmet", makeLivingArmor(ArmorItem.Type.HELMET));
     public static final DeferredHolder<Item, LivingArmorItem> LIVING_PLATE = TAB_REQ.register("living_plate", LivingArmorItem::new);
@@ -40,19 +43,17 @@ public class BMItems {
     public static final DeferredHolder<Item, BloodOrbItem> ORB_ARCHMAGE = BASIC_ITEMS.register("blood_orb_archmage", BloodOrbItem::new);
     public static final DeferredHolder<Item, BloodOrbItem> ORB_TRANSCENDENT = BASIC_ITEMS.register("blood_orb_transcendent", BloodOrbItem::new);
 
-    private static Supplier<ArmorItem> makeLivingArmor(ArmorItem.Type type) {
-        return () -> new ArmorItem(BMMaterialsAndTiers.LIVING_ARMOR_MATERIAL, type, new Item.Properties().durability(type.getDurability(33)));
-    }
-
     // these are here because I was trying to use the blank slate model for missing SigilType and Im not gonna delete them now that I remembered about the black/purple missing model
     public static final DeferredHolder<Item, Item> SLATE_BLANK = BASIC_ITEMS.register("slate_blank", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_REINFORCED = BASIC_ITEMS.register("slate_reinforced", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_IMBUED = BASIC_ITEMS.register("slate_imbued", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_DEMONIC = BASIC_ITEMS.register("slate_demonic", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SLATE_ETHEREAL = BASIC_ITEMS.register("slate_ethereal", () -> new Item(new Item.Properties()));
-    // TODO I dont think there ever was a T6 slate? if there was we should add it here as well
+    // TODO I dont think there ever was/should be a T6 slate? if there was we should add it here as well
 
     public static final DeferredHolder<Item, SacrificialDaggerItem> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", SacrificialDaggerItem::new);
+
+    public static final DeferredHolder<Item, WandItem> WILL_ROUTING_WAND = ITEMS.register("will_routing_wand", WandItem::new);
 
     public static final DeferredHolder<Item, ManifestedWillItem> MANIFESTED_WILL = WILL_ITEMS.register("manifested_will", ManifestedWillItem::new);
 
@@ -62,19 +63,20 @@ public class BMItems {
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", TartaricGemItem::new);
 
-    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DEFAULT = BASIC_ITEMS.register("will_catalyst_default", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DEFAULT = BASIC_ITEMS.register("will_catalyst_raw", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_CORROSIVE = BASIC_ITEMS.register("will_catalyst_corrosive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_CORROSIVE));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DESTRUCTIVE = BASIC_ITEMS.register("will_catalyst_destructive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_DESTRUCTIVE));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_STEADFAST = BASIC_ITEMS.register("will_catalyst_steadfast", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_STEADFAST));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_VENGEFUL = BASIC_ITEMS.register("will_catalyst_vengeful", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_VENGEFUL));
 
-    public static final DeferredHolder<Item, Item> WILL_SHARD_RAW = BASIC_ITEMS.register("will_shard_default", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_CORROSIVE = BASIC_ITEMS.register("will_shard_corrosive", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_DESTRUCTIVE = BASIC_ITEMS.register("will_shard_destructive", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_STEADFAST = BASIC_ITEMS.register("will_shard_steadfast", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_VENGEFUL = BASIC_ITEMS.register("will_shard_vengeful", () -> new Item(new Item.Properties()));
+    // TODO switch back once textures exist
+    public static final DeferredHolder<Item, Item> WILL_SHARD_RAW = ITEMS.register("will_shard_raw", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_CORROSIVE = ITEMS.register("will_shard_corrosive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_DESTRUCTIVE = ITEMS.register("will_shard_destructive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_STEADFAST = ITEMS.register("will_shard_steadfast", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_VENGEFUL = ITEMS.register("will_shard_vengeful", () -> new Item(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_RAW = BASIC_ITEMS.register("will_crystal_default", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_CRYSTAL_RAW = BASIC_ITEMS.register("will_crystal_raw", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> WILL_CRYSTAL_CORROSIVE = BASIC_ITEMS.register("will_crystal_corrosive", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> WILL_CRYSTAL_DESTRUCTIVE = BASIC_ITEMS.register("will_crystal_destructive", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> WILL_CRYSTAL_STEADFAST = BASIC_ITEMS.register("will_crystal_steadfast", () -> new Item(new Item.Properties()));
@@ -99,5 +101,7 @@ public class BMItems {
         ITEMS.register(modBus);
         WILL_ITEMS.register(modBus);
         TAB_REQ.register(modBus);
+
+        modBus.addListener(BMItems::registerItemCaps);
     }
 }

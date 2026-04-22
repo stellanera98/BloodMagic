@@ -29,7 +29,7 @@ public class BloodAltarRenderer implements BlockEntityRenderer<BloodAltarTile> {
 
     @Override
     public void render(BloodAltarTile tileAltar, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ItemStack inputStack = tileAltar.getInventory().getStackInSlot(0);
+        ItemStack inputStack = tileAltar.getItemHandler(null).getStackInSlot(0);
         this.renderItem(inputStack, tileAltar.getLevel(), poseStack, bufferSource, packedLight, packedOverlay);
 
         float level = (float) tileAltar.getFluidInTank(0).getAmount() / (float) tileAltar.getMainCapacity();

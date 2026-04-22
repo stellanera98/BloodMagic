@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "#wood",
+    "glass": "minecraft:block/light_gray_stained_glass"
+  },
+  "elements": [
+    {
+      "name": "floor",
+      "from": [0, 0, 0],
+      "to": [16, 4, 16],
+      "faces": {
+        "down": {"uv": [0, 0, 16, 16], "texture": "#wood"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#wood"},
+        "north": {"uv": [0, 0, 4, 4], "texture": "#wood"},
+        "south": {"uv": [4, 0, 16, 12], "texture": "#wood"},
+        "west": {"uv": [0, 0, 16, 12], "texture": "#wood"},
+        "east": {"uv": [0, 0, 16, 12], "texture": "#wood"}
+      }
+    },
+    {
+      "name": "top",
+      "from": [0, 16, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": {"uv": [0, 0, 16, 16], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "north",
+      "from": [16, 5, 0],
+      "to": [0, 15, 0],
+      "faces": {
+        "north": {"uv": [0, 6, 16, 16], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "south",
+      "from": [16, 5, 16],
+      "to": [0, 15, 16],
+      "faces": {
+        "south": {"uv": [16, 6, 0, 16], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "west",
+      "from": [15, 5, 1],
+      "to": [15, 15, 15],
+      "faces": {
+        "west": {"uv": [], "texture": "#glass"}
+      }
+    }
+  ]
+}

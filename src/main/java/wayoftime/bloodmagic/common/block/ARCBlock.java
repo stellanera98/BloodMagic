@@ -31,7 +31,7 @@ public class ARCBlock extends BaseTileBlock<ARCTile> implements EntityBlock {
     public static final EnumProperty<EnumWillType> TYPE = EnumProperty.create("type", EnumWillType.class);
 
     public ARCBlock() {
-        super(Properties.ofFullCopy(Blocks.FURNACE), BMTiles.ARC_TYPE.get());
+        super(Properties.ofFullCopy(Blocks.FURNACE), BMTiles.ARC_TYPE);
     }
 
     @Nullable

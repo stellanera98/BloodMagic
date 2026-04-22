@@ -1,0 +1,64 @@
+{
+  "values": {
+    "bloodmagic:will_block_corrosive": {
+      "type": "corrosive",
+      "amount": 40.0
+    },
+    "bloodmagic:will_block_destructive": {
+      "type": "destructive",
+      "amount": 40.0
+    },
+    "bloodmagic:will_block_raw": {
+      "type": "raw",
+      "amount": 40.0
+    },
+    "bloodmagic:will_block_steadfast": {
+      "type": "steadfast",
+      "amount": 40.0
+    },
+    "bloodmagic:will_block_vengeful": {
+      "type": "vengeful",
+      "amount": 40.0
+    },
+    "bloodmagic:will_crystal_corrosive": {
+      "type": "corrosive",
+      "amount": 50.0
+    },
+    "bloodmagic:will_crystal_destructive": {
+      "type": "destructive",
+      "amount": 50.0
+    },
+    "bloodmagic:will_crystal_raw": {
+      "type": "raw",
+      "amount": 50.0
+    },
+    "bloodmagic:will_crystal_steadfast": {
+      "type": "steadfast",
+      "amount": 50.0
+    },
+    "bloodmagic:will_crystal_vengeful": {
+      "type": "vengeful",
+      "amount": 50.0
+    },
+    "bloodmagic:will_shard_corrosive": {
+      "type": "corrosive",
+      "amount": 10.0
+    },
+    "bloodmagic:will_shard_destructive": {
+      "type": "destructive",
+      "amount": 10.0
+    },
+    "bloodmagic:will_shard_raw": {
+      "type": "raw",
+      "amount": 10.0
+    },
+    "bloodmagic:will_shard_steadfast": {
+      "type": "steadfast",
+      "amount": 10.0
+    },
+    "bloodmagic:will_shard_vengeful": {
+      "type": "vengeful",
+      "amount": 10.0
+    }
+  }
+}

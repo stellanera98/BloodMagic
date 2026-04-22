@@ -13,9 +13,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.IItemHandler;
 import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 
+import java.util.function.Supplier;
+
 public abstract class WorldInteractionBlock<W extends BaseTile> extends BaseTileBlock<W> implements EntityBlock {
 
-    public WorldInteractionBlock(Properties properties, BlockEntityType<W> type) {
+    public WorldInteractionBlock(Properties properties, Supplier<BlockEntityType<W>> type) {
         super(properties, type);
     }
 
@@ -24,7 +26,7 @@ public abstract class WorldInteractionBlock<W extends BaseTile> extends BaseTile
         if (hand == InteractionHand.OFF_HAND) {
             return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
-        W tile = type.getBlockEntity(level, pos);
+        W tile = type.get().getBlockEntity(level, pos);
         if (tile == null) {
             return ItemInteractionResult.FAIL;
         }

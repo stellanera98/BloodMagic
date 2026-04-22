@@ -1,7 +1,7 @@
 {
   "overrides": [
     {
-      "model": "bloodmagic:item/variant/soul_gem_common_default",
+      "model": "bloodmagic:item/variant/soul_gem_common_raw",
       "predicate": {
         "bloodmagic:will_type": 0.0
       }

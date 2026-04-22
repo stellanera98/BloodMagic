@@ -29,19 +29,23 @@ public class ClientModEventHandler {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            BMItems.WILL_ITEMS.getEntries().forEach(item -> {
-                ItemProperties.register(item.get(), BloodMagic.TYPE_PROPERTY,
-                        (stack, level, player, seed) ->
-                                stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW).ordinal());
-            });
+            BMItems.WILL_ITEMS.getEntries().forEach(item ->
+                    ItemProperties.register(item.get(), BMIdentifiers.ItemProperties.TYPE_PROPERTY,
+                            (stack, level, player, seed) ->
+                                    stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW).ordinal())
+            );
 
-            ItemProperties.register(BMItems.SACRIFICIAL_DAGGER.get(), BloodMagic.INCENSE_PROPERTY,
+            ItemProperties.register(BMItems.SACRIFICIAL_DAGGER.get(), BMIdentifiers.ItemProperties.INCENSE_PROPERTY,
                     (stack, level, entity, seed) ->
                             stack.getOrDefault(BMDataComponents.INCENSE, false) ? 1 : 0);
 
             ItemProperties.register(BMItems.SIGIL.get(), BMIdentifiers.ItemProperties.SIGIL_ACTIVE,
                     (stack, level, entity, seed) ->
                             stack.has(BMDataComponents.SIGIL_ACTIVE) ? 1 : 0);
+
+            ItemProperties.register(BMItems.WILL_ROUTING_WAND.get(), BMIdentifiers.ItemProperties.WILL_CONFIGURATION,
+                    ((stack, level, entity, seed) ->
+                            stack.has(BMDataComponents.DEMON_WILL_TYPE) ? stack.get(BMDataComponents.DEMON_WILL_TYPE).ordinal() + 1 : 0));
         });
     }
 

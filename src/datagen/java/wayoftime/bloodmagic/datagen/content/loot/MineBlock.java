@@ -36,6 +36,15 @@ public class MineBlock extends BlockLootSubProvider {
         addDropSelf(BMBlocks.ARC_BLOCK); // TODO maybe let it keep fluids?
         addDropSelf(BMBlocks.BLOOD_ALTAR);
         addDropSelf(BMBlocks.HELLFIRE_FORGE);
+        addDropSelf(BMBlocks.WILL_INFUSER);
+        addDropSelf(BMBlocks.WILL_CRUCIBLE);
+        addDropSpecial(BMBlocks.ALCHEMY_TABLE);
+
+        addDropSelf(BMBlocks.WILL_BLOCK_RAW);
+        addDropSelf(BMBlocks.WILL_BLOCK_CORROSIVE);
+        addDropSelf(BMBlocks.WILL_BLOCK_DESTRUCTIVE);
+        addDropSelf(BMBlocks.WILL_BLOCK_STEADFAST);
+        addDropSelf(BMBlocks.WILL_BLOCK_VENGEFUL);
     }
 
     private void addDropSelf(BlockWithItemHolder<? extends Block, ? extends BlockItem> toAdd) {

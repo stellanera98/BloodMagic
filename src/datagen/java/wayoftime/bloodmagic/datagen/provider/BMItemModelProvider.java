@@ -2,6 +2,7 @@ package wayoftime.bloodmagic.datagen.provider;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -16,6 +17,9 @@ import wayoftime.bloodmagic.common.item.BMItems;
 import java.util.function.Supplier;
 
 public class BMItemModelProvider extends ItemModelProvider {
+
+    private final ResourceLocation handheld = mcLoc("item/handheld");
+
     public BMItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, BloodMagic.MODID, existingFileHelper);
     }
@@ -29,18 +33,33 @@ public class BMItemModelProvider extends ItemModelProvider {
             String path = item.getId().getPath();
             ItemModelBuilder builder = getBuilder(path);
             for (EnumWillType type : EnumWillType.types()) {
-                ModelFile modelFile = singleTexture(String.format("item/variant/%s_%s", path, type.getSerializedName()), mcLoc("item/handheld"), "layer0", modLoc(String.format("item/%s_%s", path, type.getSerializedName())));
-                builder.override().predicate(BloodMagic.TYPE_PROPERTY, type.ordinal()).model(modelFile).end();
+                ModelFile modelFile = singleTexture(String.format("item/variant/%s_%s", path, type.getSerializedName()), handheld, "layer0", modLoc(String.format("item/%s_%s", path, type.getSerializedName())));
+                builder.override().predicate(BMIdentifiers.ItemProperties.TYPE_PROPERTY, type.ordinal()).model(modelFile).end();
             }
         });
 
         ItemModelBuilder builder = getBuilder(BMItems.SACRIFICIAL_DAGGER.getId().getPath());
-        ModelFile normalDagger = singleTexture("item/variant/sacrificial_dagger_normal", mcLoc("item/handheld"), "layer0", modLoc("item/sacrificial_dagger"));
-        ModelFile chargedDagger = singleTexture("item/variant/sacrificial_dagger_charged", mcLoc("item/handheld"), "layer0", modLoc("item/sacrificial_dagger_charged"));
-        builder.override().predicate(BloodMagic.INCENSE_PROPERTY, 0).model(normalDagger).end();
-        builder.override().predicate(BloodMagic.INCENSE_PROPERTY, 1).model(chargedDagger).end();
+        ModelFile normalDagger = singleTexture("item/variant/sacrificial_dagger_normal", handheld, "layer0", modLoc("item/sacrificial_dagger"));
+        ModelFile chargedDagger = singleTexture("item/variant/sacrificial_dagger_charged", handheld, "layer0", modLoc("item/sacrificial_dagger_charged"));
+        builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 0).model(normalDagger).end();
+        builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 1).model(chargedDagger).end();
+
+        createWand();
 
         createSigilModels();
+    }
+
+    private void createWand() {
+        ItemModelBuilder builder = getBuilder(BMItems.WILL_ROUTING_WAND.getId().getPath());
+
+        builder.parent(new ModelFile.UncheckedModelFile(handheld))
+                .texture("layer0", modLoc("item/wand_all"));
+
+        for (EnumWillType type : EnumWillType.types()) {
+            builder.override().predicate(BMIdentifiers.ItemProperties.WILL_CONFIGURATION, type.ordinal() + 1)
+                    .model(singleTexture("item/variant/wand_" + type.getSerializedName(), handheld, modLoc("item/wand_" + type.getSerializedName())))
+                    .end();
+        }
     }
 
     private void createSigilModels() {
@@ -55,14 +74,14 @@ public class BMItemModelProvider extends ItemModelProvider {
     private void createStandard(ResourceKey<SigilEffect> key) {
         String path = key.location().getPath();
         getBuilder("sigil_" + path)
-                .parent(new ModelFile.UncheckedModelFile("item/handheld"))
+                .parent(new ModelFile.UncheckedModelFile(handheld))
                 .texture("layer0", modLoc("item/sigil_" + path));
     }
 
     private void createToggle(ResourceKey<SigilEffect> key) {
         String path = key.location().getPath();
         getBuilder("sigil_" + path)
-                .parent(new ModelFile.UncheckedModelFile("item/handheld"))
+                .parent(new ModelFile.UncheckedModelFile(handheld))
                 .texture("layer0", modLoc("item/sigil_" + path + "_deactivated"))
                 .override().predicate(BMIdentifiers.ItemProperties.SIGIL_ACTIVE, 1)
                 .model(singleTexture("item/sigil_" + path + "_activated", mcLoc("item/handheld"), "layer0", modLoc("item/sigil_" + path + "_activated"))).end();

@@ -45,7 +45,7 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
                 .isViewBlocking((state, level, pos) -> false)
                 .requiresCorrectToolForDrops()
                 .forceSolidOn(),
-                BMTiles.ALCHEMY_TABLE_TYPE.get()
+                BMTiles.ALCHEMY_TABLE_TYPE
         );
     }
 

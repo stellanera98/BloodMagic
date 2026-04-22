@@ -49,6 +49,11 @@ public class BMTiles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WillConduitTile>> WILL_CONDUIT_TYPE = TILES.register("will_conduit",
             () -> new BlockEntityType<>(WillConduitTile::new, Set.of(), null)); // TODO add block for this
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BellJarTile>> BELLJAR_TYPE = TILES.register("belljar",
+            () -> new BlockEntityType<>(BellJarTile::new, Set.of(
+
+            ), null));
+
     private static void registerTileCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
@@ -108,6 +113,32 @@ public class BMTiles {
                 BMCaps.BLOCK_WILL_HANDLER,
                 INFUSER_TYPE.get(),
                 InfuserTile::getWillHandler
+        );
+        event.registerBlockEntity(
+                BMCaps.BLOCK_WILL_HANDLER,
+                WILL_CONDUIT_TYPE.get(),
+                WillConduitTile::getWillHandler
+        );
+        event.registerBlockEntity(
+                BMCaps.BLOCK_WILL_HANDLER,
+                BELLJAR_TYPE.get(),
+                BellJarTile::getWillHandler
+        );
+
+        event.registerBlockEntity(
+                BMCaps.WAND_CONFIGURABLE,
+                CRUCIBLE_TYPE.get(),
+                CrucibleTile::getWandConfigurable
+        );
+        event.registerBlockEntity(
+                BMCaps.WAND_CONFIGURABLE,
+                WILL_CONDUIT_TYPE.get(),
+                WillConduitTile::getWandConfigurable
+        );
+        event.registerBlockEntity(
+                BMCaps.WAND_CONFIGURABLE,
+                BELLJAR_TYPE.get(),
+                BellJarTile::getWandConfigurable
         );
     }
 

@@ -5,6 +5,7 @@ import net.neoforged.neoforge.capabilities.ItemCapability;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.capability.IRunePowers;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 
 public class BMCaps {
     public static final BlockCapability<IRunePowers, Void> RUNE_POWERS = BlockCapability.createVoid(BloodMagic.rl("rune_powers"), IRunePowers.class);
@@ -12,4 +13,6 @@ public class BMCaps {
     public static final ItemCapability<IWillHandler, Void> ITEM_WILL_HANDLER = ItemCapability.createVoid(BloodMagic.rl("will_handler"), IWillHandler.class);
 
     public static final BlockCapability<IWillHandler, Void> BLOCK_WILL_HANDLER = BlockCapability.createVoid(BloodMagic.rl("will_handler"), IWillHandler.class);
+
+    public static final BlockCapability<IWandConfigurable, Void> WAND_CONFIGURABLE = BlockCapability.createVoid(BloodMagic.rl("wand_configurable"), IWandConfigurable.class);
 }

@@ -20,7 +20,7 @@ public class InfuserBlock extends BaseTileBlock<InfuserTile> implements EntityBl
         super(Properties.of()
                 .strength(2, 5)
                 .requiresCorrectToolForDrops(),
-                BMTiles.INFUSER_TYPE.get()
+                BMTiles.INFUSER_TYPE
         );
     }
 

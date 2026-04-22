@@ -37,6 +37,7 @@ public class TartaricGemItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         // TODO interact with Block IWillHandlers
+        return InteractionResult.PASS;
     }
 
     @Override

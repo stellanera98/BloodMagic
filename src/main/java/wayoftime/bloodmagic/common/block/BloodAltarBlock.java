@@ -23,7 +23,7 @@ public class BloodAltarBlock extends WorldInteractionBlock<BloodAltarTile> imple
                 .requiresCorrectToolForDrops()
                 .strength(2.0F, 5.0F)
                 .sound(SoundType.STONE),
-                BMTiles.BLOOD_ALTAR_TYPE.get()
+                BMTiles.BLOOD_ALTAR_TYPE
         );
     }
 

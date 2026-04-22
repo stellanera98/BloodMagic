@@ -1,0 +1,53 @@
+{
+  "values": {
+    "bloodmagic:will_block_corrosive": {
+      "result": "bloodmagic:budding_will_corrosive",
+      "will": {
+        "type": "corrosive",
+        "amount": 100.0
+      }
+    },
+    "bloodmagic:will_block_destructive": {
+      "result": "bloodmagic:budding_will_destructive",
+      "will": {
+        "type": "destructive",
+        "amount": 100.0
+      }
+    },
+    "bloodmagic:will_block_raw": {
+      "result": "bloodmagic:budding_will_raw",
+      "will": {
+        "type": "raw",
+        "amount": 100.0
+      }
+    },
+    "bloodmagic:will_block_steadfast": {
+      "result": "bloodmagic:budding_will_steadfast",
+      "will": {
+        "type": "steadfast",
+        "amount": 100.0
+      }
+    },
+    "bloodmagic:will_block_vengeful": {
+      "result": "bloodmagic:budding_will_vengeful",
+      "will": {
+        "type": "vengeful",
+        "amount": 100.0
+      }
+    },
+    "minecraft:amethyst_block": {
+      "result": "minecraft:budding_amethyst",
+      "will": {
+        "type": "raw",
+        "amount": 500.0
+      }
+    },
+    "minecraft:budding_amethyst": {
+      "result": "bloodmagic:budding_will_raw",
+      "will": {
+        "type": "raw",
+        "amount": 100.0
+      }
+    }
+  }
+}

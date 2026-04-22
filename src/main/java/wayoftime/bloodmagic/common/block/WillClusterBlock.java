@@ -119,6 +119,6 @@ public class WillClusterBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED, FACING);
+        builder.add(WATERLOGGED, FACING, ANOINTED);
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.caps.BMCaps;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class WillConduitTile extends BaseTile implements IWillHandler {
+public class WillConduitTile extends BaseTile implements IWillHandler, IWandConfigurable {
 
     public Map<BlockPos, Optional<EnumWillType>> outputPositions = new HashMap<>();
     public EnumMap<EnumWillType, Double> willStored = new EnumMap<>(EnumWillType.class);
@@ -32,18 +33,28 @@ public class WillConduitTile extends BaseTile implements IWillHandler {
         // TODO implement
     }
 
-    public boolean setOutputPosition(EnumWillType type, BlockPos pos) {
+    @Override
+    public void toggleSelectedState(boolean selected) {
+        // TODO implement line rendering
+    }
+
+    @Override
+    public void toggleWillType(EnumWillType type) {
+        // I guess thats a NO-OP here
+    }
+
+    @Override
+    public void addConnection(BlockPos pos, @Nullable EnumWillType type) {
         if (outputPositions.containsKey(pos) // override
                 || outputPositions.size() <= 21) { // can add
             outputPositions.put(pos, Optional.of(type));
             setChanged();
-            return true;
         }
-        return false;
     }
 
-    public void removeOutput(BlockPos pos) {
-        outputPositions.remove(pos);
+    @Override
+    public void removeConnection(BlockPos target) {
+        outputPositions.remove(target);
         setChanged();
     }
 
@@ -167,5 +178,13 @@ public class WillConduitTile extends BaseTile implements IWillHandler {
             return new BlockPos(posTag.getInt("x"), posTag.getInt("y"), posTag.getInt("y"));
         }
         return null;
+    }
+
+    public IWillHandler getWillHandler(Void unused) {
+        return this;
+    }
+
+    public IWandConfigurable getWandConfigurable(Void unused) {
+        return this;
     }
 }

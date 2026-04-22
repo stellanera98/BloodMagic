@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
+import wayoftime.bloodmagic.common.loadcondition.BMLoadConditions;
 import wayoftime.bloodmagic.common.menu.BMMenus;
 import wayoftime.bloodmagic.common.attribute.BMAttributes;
 import wayoftime.bloodmagic.common.block.BMBlocks;
@@ -31,9 +32,6 @@ import wayoftime.bloodmagic.compat.modopedia.BookCompat;
 public class BloodMagic {
     public static final String MODID = "bloodmagic";
     public static final Logger LOGGER = LogUtils.getLogger();
-
-    public static final ResourceLocation TYPE_PROPERTY = rl("will_type");
-    public static final ResourceLocation INCENSE_PROPERTY = rl("incense_type");
 
     public static final ServerConfig SERVER_CONFIG;
     private static final ModConfigSpec SERVER_CONFIG_SPEC;
@@ -58,6 +56,7 @@ public class BloodMagic {
         BMRecipes.register(modBus);
         BMMenus.register(modBus);
         BMTabs.register(modBus);
+        BMLoadConditions.register(modBus);
 
         container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
 

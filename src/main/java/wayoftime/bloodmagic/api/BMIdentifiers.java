@@ -99,6 +99,9 @@ public class BMIdentifiers {
 
     public static class ItemProperties {
         public static final ResourceLocation SIGIL_ACTIVE = bm("sigil_active");
+        public static final ResourceLocation TYPE_PROPERTY = bm("will_type");
+        public static final ResourceLocation INCENSE_PROPERTY = bm("incense_type");
+        public static final ResourceLocation WILL_CONFIGURATION = bm("will_config");
     }
 
     public static class ModelLoaders {

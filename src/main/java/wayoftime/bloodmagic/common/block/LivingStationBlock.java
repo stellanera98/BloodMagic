@@ -31,7 +31,7 @@ public class LivingStationBlock extends BaseTileBlock<LivingStationTile> impleme
                         .strength(2, 5)
                         .sound(SoundType.STONE)
                         .requiresCorrectToolForDrops(),
-                BMTiles.LIVING_STATION_TYPE.get()
+                BMTiles.LIVING_STATION_TYPE
         );
     }
 

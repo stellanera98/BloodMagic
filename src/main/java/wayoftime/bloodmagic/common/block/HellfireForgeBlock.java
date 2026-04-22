@@ -21,7 +21,6 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.block.base.WorldInteractionBlock;
 import wayoftime.bloodmagic.common.blockentity.BMTiles;
 import wayoftime.bloodmagic.common.blockentity.HellfireForgeTile;
-import wayoftime.bloodmagic.common.blockentity.base.WorldInteractable;
 
 public class HellfireForgeBlock extends WorldInteractionBlock<HellfireForgeTile> implements EntityBlock {
     public static final VoxelShape BOX = box(1, 0, 1, 15, 12, 15);
@@ -30,7 +29,7 @@ public class HellfireForgeBlock extends WorldInteractionBlock<HellfireForgeTile>
         super(Properties.of()
                 .strength(2.0F, 5.0F)
                 .requiresCorrectToolForDrops(),
-                BMTiles.HELLFIRE_FORGE_TYPE.get()
+                BMTiles.HELLFIRE_FORGE_TYPE
         );
     }
 

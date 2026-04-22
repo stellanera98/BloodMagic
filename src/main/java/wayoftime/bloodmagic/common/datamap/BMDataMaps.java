@@ -1,6 +1,9 @@
 package wayoftime.bloodmagic.common.datamap;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -8,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.common.blockentity.InfuserTile;
 
 import java.util.List;
 
@@ -48,6 +52,14 @@ public class BMDataMaps {
             Registries.ITEM,
             WillStack.CODEC
     ).synced(WillStack.CODEC, true).build();
+
+    private static final Codec<Pair<WillStack, Block>> WILL_INFUSION_CODEC =
+            Codec.pair(WillStack.CODEC.fieldOf("will").codec(), BuiltInRegistries.BLOCK.byNameCodec().fieldOf("result").codec());
+    public static final DataMapType<Block, Pair<WillStack, Block>> WILL_INFUSION = DataMapType.builder(
+            BloodMagic.rl("will_infusion"),
+            Registries.BLOCK,
+            WILL_INFUSION_CODEC
+    ).synced(WILL_INFUSION_CODEC, true).build();
 
     public static void register(RegisterDataMapTypesEvent event) {
         event.register(TARTARIC_GEM_MAX_AMOUNTS);

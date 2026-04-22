@@ -21,7 +21,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
-import wayoftime.bloodmagic.common.blockentity.base.WorldInteractable;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.api.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
@@ -41,7 +40,7 @@ import wayoftime.bloodmagic.api.helper.SoulNetworkHelper;
 import java.util.Map;
 import java.util.Optional;
 
-public class BloodAltarTile extends BaseTile implements IFluidHandler, WorldInteractable {
+public class BloodAltarTile extends BaseTile implements IFluidHandler {
 
     private boolean isActive = false;
     private boolean canFill = false;

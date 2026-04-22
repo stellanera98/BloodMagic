@@ -19,7 +19,7 @@ public class CrucibleBlock extends WorldInteractionBlock<CrucibleTile> implement
         super(Properties.of()
                 .strength(2, 5)
                 .requiresCorrectToolForDrops(),
-                BMTiles.CRUCIBLE_TYPE.get()
+                BMTiles.CRUCIBLE_TYPE
         );
     }
 

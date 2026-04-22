@@ -43,7 +43,7 @@ public class BloodTankBlock extends BaseTileBlock<BloodTankTile> implements Enti
                 .strength(2.0F, 5.0F)
                 .sound(SoundType.GLASS)
                 .forceSolidOn(), // This prevents fluids from wiping it away
-                BMTiles.BLOOD_TANK_TYPE.get()
+                BMTiles.BLOOD_TANK_TYPE
         );
     }
 

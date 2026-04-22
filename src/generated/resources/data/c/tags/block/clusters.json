@@ -1,0 +1,9 @@
+{
+  "values": [
+    "bloodmagic:will_cluster_raw",
+    "bloodmagic:will_cluster_corrosive",
+    "bloodmagic:will_cluster_destructive",
+    "bloodmagic:will_cluster_steadfast",
+    "bloodmagic:will_cluster_vengeful"
+  ]
+}

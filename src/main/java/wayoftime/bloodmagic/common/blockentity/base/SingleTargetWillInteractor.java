@@ -6,11 +6,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.util.NBTHelper;
 
-public abstract class SingleTargetWillInteractor extends BaseTile implements WandConfigurable, IWillHandler {
+public abstract class SingleTargetWillInteractor extends BaseTile implements IWandConfigurable, IWillHandler {
 
     protected EnumWillType storedType;
     protected double storedAmount;
@@ -24,6 +25,14 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements Wan
         this.MAX_STORED = maxStored;
     }
 
+    public IWillHandler getWillHandler(Void unused) {
+        return this;
+    }
+
+    public IWandConfigurable getWandConfigurable(Void unused) {
+        return this;
+    }
+
     @Override
     public void addConnection(BlockPos target, @Nullable EnumWillType type) {
         this.target = target;
@@ -35,6 +44,11 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements Wan
         if (this.target.equals(target)) {
             this.target = null;
         }
+    }
+
+    @Override
+    public void toggleWillType(EnumWillType type) {
+        lockedType = type;
     }
 
     @Override

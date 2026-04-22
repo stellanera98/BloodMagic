@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
+
 public class BlockEntityHelper {
     public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> getTicker(BlockEntityType<A> serverType, BlockEntityType<E> clientType, BlockEntityTicker<? super E> ticker) {
         return clientType == serverType ? (BlockEntityTicker<A>) ticker : null;
@@ -24,7 +26,10 @@ public class BlockEntityHelper {
         return Component.translatable(key).withStyle(ChatFormatting.GRAY);
     }
 
-    public static void dropContents(Level level, BlockPos pos, IItemHandler handler) {
+    public static void dropContents(Level level, BlockPos pos, @Nullable IItemHandler handler) {
+        if (handler == null) {
+            return;
+        }
         for (int i = 0; i < handler.getSlots(); i++) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
         }
