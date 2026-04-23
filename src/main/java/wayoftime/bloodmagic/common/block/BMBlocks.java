@@ -113,12 +113,11 @@ public class BMBlocks {
     private static final MapColor MAP_COLOR_STEADFAST = MapColor.COLOR_BLUE;
     private static final MapColor MAP_COLOR_VENGEFUL = MapColor.COLOR_RED;
 
-    // TODO switch to BASIC once textures exist
-    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_RAW = BLOCK_REG.register("will_block_raw", getWillBlockProp(MAP_COLOR_RAW));
-    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_CORROSIVE = BLOCK_REG.register("will_block_corrosive", getWillBlockProp(MAP_COLOR_CORROSIVE));
-    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_DESTRUCTIVE = BLOCK_REG.register("will_block_destructive", getWillBlockProp(MAP_COLOR_DESTRUCTIVE));
-    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_STEADFAST = BLOCK_REG.register("will_block_steadfast", getWillBlockProp(MAP_COLOR_STEADFAST));
-    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_VENGEFUL = BLOCK_REG.register("will_block_vengeful", getWillBlockProp(MAP_COLOR_VENGEFUL));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_RAW = BASIC_REG.register("will_block_raw", getWillBlockProp(MAP_COLOR_RAW));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_CORROSIVE = BASIC_REG.register("will_block_corrosive", getWillBlockProp(MAP_COLOR_CORROSIVE));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_DESTRUCTIVE = BASIC_REG.register("will_block_destructive", getWillBlockProp(MAP_COLOR_DESTRUCTIVE));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_STEADFAST = BASIC_REG.register("will_block_steadfast", getWillBlockProp(MAP_COLOR_STEADFAST));
+    public static final BlockWithItemHolder<Block, BlockItem> WILL_BLOCK_VENGEFUL = BASIC_REG.register("will_block_vengeful", getWillBlockProp(MAP_COLOR_VENGEFUL));
 
     // these stay block for models
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_RAW = BLOCK_REG.register("will_bud_small_raw", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_RAW)));
@@ -158,7 +157,7 @@ public class BMBlocks {
     public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_JUNGLE = BLOCK_REG.register("belljar_jungle", BellJarBlock::new);
     public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_DARK_OAK = BLOCK_REG.register("belljar_dark_oak", BellJarBlock::new);
     public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_CRIMSON = BLOCK_REG.register("belljar_crimson", BellJarBlock::new);
-    public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_WARPED = BLOCK_REG.register("belljar_oak", BellJarBlock::new);
+    public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_WARPED = BLOCK_REG.register("belljar_warped", BellJarBlock::new);
     public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_MANGROVE = BLOCK_REG.register("belljar_mangrove", BellJarBlock::new);
     public static final BlockWithItemHolder<BellJarBlock, BlockItem> BELLJAR_BAMBOO = BLOCK_REG.register("belljar_bamboo", BellJarBlock::new);
 

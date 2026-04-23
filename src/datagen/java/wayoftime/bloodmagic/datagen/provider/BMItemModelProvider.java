@@ -3,6 +3,8 @@ package wayoftime.bloodmagic.datagen.provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -11,14 +13,17 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.api.BMIdentifiers.Sigils;
 import wayoftime.bloodmagic.api.sigil.SigilEffect;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.item.BMItems;
+import wayoftime.bloodmagic.util.blockitem.BlockWithItemHolder;
 
 import java.util.function.Supplier;
 
 public class BMItemModelProvider extends ItemModelProvider {
 
     private final ResourceLocation handheld = mcLoc("item/handheld");
+    private final ResourceLocation generated = mcLoc("item/generated");
 
     public BMItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, BloodMagic.MODID, existingFileHelper);
@@ -44,9 +49,37 @@ public class BMItemModelProvider extends ItemModelProvider {
         builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 0).model(normalDagger).end();
         builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 1).model(chargedDagger).end();
 
-        createWand();
+        // TODO createWand();
+        bud(BMBlocks.WILL_BUD_SMALL_RAW);
+        bud(BMBlocks.WILL_BUD_MEDIUM_RAW);
+        bud(BMBlocks.WILL_BUD_LARGE_RAW);
+        bud(BMBlocks.WILL_CLUSTER_RAW);
+
+        bud(BMBlocks.WILL_BUD_SMALL_CORROSIVE);
+        bud(BMBlocks.WILL_BUD_MEDIUM_CORROSIVE);
+        bud(BMBlocks.WILL_BUD_LARGE_CORROSIVE);
+        bud(BMBlocks.WILL_CLUSTER_CORROSIVE);
+
+        bud(BMBlocks.WILL_BUD_SMALL_DESTRUCTIVE);
+        bud(BMBlocks.WILL_BUD_MEDIUM_DESTRUCTIVE);
+        bud(BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE);
+        bud(BMBlocks.WILL_CLUSTER_DESTRUCTIVE);
+
+        bud(BMBlocks.WILL_BUD_SMALL_STEADFAST);
+        bud(BMBlocks.WILL_BUD_MEDIUM_STEADFAST);
+        bud(BMBlocks.WILL_BUD_LARGE_STEADFAST);
+        bud(BMBlocks.WILL_CLUSTER_STEADFAST);
+
+        bud(BMBlocks.WILL_BUD_SMALL_VENGEFUL);
+        bud(BMBlocks.WILL_BUD_MEDIUM_VENGEFUL);
+        bud(BMBlocks.WILL_BUD_LARGE_VENGEFUL);
+        bud(BMBlocks.WILL_CLUSTER_VENGEFUL);
 
         createSigilModels();
+    }
+
+    private void bud(BlockWithItemHolder<? extends Block, ? extends BlockItem> item) {
+        singleTexture(item.item().getId().toString(), generated, "layer0", item.block().getId().withPrefix("block/")).renderType("cutout");
     }
 
     private void createWand() {

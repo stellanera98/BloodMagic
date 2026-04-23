@@ -70,11 +70,11 @@ public class BMItems {
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_VENGEFUL = BASIC_ITEMS.register("will_catalyst_vengeful", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_VENGEFUL));
 
     // TODO switch back once textures exist
-    public static final DeferredHolder<Item, Item> WILL_SHARD_RAW = ITEMS.register("will_shard_raw", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_CORROSIVE = ITEMS.register("will_shard_corrosive", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_DESTRUCTIVE = ITEMS.register("will_shard_destructive", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_STEADFAST = ITEMS.register("will_shard_steadfast", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> WILL_SHARD_VENGEFUL = ITEMS.register("will_shard_vengeful", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_RAW = BASIC_ITEMS.register("will_shard_raw", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_CORROSIVE = BASIC_ITEMS.register("will_shard_corrosive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_DESTRUCTIVE = BASIC_ITEMS.register("will_shard_destructive", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_STEADFAST = BASIC_ITEMS.register("will_shard_steadfast", () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WILL_SHARD_VENGEFUL = BASIC_ITEMS.register("will_shard_vengeful", () -> new Item(new Item.Properties()));
 
     public static final DeferredHolder<Item, Item> WILL_CRYSTAL_RAW = BASIC_ITEMS.register("will_crystal_raw", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> WILL_CRYSTAL_CORROSIVE = BASIC_ITEMS.register("will_crystal_corrosive", () -> new Item(new Item.Properties()));

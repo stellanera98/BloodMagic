@@ -51,7 +51,16 @@ public class BMTiles {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BellJarTile>> BELLJAR_TYPE = TILES.register("belljar",
             () -> new BlockEntityType<>(BellJarTile::new, Set.of(
-
+                    BMBlocks.BELLJAR_OAK.block().get(),
+                    BMBlocks.BELLJAR_SPRUCE.block().get(),
+                    BMBlocks.BELLJAR_BIRCH.block().get(),
+                    BMBlocks.BELLJAR_CHERRY.block().get(),
+                    BMBlocks.BELLJAR_JUNGLE.block().get(),
+                    BMBlocks.BELLJAR_DARK_OAK.block().get(),
+                    BMBlocks.BELLJAR_CRIMSON.block().get(),
+                    BMBlocks.BELLJAR_WARPED.block().get(),
+                    BMBlocks.BELLJAR_MANGROVE.block().get(),
+                    BMBlocks.BELLJAR_BAMBOO.block().get()
             ), null));
 
     private static void registerTileCapabilities(RegisterCapabilitiesEvent event) {

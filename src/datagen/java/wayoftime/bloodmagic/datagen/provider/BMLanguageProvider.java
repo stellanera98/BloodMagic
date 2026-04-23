@@ -97,6 +97,18 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
         add(BMItems.MANIFESTED_WILL.get(), "Raw Will");
 
+        // Crystal Belljars
+        add(BMBlocks.BELLJAR_OAK, "Oak Will Jar");
+        add(BMBlocks.BELLJAR_SPRUCE, "Spruce Will Jar");
+        add(BMBlocks.BELLJAR_BIRCH, "Birch Will Jar");
+        add(BMBlocks.BELLJAR_CHERRY, "Cherry Will Jar");
+        add(BMBlocks.BELLJAR_JUNGLE, "Jungle Will Jar");
+        add(BMBlocks.BELLJAR_DARK_OAK, "Dark Oak Will Jar");
+        add(BMBlocks.BELLJAR_CRIMSON, "Crimson Will Jar");
+        add(BMBlocks.BELLJAR_WARPED, "Warped Will Jar");
+        add(BMBlocks.BELLJAR_MANGROVE, "Mangrove Will Jar");
+        add(BMBlocks.BELLJAR_BAMBOO, "Bamboo Will Jar");
+
         //Soul Gems
         add(BMItems.SOUL_GEM_PETTY.get(), "Petty Tartaric Gem");
         add(BMItems.SOUL_GEM_LESSER.get(), "Lesser Tartaric Gem");

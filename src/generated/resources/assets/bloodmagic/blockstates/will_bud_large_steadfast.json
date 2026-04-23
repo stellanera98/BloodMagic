@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "bloodmagic:block/will_bud_large_steadfast",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "bloodmagic:block/will_bud_large_steadfast",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "bloodmagic:block/will_bud_large_steadfast",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "bloodmagic:block/will_bud_large_steadfast",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "bloodmagic:block/will_bud_large_steadfast"
+    },
+    "facing=west": {
+      "model": "bloodmagic:block/will_bud_large_steadfast",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

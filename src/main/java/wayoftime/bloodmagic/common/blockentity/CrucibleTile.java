@@ -49,6 +49,9 @@ public class CrucibleTile extends SingleTargetWillInteractor {
 
     @Override
     public void tick(Level level, BlockPos pos, BlockState state) {
+        if (target == null) {
+            return;
+        }
         IWillHandler targetHandler = level.getCapability(BMCaps.BLOCK_WILL_HANDLER, target);
         if (targetHandler == null) {
             return;

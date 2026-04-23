@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "layer0": "bloodmagic:block/will_cluster_steadfast"
+  }
+}

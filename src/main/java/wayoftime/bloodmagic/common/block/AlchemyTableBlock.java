@@ -34,7 +34,7 @@ import wayoftime.bloodmagic.util.TablePart;
 
 public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implements EntityBlock {
 
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<TablePart> PART = EnumProperty.create("part", TablePart.class);
 
     public AlchemyTableBlock() {

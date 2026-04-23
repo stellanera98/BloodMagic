@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "bloodmagic:block/will_block_raw"
+    }
+  }
+}

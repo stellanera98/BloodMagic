@@ -40,11 +40,16 @@ public class MineBlock extends BlockLootSubProvider {
         addDropSelf(BMBlocks.WILL_CRUCIBLE);
         addDropSpecial(BMBlocks.ALCHEMY_TABLE);
 
-        addDropSelf(BMBlocks.WILL_BLOCK_RAW);
-        addDropSelf(BMBlocks.WILL_BLOCK_CORROSIVE);
-        addDropSelf(BMBlocks.WILL_BLOCK_DESTRUCTIVE);
-        addDropSelf(BMBlocks.WILL_BLOCK_STEADFAST);
-        addDropSelf(BMBlocks.WILL_BLOCK_VENGEFUL);
+        addDropSelf(BMBlocks.BELLJAR_OAK);
+        addDropSelf(BMBlocks.BELLJAR_SPRUCE);
+        addDropSelf(BMBlocks.BELLJAR_BIRCH);
+        addDropSelf(BMBlocks.BELLJAR_CHERRY);
+        addDropSelf(BMBlocks.BELLJAR_JUNGLE);
+        addDropSelf(BMBlocks.BELLJAR_DARK_OAK);
+        addDropSelf(BMBlocks.BELLJAR_CRIMSON);
+        addDropSelf(BMBlocks.BELLJAR_WARPED);
+        addDropSelf(BMBlocks.BELLJAR_MANGROVE);
+        addDropSelf(BMBlocks.BELLJAR_BAMBOO);
     }
 
     private void addDropSelf(BlockWithItemHolder<? extends Block, ? extends BlockItem> toAdd) {

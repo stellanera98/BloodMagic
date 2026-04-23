@@ -33,6 +33,10 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
         return this;
     }
 
+    public double getCapacity() {
+        return MAX_STORED;
+    }
+
     @Override
     public void addConnection(BlockPos target, @Nullable EnumWillType type) {
         this.target = target;

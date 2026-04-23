@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "bloodmagic:block/living_station",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "bloodmagic:block/living_station"
+    },
+    "facing=south": {
+      "model": "bloodmagic:block/living_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "bloodmagic:block/living_station",
+      "y": 270
+    }
+  }
+}

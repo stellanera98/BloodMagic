@@ -1,0 +1,6 @@
+{
+  "parent": "bloodmagic:block/belljar_base",
+  "textures": {
+    "wood": "minecraft:block/bamboo_planks"
+  }
+}
