@@ -12,6 +12,10 @@ public enum TablePart implements StringRepresentable {
         this.name = name;
     }
 
+    public TablePart getOther() {
+        return this == LEFT ? RIGHT : LEFT;
+    }
+
     @Override
     public String toString() {
         return this.name;

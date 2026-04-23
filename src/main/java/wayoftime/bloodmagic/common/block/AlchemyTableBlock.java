@@ -3,12 +3,14 @@ package wayoftime.bloodmagic.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +26,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.block.base.BaseTileBlock;
 import wayoftime.bloodmagic.common.blockentity.ARCTile;
@@ -37,6 +41,8 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<TablePart> PART = EnumProperty.create("part", TablePart.class);
 
+    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 12, 16);
+
     public AlchemyTableBlock() {
         super(Properties.of()
                 .strength(2, 5)
@@ -47,6 +53,11 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
                 .forceSolidOn(),
                 BMTiles.ALCHEMY_TABLE_TYPE
         );
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -78,19 +89,24 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
         BlockPos clickedPos = context.getClickedPos();
         BlockPos rightPos = clickedPos.relative(direction.getClockWise());
         Level level = context.getLevel();
-        return level.getBlockState(rightPos).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(rightPos)
-            ? this.defaultBlockState().setValue(FACING, direction)
-            : null;
+        if (level.getBlockState(rightPos).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(rightPos)) {
+            return this.defaultBlockState().setValue(FACING, direction);
+        }
+        BlockPos leftPos = clickedPos.relative(direction.getCounterClockWise());
+        return level.getBlockState(leftPos).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(leftPos) ?
+                this.defaultBlockState().setValue(FACING, direction).setValue(PART, TablePart.RIGHT)
+                : null;
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
-            BlockPos blockpos = pos.relative(state.getValue(FACING).getClockWise());
-            level.setBlock(blockpos, state.setValue(PART, TablePart.RIGHT), 3);
+            TablePart prev = state.getValue(PART);
+            BlockPos blockpos = pos.relative(getNeighbourDirection(prev, state.getValue(FACING)));
+            level.setBlockAndUpdate(blockpos, state.setValue(PART, prev.getOther()));
             level.blockUpdated(pos, Blocks.AIR);
-            state.updateNeighbourShapes(level, pos, 3);
+            state.updateNeighbourShapes(level, pos, UPDATE_ALL);
         }
     }
 
@@ -129,11 +145,5 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, PART);
-    }
-
-    // might be handy for renderer? referenced from BedBlock. LEFT is the actually placed one, RIGHT the added
-    public static DoubleBlockCombiner.BlockType getBlockType(BlockState state) {
-        TablePart part = state.getValue(PART);
-        return part == TablePart.RIGHT ? DoubleBlockCombiner.BlockType.FIRST : DoubleBlockCombiner.BlockType.SECOND;
     }
 }
