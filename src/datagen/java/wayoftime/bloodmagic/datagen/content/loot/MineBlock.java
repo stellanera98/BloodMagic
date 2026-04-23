@@ -79,7 +79,7 @@ public class MineBlock extends BlockLootSubProvider {
         copyComponents(BMBlocks.BLOOD_TANK);
         copyComponents(BMBlocks.LIVING_STATION);
 
-        add(BMBlocks.ALCHEMY_TABLE.block().get(), block -> createSinglePropConditionTable(block, AlchemyTableBlock.PART, TablePart.LEFT));
+        add(BMBlocks.ALCHEMY_TABLE.block().get(), block -> createSinglePropConditionTable(block, AlchemyTableBlock.PART, TablePart.RIGHT));
 
         dropWhenSilkTouch(BMBlocks.WILL_BUD_SMALL_RAW);
         dropWhenSilkTouch(BMBlocks.WILL_BUD_MEDIUM_RAW);

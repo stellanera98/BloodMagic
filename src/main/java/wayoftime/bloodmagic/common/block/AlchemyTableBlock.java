@@ -118,7 +118,7 @@ public class AlchemyTableBlock extends BaseTileBlock<AlchemyTableTile> implement
                 BlockPos blockpos = pos.relative(getNeighbourDirection(part, state.getValue(FACING)));
                 BlockState blockstate = level.getBlockState(blockpos);
                 if (blockstate.is(this) && blockstate.getValue(PART) == TablePart.RIGHT) {
-                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), (UPDATE_SUPPRESS_DROPS | UPDATE_ALL));
                     level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
                 }
             }
