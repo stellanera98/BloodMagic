@@ -131,6 +131,9 @@ public class BMBlockstateProvider extends BlockStateProvider {
                 .texture("bark", mcLoc("block/oak_log"))
                 .texture("dark_side", mcLoc("block/stripped_dark_oak_log"))
                 .texture("dark_top", mcLoc("block/stripped_dark_oak_log_top"))
+                .texture("desk", modLoc("block/living_desk"))
+                .texture("under", modLoc("block/rune_blank"))
+                .texture("particle", "#desk")
                 // North-East foot
                 .element().from(2, 0, 2)
                 .to(4, 3, 4)
@@ -153,10 +156,16 @@ public class BMBlockstateProvider extends BlockStateProvider {
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#dark_top").end().end()
                 // Body
                 .element().from(2, 3, 2)
-                .to(14, 16, 14)
+                .to(14, 14, 14)
                 .face(Direction.UP).uvs(0, 0, 16, 16).texture("#top").end()
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#top").end()
                 .allFacesExcept((direction, builder) -> builder.uvs(0, 0, 16, 16).texture("#side").end(), Set.of(Direction.UP, Direction.DOWN)).end()
+                // Desk-Plate
+                .element().from(0, 14, 0)
+                .to(16, 16, 16)
+                .face(Direction.UP).uvs(0, 0, 16, 16).texture("#desk").end()
+                .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#under").end()
+                .allFacesExcept((side, builder) -> builder.uvs(0, 0, 16, 1).texture("#under"), Set.of(Direction.UP, Direction.DOWN)).end()
                 // Upper Drawer
                 .element().from(4, 10, 14)
                 .to(12, 14, 15)
@@ -192,7 +201,7 @@ public class BMBlockstateProvider extends BlockStateProvider {
 
         VariantBlockStateBuilder builder = getVariantBuilder(BMBlocks.LIVING_STATION.block().get());
         for (Direction facing : Direction.Plane.HORIZONTAL) {
-            builder.partialState().with(ARCBlock.FACING, facing).modelForState().modelFile(model).rotationY((int) facing.getOpposite().toYRot()).addModel();
+            builder.partialState().with(ARCBlock.FACING, facing).modelForState().modelFile(model).rotationY((int) facing.toYRot()).addModel();
         }
     }
 

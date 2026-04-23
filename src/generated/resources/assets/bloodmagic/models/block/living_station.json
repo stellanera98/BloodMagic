@@ -301,8 +301,64 @@
       ],
       "to": [
         14,
-        16,
+        14,
         14
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#under"
+        },
+        "east": {
+          "texture": "#under",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            1.0
+          ]
+        },
+        "north": {
+          "texture": "#under",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            1.0
+          ]
+        },
+        "south": {
+          "texture": "#under",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            1.0
+          ]
+        },
+        "up": {
+          "texture": "#desk"
+        },
+        "west": {
+          "texture": "#under",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            1.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
       ]
     },
     {
@@ -546,7 +602,10 @@
     "bark": "minecraft:block/oak_log",
     "dark_side": "minecraft:block/stripped_dark_oak_log",
     "dark_top": "minecraft:block/stripped_dark_oak_log_top",
+    "desk": "bloodmagic:block/living_desk",
+    "particle": "#desk",
     "side": "minecraft:block/stripped_oak_log",
-    "top": "minecraft:block/stripped_oak_log_top"
+    "top": "minecraft:block/stripped_oak_log_top",
+    "under": "bloodmagic:block/rune_blank"
   }
 }

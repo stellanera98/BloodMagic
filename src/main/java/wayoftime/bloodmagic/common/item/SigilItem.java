@@ -39,6 +39,10 @@ public class SigilItem extends Item {
         }
         ResourceKey<SigilEffect> key = stack.getOrDefault(BMDataComponents.SIGIL_EFFECT, Sigils.DIVINATION);
         tooltipComponents.add(Component.translatable("tooltip.bloodmagic.sigil." + key.location().getPath()));
+        if (context.level() == null) {
+            tooltipComponents.add(Component.literal("sry, level is null"));
+            return;
+        }
         SigilEffect effect = context.level().registryAccess().registryOrThrow(BMIdentifiers.RegistryKeys.SIGIL_EFFECT).getOrThrow(key);
         if (effect.isActivatable()) {
             boolean isActive = stack.has(BMDataComponents.SIGIL_ACTIVE);

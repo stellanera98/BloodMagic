@@ -16,7 +16,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.common.Tags;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMTags;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 
@@ -35,23 +37,23 @@ public class BuddingWillBlock extends Block {
     public static final Map<Holder<Block>, Holder<Block>> GROWTH_MAP = new ImmutableMap.Builder<Holder<Block>, Holder<Block>>()
             .put(BMBlocks.WILL_BUD_SMALL_RAW.block(), BMBlocks.WILL_BUD_MEDIUM_RAW.block())
             .put(BMBlocks.WILL_BUD_MEDIUM_RAW.block(), BMBlocks.WILL_BUD_LARGE_RAW.block())
-            .put(BMBlocks.WILL_BUD_LARGE_RAW.block(), BMBlocks.BUDDING_WILL_RAW.block())
+            .put(BMBlocks.WILL_BUD_LARGE_RAW.block(), BMBlocks.WILL_CLUSTER_RAW.block())
 
             .put(BMBlocks.WILL_BUD_SMALL_CORROSIVE.block(), BMBlocks.WILL_BUD_MEDIUM_CORROSIVE.block())
             .put(BMBlocks.WILL_BUD_MEDIUM_CORROSIVE.block(), BMBlocks.WILL_BUD_LARGE_CORROSIVE.block())
-            .put(BMBlocks.WILL_BUD_LARGE_CORROSIVE.block(), BMBlocks.BUDDING_WILL_CORROSIVE.block())
+            .put(BMBlocks.WILL_BUD_LARGE_CORROSIVE.block(), BMBlocks.WILL_CLUSTER_CORROSIVE.block())
 
             .put(BMBlocks.WILL_BUD_SMALL_DESTRUCTIVE.block(), BMBlocks.WILL_BUD_MEDIUM_DESTRUCTIVE.block())
             .put(BMBlocks.WILL_BUD_MEDIUM_DESTRUCTIVE.block(), BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE.block())
-            .put(BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE.block(), BMBlocks.BUDDING_WILL_DESTRUCTIVE.block())
+            .put(BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE.block(), BMBlocks.WILL_CLUSTER_DESTRUCTIVE.block())
 
             .put(BMBlocks.WILL_BUD_SMALL_STEADFAST.block(), BMBlocks.WILL_BUD_MEDIUM_STEADFAST.block())
             .put(BMBlocks.WILL_BUD_MEDIUM_STEADFAST.block(), BMBlocks.WILL_BUD_LARGE_STEADFAST.block())
-            .put(BMBlocks.WILL_BUD_LARGE_STEADFAST.block(), BMBlocks.BUDDING_WILL_STEADFAST.block())
+            .put(BMBlocks.WILL_BUD_LARGE_STEADFAST.block(), BMBlocks.WILL_CLUSTER_STEADFAST.block())
 
             .put(BMBlocks.WILL_BUD_SMALL_VENGEFUL.block(), BMBlocks.WILL_BUD_MEDIUM_VENGEFUL.block())
             .put(BMBlocks.WILL_BUD_MEDIUM_VENGEFUL.block(), BMBlocks.WILL_BUD_LARGE_VENGEFUL.block())
-            .put(BMBlocks.WILL_BUD_LARGE_VENGEFUL.block(), BMBlocks.BUDDING_WILL_VENGEFUL.block())
+            .put(BMBlocks.WILL_BUD_LARGE_VENGEFUL.block(), BMBlocks.WILL_CLUSTER_VENGEFUL.block())
             .build();
 
     public static final IntegerProperty STORED_WILL = IntegerProperty.create("stored_will", 0, 4 * 6); // store enough will to grow a full cluster on each side
@@ -105,13 +107,22 @@ public class BuddingWillBlock extends Block {
 
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-
+        // 60s * 10 random ticks * 1/30 * 1/5 = 4 -> 1 cluster per 60s +/- randomness
+        // default randomTickSpeed (3) -> roughly once per 45-48s, 45 * 30 = 1350s -> one extra per 22.5 - 24h
+        if (random.nextInt(30) == 0) {
+            growthTick(state, level, pos, random);
+        }
     }
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         growthTick(state, level, pos, random);
         level.scheduleTick(pos, state.getBlock(), 20 * (45 + random.nextInt(3)));
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        level.scheduleTick(pos, state.getBlock(), 20 * 45);
     }
 
     public void growthTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -130,7 +141,7 @@ public class BuddingWillBlock extends Block {
             if (canClusterGrowAtState(growState)) {
                 block = small.value();
                 break;
-            } else if (growState.getValue(FACING) == side) {
+            } else if (growState.is(Tags.Blocks.BUDS) && growState.getValue(FACING) == side) {
                 block = GROWTH_MAP.get(growState.getBlockHolder()).value();
                 break;
             }
@@ -140,11 +151,11 @@ public class BuddingWillBlock extends Block {
             BlockState newState = block.defaultBlockState()
                     .setValue(FACING, growSide)
                     .setValue(WillClusterBlock.WATERLOGGED, growState.getFluidState().getType() == Fluids.WATER);
-            int cost = newState.is(sameType) ? 1 : foreignCost;
+            int cost = growState.isEmpty() || growState.is(sameType) ? 1 : foreignCost;
             int available = state.getValue(STORED_WILL);
             if (cost <= available) {
                 level.setBlockAndUpdate(growPos, newState);
-                level.sendBlockUpdated(pos, state, state.setValue(STORED_WILL, available - cost), UPDATE_ALL_IMMEDIATE);
+                level.setBlockAndUpdate(pos, state.setValue(STORED_WILL, available - cost));
             }
         }
     }

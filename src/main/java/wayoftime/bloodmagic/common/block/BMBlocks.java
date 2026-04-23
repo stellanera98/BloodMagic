@@ -124,7 +124,7 @@ public class BMBlocks {
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_RAW = BLOCK_REG.register("will_bud_medium_raw", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_RAW)));
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_LARGE_RAW = BLOCK_REG.register("will_bud_large_raw", () -> new WillClusterBlock(5, 3, getClusterProp(SoundType.LARGE_AMETHYST_BUD, 4, MAP_COLOR_RAW)));
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_CLUSTER_RAW = BLOCK_REG.register("will_cluster_raw", () -> new WillClusterBlock(7, 3, getClusterProp(SoundType.AMETHYST_CLUSTER, 5, MAP_COLOR_RAW)));
-    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_RAW = BLOCK_REG.register("budding_will_raw", () -> new BuddingWillBlock(WILL_BUD_SMALL_RAW.block(), 1, BMTags.Blocks.WILL_BUD_RAW, MAP_COLOR_RAW));
+    public static final BlockWithItemHolder<BuddingWillBlock, BlockItem> BUDDING_WILL_RAW = BLOCK_REG.register("budding_will_raw", () -> new BuddingWillBlock(WILL_BUD_SMALL_RAW.block(), 2, BMTags.Blocks.WILL_BUD_RAW, MAP_COLOR_RAW));
 
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_SMALL_CORROSIVE = BLOCK_REG.register("will_bud_small_corrosive", () -> new WillClusterBlock(3, 4, getClusterProp(SoundType.SMALL_AMETHYST_BUD, 1, MAP_COLOR_CORROSIVE)));
     public static final BlockWithItemHolder<WillClusterBlock, BlockItem> WILL_BUD_MEDIUM_CORROSIVE = BLOCK_REG.register("will_bud_medium_corrosive", () -> new WillClusterBlock(4, 3, getClusterProp(SoundType.MEDIUM_AMETHYST_BUD, 2, MAP_COLOR_CORROSIVE)));
