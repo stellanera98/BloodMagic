@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import wayoftime.bloodmagic.BloodMagic;
+import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
@@ -95,7 +96,8 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.IMPERFECT_RITUAL_BLOCK, "Imperfect Ritual Stone");
 
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
-        add(BMItems.MANIFESTED_WILL.get(), "Raw Will");
+        add(BMBlocks.WILL_CRUCIBLE, "Demon Crucible");
+        add(BMBlocks.WILL_INFUSER, "Demon Will Infuser");
 
         // Crystal Belljars
         add(BMBlocks.BELLJAR_OAK, "Oak Will Jar");
@@ -109,6 +111,69 @@ public class BMLanguageProvider extends LanguageProvider {
         add(BMBlocks.BELLJAR_MANGROVE, "Mangrove Will Jar");
         add(BMBlocks.BELLJAR_BAMBOO, "Bamboo Will Jar");
 
+        // Will Blocks
+        add(BMBlocks.WILL_BLOCK_RAW, "Block of Raw Will");
+        add(BMBlocks.WILL_BLOCK_CORROSIVE, "Block of Corrosive Will");
+        add(BMBlocks.WILL_BLOCK_DESTRUCTIVE, "Block of Destructive Will");
+        add(BMBlocks.WILL_BLOCK_STEADFAST, "Block of Steadfast Will");
+        add(BMBlocks.WILL_BLOCK_VENGEFUL, "Block of Vengeful Will");
+
+        // Budding Will Blocks
+        add(BMBlocks.BUDDING_WILL_RAW, "Budding Raw Will");
+        add(BMBlocks.BUDDING_WILL_CORROSIVE, "Budding Corrosive Will");
+        add(BMBlocks.BUDDING_WILL_DESTRUCTIVE, "Budding Destructive Will");
+        add(BMBlocks.BUDDING_WILL_STEADFAST, "Budding Steadfast Will");
+        add(BMBlocks.BUDDING_WILL_VENGEFUL, "Budding Vengeful Will");
+
+        // Small Will Buds
+        add(BMBlocks.WILL_BUD_SMALL_RAW, "Small Raw Will Bud");
+        add(BMBlocks.WILL_BUD_SMALL_CORROSIVE, "Small Corrosive Will Bud");
+        add(BMBlocks.WILL_BUD_SMALL_DESTRUCTIVE, "Small Destructive Will Bud");
+        add(BMBlocks.WILL_BUD_SMALL_STEADFAST, "Small Steadfast Will Bud");
+        add(BMBlocks.WILL_BUD_SMALL_VENGEFUL, "Small Vengeful Will Bud");
+
+        // Medium Will Buds
+        add(BMBlocks.WILL_BUD_MEDIUM_RAW, "Medium Raw Will Bud");
+        add(BMBlocks.WILL_BUD_MEDIUM_CORROSIVE, "Medium Corrosive Will Bud");
+        add(BMBlocks.WILL_BUD_MEDIUM_DESTRUCTIVE, "Medium Destructive Will Bud");
+        add(BMBlocks.WILL_BUD_MEDIUM_STEADFAST, "Medium Steadfast Will Bud");
+        add(BMBlocks.WILL_BUD_MEDIUM_VENGEFUL, "Medium Vengeful Will Bud");
+
+        // Large Will Buds
+        add(BMBlocks.WILL_BUD_LARGE_RAW, "Large Raw Will Bud");
+        add(BMBlocks.WILL_BUD_LARGE_CORROSIVE, "Large Corrosive Will Bud");
+        add(BMBlocks.WILL_BUD_LARGE_DESTRUCTIVE, "Large Destructive Will Bud");
+        add(BMBlocks.WILL_BUD_LARGE_STEADFAST, "Large Steadfast Will Bud");
+        add(BMBlocks.WILL_BUD_LARGE_VENGEFUL, "Large Vengeful Will Bud");
+
+        // Will Clusters
+        add(BMBlocks.WILL_CLUSTER_RAW, "Raw Will Cluster");
+        add(BMBlocks.WILL_CLUSTER_CORROSIVE, "Corrosive Will Cluster");
+        add(BMBlocks.WILL_CLUSTER_DESTRUCTIVE, "Destructive Will Cluster");
+        add(BMBlocks.WILL_CLUSTER_STEADFAST, "Steadfast Will Cluster");
+        add(BMBlocks.WILL_CLUSTER_VENGEFUL, "Vengeful Will Cluster");
+
+        // Will Shards
+        add(BMItems.WILL_SHARD_RAW.get(), "Raw Will Shard");
+        add(BMItems.WILL_SHARD_CORROSIVE.get(), "Corrosive Will Shard");
+        add(BMItems.WILL_SHARD_DESTRUCTIVE.get(), "Destructive Will Shard");
+        add(BMItems.WILL_SHARD_STEADFAST.get(), "Steadfast Will Shard");
+        add(BMItems.WILL_SHARD_VENGEFUL.get(), "Vengeful Will Shard");
+
+        // Will Crystals
+        add(BMItems.WILL_CRYSTAL_RAW.get(), "Raw Will Crystal");
+        add(BMItems.WILL_CRYSTAL_CORROSIVE.get(), "Corrosive Will Crystal");
+        add(BMItems.WILL_CRYSTAL_DESTRUCTIVE.get(), "Destructive Will Crystal");
+        add(BMItems.WILL_CRYSTAL_STEADFAST.get(), "Steadfast Will Crystal");
+        add(BMItems.WILL_CRYSTAL_VENGEFUL.get(), "Vengeful Will Crystal");
+
+        // Will Catalysts
+        add(BMItems.WILL_CATALYST_RAW.get(), "Raw Will Catalyst");
+        add(BMItems.WILL_CATALYST_CORROSIVE.get(), "Corrosive Will Catalyst");
+        add(BMItems.WILL_CATALYST_DESTRUCTIVE.get(), "Destructive Will Catalyst");
+        add(BMItems.WILL_CATALYST_STEADFAST.get(), "Steadfast Will Catalyst");
+        add(BMItems.WILL_CATALYST_VENGEFUL.get(), "Vengeful Will Catalyst");
+
         //Soul Gems
         add(BMItems.SOUL_GEM_PETTY.get(), "Petty Tartaric Gem");
         add(BMItems.SOUL_GEM_LESSER.get(), "Lesser Tartaric Gem");
@@ -121,9 +186,12 @@ public class BMLanguageProvider extends LanguageProvider {
         addGemDesc(BMItems.SOUL_GEM_GREATER, "a greater amount of");
         addGemDesc(BMItems.SOUL_GEM_GRAND, "a large amount of");
 
+        add(BMItems.WILL_ROUTING_WAND.get(), "Routing Wand");
         addTooltip("will", "Will Quality: %s");
         for (EnumWillType type : EnumWillType.types()) {
             addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
+            add(BMItems.WILL_ROUTING_WAND.get().getDescriptionId() + "." + type.getSerializedName(), "Routing Wand (" + type.toCapitalized() + ")");
+            add(BMItems.MANIFESTED_WILL.get().getDescriptionId() + "." + type.getSerializedName(), "Manifested " + type.toCapitalized() + " Will");
         }
 
         add(BMBlocks.ALCHEMY_TABLE, "Alchemy Table");

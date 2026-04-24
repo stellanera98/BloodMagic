@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.common.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +38,7 @@ public class ManifestedWillItem extends Item {
     @Override
     public String getDescriptionId(ItemStack stack) {
         EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
-        String baseId = stack.getItemHolder().getRegisteredName();
+        String baseId = Util.makeDescriptionId("item", stack.getItemHolder().getKey().location());
         return baseId + "." + type.getSerializedName();
     }
 

@@ -68,5 +68,7 @@ public class BMDataMaps {
         event.register(LIVING_ARMOUR_DATA);
 
         event.register(IMPERFECT_RITUAL_CATALYST);
+        event.register(DEMON_CRUCIBLE);
+        event.register(WILL_INFUSION);
     }
 }

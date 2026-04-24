@@ -63,7 +63,7 @@ public class BMItems {
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", TartaricGemItem::new);
 
-    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DEFAULT = BASIC_ITEMS.register("will_catalyst_raw", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
+    public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_RAW = BASIC_ITEMS.register("will_catalyst_raw", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_CORROSIVE = BASIC_ITEMS.register("will_catalyst_corrosive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_CORROSIVE));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_DESTRUCTIVE = BASIC_ITEMS.register("will_catalyst_destructive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_DESTRUCTIVE));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_STEADFAST = BASIC_ITEMS.register("will_catalyst_steadfast", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_STEADFAST));

@@ -49,7 +49,7 @@ public class BMItemModelProvider extends ItemModelProvider {
         builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 0).model(normalDagger).end();
         builder.override().predicate(BMIdentifiers.ItemProperties.INCENSE_PROPERTY, 1).model(chargedDagger).end();
 
-        // TODO createWand();
+        createWand();
         bud(BMBlocks.WILL_BUD_SMALL_RAW);
         bud(BMBlocks.WILL_BUD_MEDIUM_RAW);
         bud(BMBlocks.WILL_BUD_LARGE_RAW);
@@ -86,11 +86,11 @@ public class BMItemModelProvider extends ItemModelProvider {
         ItemModelBuilder builder = getBuilder(BMItems.WILL_ROUTING_WAND.getId().getPath());
 
         builder.parent(new ModelFile.UncheckedModelFile(handheld))
-                .texture("layer0", modLoc("item/wand_all"));
+                .texture("layer0", modLoc("item/router_none"));
 
         for (EnumWillType type : EnumWillType.types()) {
             builder.override().predicate(BMIdentifiers.ItemProperties.WILL_CONFIGURATION, type.ordinal() + 1)
-                    .model(singleTexture("item/variant/wand_" + type.getSerializedName(), handheld, modLoc("item/wand_" + type.getSerializedName())))
+                    .model(singleTexture("item/variant/router_" + type.getSerializedName(), handheld, "layer0", modLoc("item/router_" + type.getSerializedName())))
                     .end();
         }
     }

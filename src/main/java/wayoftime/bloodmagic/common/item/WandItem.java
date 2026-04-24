@@ -1,5 +1,6 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,6 +21,13 @@ public class WandItem extends Item {
         super(new Properties()
                 .stacksTo(1)
         );
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack stack) {
+        EnumWillType type = stack.get(BMDataComponents.DEMON_WILL_TYPE);
+        String baseId = Util.makeDescriptionId("item", stack.getItemHolder().getKey().location());
+        return type == null ? baseId : baseId + "." + type.getSerializedName();
     }
 
     @Override

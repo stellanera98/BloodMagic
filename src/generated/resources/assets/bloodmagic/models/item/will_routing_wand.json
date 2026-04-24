@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:item/handheld",
+  "overrides": [
+    {
+      "model": "bloodmagic:item/variant/router_raw",
+      "predicate": {
+        "bloodmagic:will_config": 1.0
+      }
+    },
+    {
+      "model": "bloodmagic:item/variant/router_corrosive",
+      "predicate": {
+        "bloodmagic:will_config": 2.0
+      }
+    },
+    {
+      "model": "bloodmagic:item/variant/router_destructive",
+      "predicate": {
+        "bloodmagic:will_config": 3.0
+      }
+    },
+    {
+      "model": "bloodmagic:item/variant/router_steadfast",
+      "predicate": {
+        "bloodmagic:will_config": 4.0
+      }
+    },
+    {
+      "model": "bloodmagic:item/variant/router_vengeful",
+      "predicate": {
+        "bloodmagic:will_config": 5.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "bloodmagic:item/router_none"
+  }
+}
