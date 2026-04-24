@@ -3,13 +3,20 @@ package wayoftime.bloodmagic.common.blockentity.base;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
+import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.util.NBTHelper;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public abstract class SingleTargetWillInteractor extends BaseTile implements IWandConfigurable, IWillHandler {
 
@@ -25,6 +32,20 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
         this.MAX_STORED = maxStored;
     }
 
+    public void pushWill(double rate) {
+        if (target == null) {
+            return;
+        }
+        IWillHandler targetHandler = level.getCapability(BMCaps.BLOCK_WILL_HANDLER, target);
+        if (targetHandler == null) {
+            return;
+        }
+
+        double available = drain(storedType, rate, false);
+        double filled = targetHandler.fill(storedType, available, true);
+        drain(storedType, filled, true);
+    }
+
     public IWillHandler getWillHandler(Void unused) {
         return this;
     }
@@ -38,21 +59,25 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
     }
 
     @Override
-    public void addConnection(BlockPos target, @Nullable EnumWillType type) {
+    public void addConnection(BlockPos target, @Nullable EnumWillType type, Consumer<MutableComponent> response) {
         this.target = target;
         this.lockedType = type;
+        response.accept(Component.translatable("tooltip.bloodmagic.routing.link.success", target.toShortString()));
     }
 
     @Override
-    public void removeConnection(BlockPos target) {
-        if (this.target.equals(target)) {
+    public void removeConnection(BlockPos target, Consumer<MutableComponent> response) {
+        if (this.target != null && this.target.equals(target)) {
             this.target = null;
+            response.accept(Component.translatable("tooltip.bloodmagic.routing.unlink.success"));
         }
+        response.accept(Component.translatable("tooltip.bloodmagic.routing.unlink.fail", target.toShortString()));
     }
 
     @Override
-    public void toggleWillType(EnumWillType type) {
+    public void toggleWillType(EnumWillType type, Consumer<MutableComponent> response) {
         lockedType = type;
+        response.accept(Component.translatable("tooltip.bloodmagic.routing.will." + type.getSerializedName() + ".on"));
     }
 
     @Override

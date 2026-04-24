@@ -33,14 +33,17 @@ public abstract class WorldInteractionBlock<W extends BaseTile> extends BaseTile
         IItemHandler handler = tile.getItemHandler(hitResult.getDirection());
         if (stack.isEmpty()) {
             player.setItemInHand(hand, take(handler, player, hitResult));
+            level.sendBlockUpdated(pos, state, state, UPDATE_CLIENTS);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         } else {
             if (put(handler, stack.copyWithCount(1), player, hitResult).isEmpty()) {
                 stack.shrink(1);
+                level.sendBlockUpdated(pos, state, state, UPDATE_CLIENTS);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
 
-        level.sendBlockUpdated(pos, state, state, UPDATE_CLIENTS);
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     protected ItemStack take(IItemHandler handler, Player player, BlockHitResult result) {

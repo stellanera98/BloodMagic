@@ -15,6 +15,8 @@ import wayoftime.bloodmagic.datagen.content.LivingUpgrades;
 import wayoftime.bloodmagic.datagen.content.SigilData;
 import wayoftime.bloodmagic.util.blockitem.BlockWithItemHolder;
 
+import static wayoftime.bloodmagic.common.datacomponent.EnumWillType.*;
+
 public class BMLanguageProvider extends LanguageProvider {
 
     public BMLanguageProvider(PackOutput output) {
@@ -193,6 +195,25 @@ public class BMLanguageProvider extends LanguageProvider {
             add(BMItems.WILL_ROUTING_WAND.get().getDescriptionId() + "." + type.getSerializedName(), "Routing Wand (" + type.toCapitalized() + ")");
             add(BMItems.MANIFESTED_WILL.get().getDescriptionId() + "." + type.getSerializedName(), "Manifested " + type.toCapitalized() + " Will");
         }
+
+        addTooltip("routing.link.success", "Successfully linked to %s");
+        addTooltip("routing.link.fail", "Failed to link to %s");
+        addTooltip("routing.unlink.success", "Successfully removed %s");
+        addTooltip("routing.unlink.fail", "Failed to remove %s");
+        addTooltip("routing.will." + RAW.getSerializedName() + ".on", "Now using with Raw Will");
+        addTooltip("routing.will." + RAW.getSerializedName() + ".off", "No longer using Raw Will");
+
+        addTooltip("routing.will." + CORROSIVE.getSerializedName() + ".on", "Now using with Corrosive Will");
+        addTooltip("routing.will." + CORROSIVE.getSerializedName() + ".off", "No longer using Corrosive Will");
+
+        addTooltip("routing.will." + DESTRUCTIVE.getSerializedName() + ".on", "Now using with Destructive Will");
+        addTooltip("routing.will." + DESTRUCTIVE.getSerializedName() + ".off", "No longer using Destructive Will");
+
+        addTooltip("routing.will." + STEADFAST.getSerializedName() + ".on", "Now using with Steadfast Will");
+        addTooltip("routing.will." + STEADFAST.getSerializedName() + ".off", "No longer using Steadfast Will");
+
+        addTooltip("routing.will." + VENGEFUL.getSerializedName() + ".on", "Now using with Vengeful Will");
+        addTooltip("routing.will." + VENGEFUL.getSerializedName() + ".off", "No longer using Vengeful Will");
 
         add(BMBlocks.ALCHEMY_TABLE, "Alchemy Table");
         addTooltip("alchemy_table.orb_error.title", "Orb Error");

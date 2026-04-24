@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +20,8 @@ import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.datamap.WillStack;
+
+import java.util.function.Consumer;
 
 public class CrucibleTile extends SingleTargetWillInteractor {
 
@@ -110,7 +113,7 @@ public class CrucibleTile extends SingleTargetWillInteractor {
     }
 
     @Override
-    public void toggleWillType(EnumWillType type) {
+    public void toggleWillType(EnumWillType type, Consumer<MutableComponent> response) {
         // TODO only have it accept correct type items?
     }
 

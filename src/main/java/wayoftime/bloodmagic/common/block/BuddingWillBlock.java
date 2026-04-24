@@ -91,7 +91,9 @@ public class BuddingWillBlock extends Block {
                     return 0;
                 }
                 if (max >= 10) {
-                    level.setBlockAndUpdate(pos, state.setValue(STORED_WILL, has + 1));
+                    if (doFill) {
+                        level.setBlockAndUpdate(pos, state.setValue(STORED_WILL, has + 1));
+                    }
                     return 10;
                 }
 

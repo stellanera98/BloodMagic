@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +20,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class WillConduitTile extends BaseTile implements IWillHandler, IWandConfigurable {
 
@@ -39,23 +42,27 @@ public class WillConduitTile extends BaseTile implements IWillHandler, IWandConf
     }
 
     @Override
-    public void toggleWillType(EnumWillType type) {
+    public void toggleWillType(EnumWillType type, Consumer<MutableComponent> response) {
         // I guess thats a NO-OP here
     }
 
     @Override
-    public void addConnection(BlockPos pos, @Nullable EnumWillType type) {
-        if (outputPositions.containsKey(pos) // override
-                || outputPositions.size() <= 21) { // can add
+    public void addConnection(BlockPos pos, @Nullable EnumWillType type, Consumer<MutableComponent> response) {
+        boolean override = outputPositions.containsKey(pos);
+        boolean hasEmpty = outputPositions.size() <= 21;
+        if (override || hasEmpty) {
             outputPositions.put(pos, Optional.of(type));
             setChanged();
+            response.accept(Component.translatable("tooltip.bloodmagic.routing.link.success", pos.toShortString()));
         }
+        response.accept(Component.translatable("tooltip.bloodmagic.routing.link.fail", pos.toShortString()));
     }
 
     @Override
-    public void removeConnection(BlockPos target) {
-        outputPositions.remove(target);
+    public void removeConnection(BlockPos target, Consumer<MutableComponent> response) {
+        Optional<EnumWillType> old = outputPositions.remove(target);
         setChanged();
+        response.accept(Component.translatable("tooltip.bloodmagic.routing.unlink." + old == null ? "fail" : "success", target.toShortString()));
     }
 
     @Override

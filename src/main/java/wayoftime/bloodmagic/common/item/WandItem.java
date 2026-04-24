@@ -2,6 +2,7 @@ package wayoftime.bloodmagic.common.item;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,6 +15,10 @@ import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.util.ChatUtil;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class WandItem extends Item {
 
@@ -34,20 +39,26 @@ public class WandItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
+        Player player = context.getPlayer();
         boolean isShiftDown = context.isSecondaryUseActive();
         ItemStack wand = context.getItemInHand();
-        BlockPos stored = wand.getOrDefault(BMDataComponents.STORED_POSITION, BlockPos.ZERO);
+        BlockPos stored = wand.get(BMDataComponents.STORED_POSITION);
         EnumWillType type = wand.get(BMDataComponents.DEMON_WILL_TYPE);
+        Consumer<MutableComponent> sender = text -> {
+            if (level.isClientSide) {
+                ChatUtil.sendChatNoSpam(player, List.of(text));
+            }
+        };
 
         IWandConfigurable source;
-        if (stored == BlockPos.ZERO) {
+        if (stored == null) {
             source = level.getCapability(BMCaps.WAND_CONFIGURABLE, pos);
             if (source == null) {
                 return InteractionResult.PASS;
             }
             if (isShiftDown) {
                 if (type != null) {
-                    source.toggleWillType(type);
+                    source.toggleWillType(type, sender);
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 } else {
                     // TODO has shift down but no type stored?
@@ -67,9 +78,9 @@ public class WandItem extends Item {
         }
 
         if (!isShiftDown) { // link
-            source.addConnection(pos, type);
+            source.addConnection(pos, type, sender);
         } else { // delete
-            source.removeConnection(pos);
+            source.removeConnection(pos, sender);
         }
 
         source.toggleSelectedState(false);

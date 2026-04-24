@@ -9,6 +9,7 @@ public class BellJarBlock extends BaseTileBlock<BellJarTile> {
 
     public BellJarBlock() {
         super(Properties.of()
+                        .noOcclusion()
                         .sound(SoundType.GLASS)
                         .strength(2, 5),
                 BMTiles.BELLJAR_TYPE

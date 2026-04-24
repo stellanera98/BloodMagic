@@ -45,7 +45,7 @@ public class BloodTankRenderer implements BlockEntityRenderer<BloodTankTile> {
         float capacityHeight = maxHeight - minHeight;
         float height = ((float) fluidStack.getAmount() / (float) blockEntity.getCapacity()) * capacityHeight;
 
-        RenderHelper.addCubeAll(vertexConsumer, poseStack, sprite, color, packedLight, packedOverlay, start, minHeight, start, end, height, end);
+        RenderHelper.addCubeAll(vertexConsumer, poseStack, sprite, color, packedLight, packedOverlay, start, minHeight, start, end, minHeight + height, end);
 
         poseStack.popPose();
     }
