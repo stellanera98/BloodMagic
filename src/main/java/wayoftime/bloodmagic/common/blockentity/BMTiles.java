@@ -11,10 +11,7 @@ import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.client.render.blockentity.BloodAltarRenderer;
-import wayoftime.bloodmagic.client.render.blockentity.BloodTankRenderer;
-import wayoftime.bloodmagic.client.render.blockentity.HellfireForgeRenderer;
-import wayoftime.bloodmagic.client.render.blockentity.BellJarRenderer;
+import wayoftime.bloodmagic.client.render.blockentity.*;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 
@@ -156,6 +153,8 @@ public class BMTiles {
         event.registerBlockEntityRenderer(HELLFIRE_FORGE_TYPE.get(), HellfireForgeRenderer::new);
         event.registerBlockEntityRenderer(BLOOD_ALTAR_TYPE.get(), BloodAltarRenderer::new);
         event.registerBlockEntityRenderer(BLOOD_TANK_TYPE.get(), BloodTankRenderer::new);
+
+        event.registerBlockEntityRenderer(CRUCIBLE_TYPE.get(), WillRenderer::new);
         event.registerBlockEntityRenderer(BELLJAR_TYPE.get(), BellJarRenderer::new);
     }
 

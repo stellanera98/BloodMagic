@@ -12,10 +12,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.inventory.InventoryMenu;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.BellJarTile;
+import wayoftime.bloodmagic.common.blockentity.base.SingleTargetWillInteractor;
 import wayoftime.bloodmagic.common.datamap.WillStack;
 import wayoftime.bloodmagic.util.RenderHelper;
 
-public class BellJarRenderer implements BlockEntityRenderer<BellJarTile> {
+public class BellJarRenderer extends WillRenderer {
 
     // Tank inside
     private static final float minHeight = 4F/16F + 0.01F;
@@ -30,11 +31,16 @@ public class BellJarRenderer implements BlockEntityRenderer<BellJarTile> {
     private static final TextureAtlasSprite VENGEFUL = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(BloodMagic.rl("block/will_vengeful"));
 
     public BellJarRenderer(BlockEntityRendererProvider.Context context) {
-        Minecraft minecraft = Minecraft.getInstance();
+        super(context);
     }
 
     @Override
-    public void render(BellJarTile blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(SingleTargetWillInteractor stwi, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        super.render(stwi, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
+        if (!(stwi instanceof BellJarTile blockEntity)) {
+            return;
+        }
+
         WillStack willStack = blockEntity.getStoredWill();
         if (willStack.amount() <= 0) {
             return;

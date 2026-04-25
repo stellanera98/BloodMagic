@@ -108,11 +108,6 @@ public class CrucibleTile extends SingleTargetWillInteractor {
     }
 
     @Override
-    public void toggleSelectedState(boolean selected) {
-        // TODO implement line rendering
-    }
-
-    @Override
     public void toggleWillType(EnumWillType type, Consumer<MutableComponent> response) {
         // TODO only have it accept correct type items?
     }

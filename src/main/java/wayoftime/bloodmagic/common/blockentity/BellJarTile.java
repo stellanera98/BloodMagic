@@ -25,9 +25,4 @@ public class BellJarTile extends SingleTargetWillInteractor {
 
         return new WillStack(storedType, storedAmount);
     }
-
-    @Override
-    public void toggleSelectedState(boolean selected) {
-        // TODO implement line rendering
-    }
 }

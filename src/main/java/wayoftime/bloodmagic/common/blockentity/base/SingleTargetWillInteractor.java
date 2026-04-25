@@ -27,9 +27,30 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
     protected EnumWillType lockedType = null;
     protected BlockPos target;
 
+    protected boolean renderLines = false;
+
     public SingleTargetWillInteractor(BlockEntityType<?> type, BlockPos pos, BlockState blockState, double maxStored) {
         super(type, pos, blockState);
         this.MAX_STORED = maxStored;
+    }
+
+    @Override
+    public void toggleSelectedState(boolean selected) {
+        this.renderLines = selected;
+    }
+
+    @Nullable
+    public BlockPos getTarget() {
+        return target;
+    }
+
+    @Nullable
+    public EnumWillType getWillType() {
+        return lockedType != null ? lockedType : storedType;
+    }
+
+    public boolean shouldRenderLine() {
+        return renderLines;
     }
 
     public void pushWill(double rate) {
@@ -63,21 +84,28 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
         this.target = target;
         this.lockedType = type;
         response.accept(Component.translatable("tooltip.bloodmagic.routing.link.success", target.toShortString()));
+        setChanged();
     }
 
     @Override
     public void removeConnection(BlockPos target, Consumer<MutableComponent> response) {
+        if (target.equals(getBlockPos())) {
+            // nothing. it'll toggle off the lines via wand anyways
+            return;
+        }
         if (this.target != null && this.target.equals(target)) {
             this.target = null;
             response.accept(Component.translatable("tooltip.bloodmagic.routing.unlink.success"));
         }
         response.accept(Component.translatable("tooltip.bloodmagic.routing.unlink.fail", target.toShortString()));
+        setChanged();
     }
 
     @Override
     public void toggleWillType(EnumWillType type, Consumer<MutableComponent> response) {
         lockedType = type;
         response.accept(Component.translatable("tooltip.bloodmagic.routing.will." + type.getSerializedName() + ".on"));
+        setChanged();
     }
 
     @Override
@@ -94,6 +122,7 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
             if (storedType == null) { // if stored was null, set it to incoming
                 storedType = type;
             }
+            setChanged();
         }
         return maxFill;
     }
@@ -110,6 +139,7 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
             if (storedAmount <= 0) { // reset to no type when empty
                 storedType = null;
             }
+            setChanged();
         }
         return maxDrain;
     }
