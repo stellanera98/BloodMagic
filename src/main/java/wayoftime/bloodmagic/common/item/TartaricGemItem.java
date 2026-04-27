@@ -1,6 +1,7 @@
 package wayoftime.bloodmagic.common.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,9 @@ import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.datamap.BMDataMaps;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 import wayoftime.bloodmagic.util.ChatUtil;
+import wayoftime.bloodmagic.util.InventoryHelper;
 
 import java.util.List;
 
@@ -36,24 +39,43 @@ public class TartaricGemItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        // TODO interact with Block IWillHandlers
-        return InteractionResult.PASS;
+        BlockPos pos = context.getClickedPos();
+        Level level = context.getLevel();
+        ItemStack gem = context.getItemInHand();
+
+        IWillHandler blockHandler = level.getCapability(BMCaps.BLOCK_WILL_HANDLER, pos);
+        IWillHandler gemHandler = gem.getCapability(BMCaps.ITEM_WILL_HANDLER);
+        if (blockHandler == null || gemHandler == null) {
+            return InteractionResult.FAIL;
+        }
+        Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
+        WillStack gemWill = gemHandler.getWillStack();
+        EnumWillType drainType = gemWill.type();
+        double drainAmount = max - gemWill.amount();
+        if (gemWill.amount() == 0) {
+            WillStack blockWill = blockHandler.getWillStack();
+            drainType = blockWill.type();
+            drainAmount = max;
+        }
+        double drained = blockHandler.drain(drainType, drainAmount, true);
+        gemHandler.fill(drainType, drained, true);
+
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        NonNullList<ItemStack> inv = player.getInventory().items;
-        inv.addAll(player.getInventory().offhand);
+        NonNullList<ItemStack> inv = InventoryHelper.getGemOrder(player);
         ItemStack gem = player.getItemInHand(usedHand);
         EnumWillType type = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         double amount = gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
         Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
-        double limit = max - amount;
+        double limit = max - amount; // NPE deserved for not having a max set for TartaricGemItem
         for (int i = 0; i < inv.size(); i++) {
             if (usedHand == InteractionHand.MAIN_HAND && i == player.getInventory().selected) {
                 continue;
             }
-            if (usedHand == InteractionHand.OFF_HAND && i == inv.size()-1) {
+            if (usedHand == InteractionHand.OFF_HAND && i == 9) {
                 continue;
             }
 
@@ -69,10 +91,9 @@ public class TartaricGemItem extends Item {
                 }
             }
         }
-        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, amount);
-        player.getInventory().setChanged();
 
-        return super.use(level, player, usedHand);
+        gem.set(BMDataComponents.DEMON_WILL_AMOUNT, amount);
+        return InteractionResultHolder.sidedSuccess(gem, level.isClientSide);
     }
 
     @Override
@@ -111,6 +132,14 @@ public class TartaricGemItem extends Item {
 
     public static IWillHandler getWillHandler(ItemStack gem, Void unused) {
         return new IWillHandler() {
+            @Override
+            public WillStack getWillStack() {
+                return new WillStack(
+                        gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW),
+                        gem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0d)
+                );
+            }
+
             @Override
             public double fill(EnumWillType type, double max, boolean doFill) {
                 EnumWillType containedType = gem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);

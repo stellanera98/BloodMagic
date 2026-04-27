@@ -9,6 +9,7 @@ import net.minecraft.world.item.TooltipFlag;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 import wayoftime.bloodmagic.util.ChatUtil;
 
 import java.util.List;
@@ -45,6 +46,14 @@ public class ManifestedWillItem extends Item {
     // not sure its needed. I keep it for now
     public static IWillHandler getWillHandler(ItemStack willItem, Void unused) {
         return new IWillHandler() {
+            @Override
+            public WillStack getWillStack() {
+                return new WillStack(
+                        willItem.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW),
+                        willItem.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0d)
+                );
+            }
+
             @Override
             public double fill(EnumWillType type, double max, boolean doFill) {
                 // we are a Raw Will. Mob drop thingy. we do not fill this

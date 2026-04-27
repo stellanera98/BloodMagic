@@ -12,6 +12,7 @@ import wayoftime.bloodmagic.api.capability.IWandConfigurable;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 import wayoftime.bloodmagic.util.NBTHelper;
 
 import java.util.Map;
@@ -32,6 +33,11 @@ public abstract class SingleTargetWillInteractor extends BaseTile implements IWa
     public SingleTargetWillInteractor(BlockEntityType<?> type, BlockPos pos, BlockState blockState, double maxStored) {
         super(type, pos, blockState);
         this.MAX_STORED = maxStored;
+    }
+
+    @Override
+    public WillStack getWillStack() {
+        return new WillStack(storedType != null ? storedType : EnumWillType.RAW, storedAmount);
     }
 
     @Override

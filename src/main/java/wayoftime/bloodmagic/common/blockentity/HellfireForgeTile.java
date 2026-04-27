@@ -22,6 +22,7 @@ import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 import wayoftime.bloodmagic.common.event.BloodMagicCraftedEvent;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.recipe.forge.ForgeInput;
@@ -79,6 +80,14 @@ public class HellfireForgeTile extends BaseTile {
     public HellfireForgeTile(BlockPos pos, BlockState blockState) {
         super(BMTiles.HELLFIRE_FORGE_TYPE.get(), pos, blockState);
         this.quickCheck = RecipeManager.createCheck(BMRecipes.HELLFIRE_FORGE_TYPE.get());
+    }
+
+    public IWillHandler getWillHandler(Void unused) {
+        ItemStack gemStack = inv.getStackInSlot(GEM_SLOT);
+        if (!gemStack.is(BMTags.Items.TARTARIC_GEM)) {
+            return null;
+        }
+        return gemStack.getCapability(BMCaps.ITEM_WILL_HANDLER);
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {

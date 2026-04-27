@@ -65,6 +65,11 @@ public class InfuserTile extends BaseTile implements IWillHandler {
     }
 
     @Override
+    public WillStack getWillStack() {
+        return new WillStack(storedType != null ? storedType : EnumWillType.RAW, storedAmount);
+    }
+
+    @Override
     public double fill(EnumWillType type, double max, boolean doFill) {
         if (storedType != null && storedType != type) { // if stored is set, stored and type need to match
             return 0;

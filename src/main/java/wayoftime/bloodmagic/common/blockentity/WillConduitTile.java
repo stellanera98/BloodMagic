@@ -14,6 +14,7 @@ import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.blockentity.base.BaseTile;
 import wayoftime.bloodmagic.common.caps.BMCaps;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -90,6 +91,12 @@ public class WillConduitTile extends BaseTile implements IWillHandler, IWandConf
 
     public double getCapacity(EnumWillType type) {
         return 100;
+    }
+
+    @Override
+    public WillStack getWillStack() {
+        // TODO idk what to return here. its mostly meant for gems anyways
+        return null;
     }
 
     @Override

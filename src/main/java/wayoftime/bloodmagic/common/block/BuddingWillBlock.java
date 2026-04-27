@@ -21,6 +21,7 @@ import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.BMTags;
 import wayoftime.bloodmagic.api.capability.IWillHandler;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datamap.WillStack;
 
 import java.util.Collection;
 import java.util.Map;
@@ -103,6 +104,11 @@ public class BuddingWillBlock extends Block {
             @Override
             public double drain(EnumWillType type, double max, boolean doDrain) {
                 return 0;
+            }
+
+            @Override
+            public WillStack getWillStack() {
+                return new WillStack(EnumWillType.RAW, 0d);
             }
         };
     }

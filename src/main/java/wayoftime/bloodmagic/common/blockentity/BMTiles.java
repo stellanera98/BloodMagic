@@ -118,6 +118,11 @@ public class BMTiles {
 
         event.registerBlockEntity(
                 BMCaps.BLOCK_WILL_HANDLER,
+                HELLFIRE_FORGE_TYPE.get(),
+                HellfireForgeTile::getWillHandler
+        );
+        event.registerBlockEntity(
+                BMCaps.BLOCK_WILL_HANDLER,
                 INFUSER_TYPE.get(),
                 InfuserTile::getWillHandler
         );

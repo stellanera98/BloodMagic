@@ -33,6 +33,7 @@ public class BMDataComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> DEMON_WILL_AMOUNT = DATA_COMPONENTS.registerComponentType("will_amount", builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<EnumWillType>> DEMON_WILL_TYPE = DATA_COMPONENTS.registerComponentType("will_type", builder -> builder.persistent(EnumWillType.CODEC).networkSynchronized(EnumWillType.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentientInfo>> SENTIENT_INFO = DATA_COMPONENTS.registerComponentType("sentient_info", builder -> builder.persistent(SentientInfo.CODEC).networkSynchronized(SentientInfo.STREAM_CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> SIGIL_ACTIVE = DATA_COMPONENTS.registerComponentType("sigil_active", builder -> builder.persistent(Unit.CODEC).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceKey<SigilEffect>>> SIGIL_EFFECT = DATA_COMPONENTS.registerComponentType("sigil_effect", builder -> builder.persistent(ResourceKey.codec(BMIdentifiers.RegistryKeys.SIGIL_EFFECT)).networkSynchronized(ResourceKey.streamCodec(BMIdentifiers.RegistryKeys.SIGIL_EFFECT)));

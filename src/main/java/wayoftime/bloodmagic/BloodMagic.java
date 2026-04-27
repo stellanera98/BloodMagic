@@ -24,6 +24,7 @@ import wayoftime.bloodmagic.common.datamap.BMDataMaps;
 import wayoftime.bloodmagic.common.fluid.BMFluids;
 import wayoftime.bloodmagic.common.item.BMItems;
 import wayoftime.bloodmagic.common.item.BMMaterialsAndTiers;
+import wayoftime.bloodmagic.common.mobeffect.BMMobEffects;
 import wayoftime.bloodmagic.common.recipe.BMRecipes;
 import wayoftime.bloodmagic.common.registry.BMRegistries;
 import wayoftime.bloodmagic.compat.modopedia.BookCompat;
@@ -57,6 +58,7 @@ public class BloodMagic {
         BMMenus.register(modBus);
         BMTabs.register(modBus);
         BMLoadConditions.register(modBus);
+        BMMobEffects.register(modBus);
 
         container.registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
 
