@@ -65,3 +65,7 @@ Arcane Ashes
 
 Will Stuff
 
+Will Pallete's
+Light -> Dark
+Vengeful
+fbffca fbaa98 fd8486 d66063 be5256 a73e43 952b31 6e2126
