@@ -20,6 +20,7 @@ import wayoftime.bloodmagic.api.BMIdentifiers;
 import wayoftime.bloodmagic.api.datacomponent.Binding;
 import wayoftime.bloodmagic.api.datacomponent.LivingStats;
 import wayoftime.bloodmagic.api.sigil.SigilEffect;
+import wayoftime.bloodmagic.common.datamap.SentientStats;
 import wayoftime.bloodmagic.common.living.LivingUpgrade;
 
 import java.util.function.Function;

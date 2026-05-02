@@ -1,5 +1,10 @@
 package wayoftime.bloodmagic.common.fluid;
 
+import com.mojang.blaze3d.shaders.FogShape;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -21,6 +26,8 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import wayoftime.bloodmagic.BloodMagic;
 
 public class BMFluids {
@@ -84,6 +91,11 @@ public class BMFluids {
             public ResourceLocation getFlowingTexture() {
                 return ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "block/life_essence_flowing");
             }
+
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return new Vector3f(101/255f, 2/255f, 6/255f);
+            }
         }, LIFE_ESSENCE_TYPE);
 
         event.registerFluidType(new IClientFluidTypeExtensions() {
@@ -95,6 +107,11 @@ public class BMFluids {
             @Override
             public ResourceLocation getFlowingTexture() {
                 return ResourceLocation.fromNamespaceAndPath(BloodMagic.MODID, "block/liquid_doubt_flowing");
+            }
+
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return new Vector3f(0/255f, 91/255f, 120/255f);
             }
         }, DOUBT_TYPE);
     }

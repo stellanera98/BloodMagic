@@ -34,6 +34,8 @@ public class BMTags {
         public static final TagKey<Item> LIVING_UPGRADE_SET = tag(bm("living_upgrade_set"));
         public static final TagKey<Item> LIVING_SET = withParent(LIVING_UPGRADE_SET, BMMaterialsAndTiers.LIVING_ARMOR_MATERIAL.getId().getPath());
 
+        public static final TagKey<Item> SHARDS = tag(bm("will_shard"));
+
         private static TagKey<Item> fromBlock(TagKey<Block> input) {
             return tag(input.location());
         }

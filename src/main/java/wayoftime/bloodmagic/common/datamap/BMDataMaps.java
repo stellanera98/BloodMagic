@@ -12,8 +12,10 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.common.blockentity.InfuserTile;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 
 import java.util.List;
+import java.util.Map;
 
 public class BMDataMaps {
     public static final DataMapType<Item, Double> TARTARIC_GEM_MAX_AMOUNTS = DataMapType.builder(
@@ -60,6 +62,13 @@ public class BMDataMaps {
             Registries.BLOCK,
             WILL_INFUSION_CODEC
     ).synced(WILL_INFUSION_CODEC, true).build();
+
+    private static final Codec<Map<EnumWillType, SentientStats>> SENTIENT_STATS_CODEC = Codec.unboundedMap(EnumWillType.CODEC, SentientStats.CODEC);
+    public static final DataMapType<Item, Map<EnumWillType, SentientStats>> SENTIENT_STATS = DataMapType.builder(
+            BloodMagic.rl("sentient_stats"),
+            Registries.ITEM,
+            SENTIENT_STATS_CODEC
+    ).build();
 
     public static void register(RegisterDataMapTypesEvent event) {
         event.register(TARTARIC_GEM_MAX_AMOUNTS);
