@@ -52,6 +52,8 @@ public class BMBlocks {
 
     public static final BlockWithItemHolder<ImperfectRitualBlock, BlockItem> IMPERFECT_RITUAL_BLOCK = BASIC_REG.register("ritual_stone_imperfect", ImperfectRitualBlock::new);
 
+    public static final BlockWithItemHolder<PedestalBlock, BlockItem> PEDESTAL = BLOCK_REG.register("pedestal", PedestalBlock::new);
+
     private static final BlockBehaviour.Properties rune_properties = BlockBehaviour.Properties.of().strength(2.0F, 5.0F).sound(SoundType.STONE).requiresCorrectToolForDrops();
     private static final ItemLore safe_decoration = new ItemLore(List.of(BlockEntityHelper.translatableHover("tooltip.bloodmagic.safe_for_decoration").withStyle(ChatFormatting.ITALIC)));
     private static final Item.Properties decoration_item_properties = new Item.Properties().component(DataComponents.LORE, safe_decoration);

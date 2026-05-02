@@ -8,12 +8,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 import wayoftime.bloodmagic.common.blockentity.BloodTankTile;
 import wayoftime.bloodmagic.util.RenderHelper;
 
@@ -26,8 +27,9 @@ public class BloodTankRenderer implements BlockEntityRenderer<BloodTankTile> {
     private static final float start = 4F/16F; // inside corner
     private static final float end = 12F/16F; // other inside corner
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void render(BloodTankTile blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(BloodTankTile blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Minecraft minecraft = Minecraft.getInstance();
         FluidStack fluidStack = blockEntity.getFluidContained();
         if (fluidStack.isEmpty()) {
@@ -36,7 +38,7 @@ public class BloodTankRenderer implements BlockEntityRenderer<BloodTankTile> {
         IClientFluidTypeExtensions fluidClientInfo = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         FluidState fluidState = fluidStack.getFluid().defaultFluidState();
         RenderType blockRenderType = ItemBlockRenderTypes.getRenderLayer(fluidState);
-        TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidClientInfo.getStillTexture());
+        TextureAtlasSprite sprite = minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(fluidClientInfo.getStillTexture());
         int color = fluidClientInfo.getTintColor();
 
         poseStack.pushPose();

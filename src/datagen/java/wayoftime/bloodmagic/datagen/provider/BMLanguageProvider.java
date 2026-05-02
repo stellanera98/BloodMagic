@@ -96,6 +96,7 @@ public class BMLanguageProvider extends LanguageProvider {
         addTooltip("fluid_content", "Contains: %smB of %s");
 
         add(BMBlocks.IMPERFECT_RITUAL_BLOCK, "Imperfect Ritual Stone");
+        add(BMBlocks.PEDESTAL, "Arcane Pedestal");
 
         add(BMBlocks.HELLFIRE_FORGE, "Hellfire Forge");
         add(BMBlocks.WILL_CRUCIBLE, "Demon Crucible");

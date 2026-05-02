@@ -38,6 +38,7 @@ public class MineBlock extends BlockLootSubProvider {
         addDropSelf(BMBlocks.HELLFIRE_FORGE);
         addDropSelf(BMBlocks.WILL_INFUSER);
         addDropSelf(BMBlocks.WILL_CRUCIBLE);
+        addDropSelf(BMBlocks.PEDESTAL);
         addDropSpecial(BMBlocks.ALCHEMY_TABLE);
 
         addDropSelf(BMBlocks.BELLJAR_OAK);

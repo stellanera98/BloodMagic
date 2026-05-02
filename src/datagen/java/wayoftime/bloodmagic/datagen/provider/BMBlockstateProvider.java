@@ -76,6 +76,7 @@ public class BMBlockstateProvider extends BlockStateProvider {
 
         genARC();
         genStation();
+        genPedestal();
     }
 
     private void standard(BlockWithItemHolder<? extends Block, BlockItem> block) {
@@ -122,6 +123,110 @@ public class BMBlockstateProvider extends BlockStateProvider {
                 builder.partialState().with(ARCBlock.LIT, true).with(ARCBlock.FACING, facing).with(ARCBlock.TYPE, type).modelForState().modelFile(on).rotationY((int) facing.getOpposite().toYRot()).addModel();
             }
         }
+    }
+
+    private void genPedestal() {
+        ModelFile model = models().withExistingParent(name(BMBlocks.PEDESTAL), mcLoc("block/block"))
+                .texture("air", modLoc("block/ritual_stone_air"))
+                .texture("earth", modLoc("block/ritual_stone_earth"))
+                .texture("water", modLoc("block/ritual_stone_water"))
+                .texture("fire", modLoc("block/ritual_stone_fire"))
+                .texture("blank", modLoc("block/ritual_stone_blank"))
+                // foot
+                .element().from(0, 0, 0)
+                .to(16, 1, 16)
+                .face(Direction.UP).texture("#blank").end()
+                .face(Direction.DOWN).texture("#blank").end()
+                .face(Direction.NORTH).texture("#blank").end()
+                .face(Direction.SOUTH).texture("#blank").end()
+                .face(Direction.WEST).texture("#blank").end()
+                .face(Direction.EAST).texture("#blank").end().end()
+                // pillar
+                .element().from(3, 1, 3)
+                .to(13, 11, 13)
+                .face(Direction.UP).texture("#blank").uvs(0, 0, 16, 16).end()
+                .face(Direction.NORTH).texture("#fire").uvs(0, 0, 16, 16).end()
+                .face(Direction.SOUTH).texture("#water").uvs(0, 0, 16, 16).end()
+                .face(Direction.WEST).texture("#air").uvs(0, 0, 16, 16).end()
+                .face(Direction.EAST).texture("#earth").uvs(0, 0, 16, 16).end().end()
+                // "cup" bottom
+                .element().from(5, 11, 5)
+                .to(11, 12, 11)
+                .face(Direction.UP).texture("#blank").uvs(5, 5, 11, 11).end()
+                .face(Direction.DOWN).texture("#blank").uvs(5, 5, 11, 11).end()
+                .face(Direction.NORTH).texture("#blank").uvs(5, 0, 11, 1).end()
+                .face(Direction.SOUTH).texture("#blank").uvs(5, 0, 11, 1).end()
+                .face(Direction.WEST).texture("#blank").uvs(5, 0, 11, 1).end()
+                .face(Direction.EAST).texture("#blank").uvs(5, 0, 11, 1).end().end()
+                // layer 1, north
+                .element().from(4, 12, 4)
+                .to(12, 13, 5)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 1, south
+                .element().from(4, 12, 11)
+                .to(12, 13, 12)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 1, east
+                .element().from(4, 12, 5)
+                .to(5, 13, 11)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 1, west
+                .element().from(11, 12, 5)
+                .to(12, 13, 11)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+
+                // layer 2, north
+                .element().from(3, 13, 3)
+                .to(13, 14, 4)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 2, south
+                .element().from(3, 13, 12)
+                .to(13, 14, 13)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 2, east
+                .element().from(3, 13, 4)
+                .to(4, 14, 12)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 2, west
+                .element().from(12, 13, 4)
+                .to(13, 14, 12)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+
+                // layer 3, north
+                .element().from(2, 14, 2)
+                .to(14, 15, 3)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 3, south
+                .element().from(2, 14, 13)
+                .to(14, 15, 14)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 3, east
+                .element().from(2, 14, 3)
+                .to(3, 15, 13)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 3, west
+                .element().from(13, 14, 3)
+                .to(14, 15, 13)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+
+                // layer 4, north
+                .element().from(1, 15, 1)
+                .to(15, 16, 2)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 4, south
+                .element().from(1, 15, 14)
+                .to(15, 16, 15)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 4, east
+                .element().from(1, 15, 2)
+                .to(2, 16, 14)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end()
+                // layer 4, west
+                .element().from(14, 15, 2)
+                .to(15, 16, 14)
+                .allFaces((dir, builder) -> builder.texture("#blank")).end();
+
+        simpleBlockWithItem(BMBlocks.PEDESTAL.block().get(), model);
     }
 
     private void genStation() {

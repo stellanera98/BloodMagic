@@ -389,12 +389,6 @@ public class BloodAltarTile extends BaseTile implements IFluidHandler {
     }
 
     @Override
-    public void setChanged() {
-        super.setChanged();
-        this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL); // send to client
-    }
-
-    @Override
     public int getTanks() {
         return 3;
     }

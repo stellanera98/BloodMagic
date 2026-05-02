@@ -22,6 +22,7 @@ public abstract class BaseTile extends BlockEntity {
 
     @Override
     public void setChanged() {
+        super.setChanged();
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 

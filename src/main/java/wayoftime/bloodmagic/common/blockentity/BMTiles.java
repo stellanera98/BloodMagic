@@ -38,6 +38,9 @@ public class BMTiles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AlchemyTableTile>> ALCHEMY_TABLE_TYPE = TILES.register("alchemy_table",
             () -> new BlockEntityType<>(AlchemyTableTile::new, Set.of(BMBlocks.ALCHEMY_TABLE.block().get()), null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PedestalTile>> PEDESTAL_TYPE = TILES.register("pedestal",
+            () -> new BlockEntityType<>(PedestalTile::new, Set.of(BMBlocks.PEDESTAL.block().get()), null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InfuserTile>> INFUSER_TYPE = TILES.register("will_infuser",
             () -> new BlockEntityType<>(InfuserTile::new, Set.of(BMBlocks.WILL_INFUSER.block().get()), null));
 
@@ -158,6 +161,8 @@ public class BMTiles {
         event.registerBlockEntityRenderer(HELLFIRE_FORGE_TYPE.get(), HellfireForgeRenderer::new);
         event.registerBlockEntityRenderer(BLOOD_ALTAR_TYPE.get(), BloodAltarRenderer::new);
         event.registerBlockEntityRenderer(BLOOD_TANK_TYPE.get(), BloodTankRenderer::new);
+
+        event.registerBlockEntityRenderer(PEDESTAL_TYPE.get(), PedestalRenderer::new);
 
         event.registerBlockEntityRenderer(CRUCIBLE_TYPE.get(), WillRenderer::new);
         event.registerBlockEntityRenderer(BELLJAR_TYPE.get(), BellJarRenderer::new);
