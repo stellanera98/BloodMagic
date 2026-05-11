@@ -56,7 +56,7 @@ public class ManifestedWillItem extends Item {
 
             @Override
             public double fill(EnumWillType type, double max, boolean doFill) {
-                // we are a Raw Will. Mob drop thingy. we do not fill this
+                // we are a Manifested Will. Mob drop thingy. we do not fill this
                 return 0;
             }
 

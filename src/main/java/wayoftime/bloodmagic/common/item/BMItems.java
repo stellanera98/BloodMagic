@@ -1,7 +1,9 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -62,6 +64,8 @@ public class BMItems {
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_COMMON = WILL_ITEMS.register("soul_gem_common", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GREATER = WILL_ITEMS.register("soul_gem_greater", TartaricGemItem::new);
     public static final DeferredHolder<Item, TartaricGemItem> SOUL_GEM_GRAND = WILL_ITEMS.register("soul_gem_grand", TartaricGemItem::new);
+
+    public static final DeferredHolder<Item, SentientWeaponItem> SENTIENT_SWORD = WILL_ITEMS.register("sentient_sword", () -> new SentientWeaponItem(new Item.Properties().component(DataComponents.TOOL, SwordItem.createToolProperties()), 5f, 1.6f));
 
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_RAW = BASIC_ITEMS.register("will_catalyst_raw", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_RAW));
     public static final DeferredHolder<Item, WillCatalystItem> WILL_CATALYST_CORROSIVE = BASIC_ITEMS.register("will_catalyst_corrosive", () -> new WillCatalystItem(BMTags.Blocks.CATALYST_TARGET_CORROSIVE));

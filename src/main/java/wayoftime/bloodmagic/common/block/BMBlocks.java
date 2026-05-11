@@ -44,8 +44,8 @@ public class BMBlocks {
     public static final BlockWithItemHolder<ARCBlock, BlockItem> ARC_BLOCK = BLOCK_REG.register("arc", ARCBlock::new);
     public static final BlockWithItemHolder<AlchemyTableBlock, BlockItem> ALCHEMY_TABLE = BLOCK_REG.register("alchemy_table", AlchemyTableBlock::new);
 
-    public static final BlockWithItemHolder<InfuserBlock, BlockItem> WILL_INFUSER = BASIC_REG.register("will_infuser", InfuserBlock::new);
-    public static final BlockWithItemHolder<CrucibleBlock, BlockItem> WILL_CRUCIBLE = BASIC_REG.register("will_crucible", CrucibleBlock::new);
+    public static final BlockWithItemHolder<InfuserBlock, BlockItem> WILL_INFUSER = BLOCK_REG.register("will_infuser", InfuserBlock::new);
+    public static final BlockWithItemHolder<CrucibleBlock, BlockItem> WILL_CRUCIBLE = BLOCK_REG.register("will_crucible", CrucibleBlock::new);
 
     // TODO add model/textures for this and change registry to BASIC_REG
     public static final BlockWithItemHolder<LivingStationBlock, BlockItem> LIVING_STATION = BLOCK_REG.register("living_station", LivingStationBlock::new);

@@ -1,0 +1,111 @@
+{
+  "values": {
+    "bloodmagic:sentient_sword": {
+      "corrosive": {
+        "attack_speed": 0.0,
+        "attributes": [],
+        "damage": 0.0,
+        "effects": [
+          {
+            "amplifier": {
+              "type": "minecraft:lookup",
+              "fallback": 2.0,
+              "values": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "duration": {
+              "type": "minecraft:linear",
+              "base": 20.0,
+              "per_level_above_first": 20.0
+            },
+            "holder": "minecraft:wither"
+          }
+        ]
+      },
+      "destructive": {
+        "attack_speed": {
+          "type": "minecraft:lookup",
+          "fallback": -0.6,
+          "values": [
+            -0.1,
+            -0.2,
+            -0.3,
+            -0.4,
+            -0.5
+          ]
+        },
+        "attributes": [],
+        "damage": {
+          "type": "minecraft:linear",
+          "base": 1.5,
+          "per_level_above_first": 0.75
+        },
+        "effects": []
+      },
+      "raw": {
+        "attack_speed": 0.0,
+        "attributes": [],
+        "damage": {
+          "type": "minecraft:linear",
+          "base": 0.5,
+          "per_level_above_first": 0.5
+        },
+        "effects": []
+      },
+      "steadfast": {
+        "attack_speed": 0.0,
+        "attributes": [
+          {
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 2.0,
+              "per_level_above_first": 2.0
+            },
+            "holder": "minecraft:generic.max_absorption",
+            "id": "bloodmagic:steadfast",
+            "operation": "add_value"
+          }
+        ],
+        "damage": {
+          "type": "minecraft:linear",
+          "base": 0.0,
+          "per_level_above_first": 0.5
+        },
+        "effects": []
+      },
+      "vengeful": {
+        "attack_speed": {
+          "type": "minecraft:linear",
+          "base": 0.2,
+          "per_level_above_first": 0.1
+        },
+        "attributes": [
+          {
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.05,
+              "per_level_above_first": 0.05
+            },
+            "holder": "minecraft:generic.movement_speed",
+            "id": "bloodmagic:vengeful",
+            "operation": "add_value"
+          }
+        ],
+        "damage": {
+          "type": "minecraft:linear",
+          "base": 0.0,
+          "per_level_above_first": 0.5
+        },
+        "effects": []
+      }
+    }
+  }
+}

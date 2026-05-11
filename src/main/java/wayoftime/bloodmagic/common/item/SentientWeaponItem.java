@@ -1,5 +1,6 @@
 package wayoftime.bloodmagic.common.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
@@ -21,6 +22,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.util.AttributeTooltipContext;
+import net.neoforged.neoforge.common.util.AttributeUtil;
 import wayoftime.bloodmagic.BloodMagic;
 import wayoftime.bloodmagic.api.BMTags;
 import wayoftime.bloodmagic.common.datacomponent.BMDataComponents;
@@ -49,7 +52,7 @@ public class SentientWeaponItem extends Item {
                 properties
                         .component(BMDataComponents.SENTIENT_INFO, SentientInfo.NONE)
                         .component(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW)
-                        .component(DataComponents.ATTRIBUTE_MODIFIERS, defaultModifiers(baseDamage, baseAttackSpeed).build().withTooltip(false))
+                        .component(DataComponents.ATTRIBUTE_MODIFIERS, defaultModifiers(baseDamage, baseAttackSpeed).build())
         );
 
         this.baseDamage = baseDamage;
@@ -57,8 +60,12 @@ public class SentientWeaponItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list, TooltipFlag tooltipFlag) {
+        SentientInfo info = stack.get(BMDataComponents.SENTIENT_INFO);
+        if (info != null && info != SentientInfo.NONE) {
+            list.add(Component.translatable("tooltip.bloodmagic.sentient.gem").append(info.gemName()));
+            list.add(Component.translatable("tooltip.bloodmagic.sentient.will", info.amount(), info.type().asComponent(), info.tier()));
+        }
     }
 
     public static int getTier(double willAmount) {
@@ -81,7 +88,7 @@ public class SentientWeaponItem extends Item {
                 Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage, AttributeModifier.Operation.ADD_VALUE), slot
         );
         builder.add(
-                Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE), slot
+                Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed - 4, AttributeModifier.Operation.ADD_VALUE), slot
         );
 
         return builder;
@@ -99,39 +106,43 @@ public class SentientWeaponItem extends Item {
 
         EnumWillType type = EnumWillType.RAW;
         int tier = 0;
+        ItemAttributeModifiers.Builder builder = defaultModifiers(baseDamage, baseAttackSpeed);
         if (!gemStack.isEmpty()) {
-            Map<EnumWillType, SentientStats> statsMap = stack.getItemHolder().getData(BMDataMaps.SENTIENT_STATS);
-            if (statsMap == null) {
-                return false;
-            }
-            SentientStats stats = statsMap.get(type);
-            ItemAttributeModifiers.Builder builder = defaultModifiers(baseDamage, baseAttackSpeed);
-            builder.add(
-                    Attributes.ATTACK_DAMAGE,
-                    new AttributeModifier(BONUS_DAMAGE, stats.bonusDamage().calculate(tier - 1), AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.MAINHAND
-            );
-            builder.add(
-                    Attributes.ATTACK_SPEED,
-                    new AttributeModifier(BONUS_ATTACK_SPEED, stats.bonusAttackSpeed().calculate(tier - 1), AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.MAINHAND
-            );
-            for (SentientStats.Attributes entry : stats.attributes()) {
-                builder.add(entry.holder(), entry.getModifier(tier - 1), EquipmentSlotGroup.MAINHAND);
-            }
-            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build().withTooltip(false));
-
-            for (SentientStats.Effects entry : stats.effects()) {
-                target.addEffect(entry.getEffect(tier - 1), player);
-            }
-
             double amount = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0d);
             tier = getTier(amount);
             type = gemStack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, type);
+            if (tier > 0) {
+                Map<EnumWillType, SentientStats> statsMap = stack.getItemHolder().getData(BMDataMaps.SENTIENT_STATS);
+                if (statsMap == null) {
+                    return false;
+                }
+                SentientStats stats = statsMap.get(type);
+                builder.add(
+                        Attributes.ATTACK_DAMAGE,
+                        new AttributeModifier(BONUS_DAMAGE, stats.bonusDamage().calculate(tier), AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND
+                );
+                builder.add(
+                        Attributes.ATTACK_SPEED,
+                        new AttributeModifier(BONUS_ATTACK_SPEED, stats.bonusAttackSpeed().calculate(tier), AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND
+                );
+                for (SentientStats.Attributes entry : stats.attributes()) {
+                    builder.add(entry.holder(), entry.getModifier(tier), EquipmentSlotGroup.MAINHAND);
+                }
+
+                for (SentientStats.Effects entry : stats.effects()) {
+                    target.addEffect(entry.getEffect(tier), player);
+                }
+            }
             stack.set(BMDataComponents.SENTIENT_INFO, new SentientInfo(type, amount, tier, gemStack.getHoverName()));
             stack.set(BMDataComponents.DEMON_WILL_TYPE, type);
             gemStack.set(BMDataComponents.DEMON_WILL_AMOUNT, Math.max(amount - getDrain(tier), 0));
+        } else {
+            stack.set(BMDataComponents.SENTIENT_INFO, SentientInfo.NONE);
         }
+
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
 
         Holder<MobEffect> holder = switch (type) {
             case RAW -> BMMobEffects.SOUL_SNARE_RAW;
@@ -158,6 +169,9 @@ public class SentientWeaponItem extends Item {
     @Override
     public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
+        if (target.isDeadOrDying()) {
+            attacker.setAbsorptionAmount(attacker.getAbsorptionAmount() + (target.getMaxHealth() / 10));
+        }
     }
 
     @Override

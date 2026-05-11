@@ -99,9 +99,9 @@ public class CommonEventHandler {
     public static ItemStack makeDrop(EnumWillType type, int amplifier, double maxHp, RandomSource random) {
         ItemStack willStack = new ItemStack(BMItems.MANIFESTED_WILL);
         willStack.set(BMDataComponents.DEMON_WILL_TYPE, type);
-        double amount = (3 * amplifier * random.nextDouble()) + (amplifier/2) * maxHp / 20d;
+        double amount = (3 * amplifier * random.nextDouble()) + Math.floor(amplifier / 2d) * maxHp / 20d; // Math.floor(amplifier/2d) could be replaced by (amplifier / 2) cuz int division but its less intentional about it
         if (amplifier == 0) {
-            amount = 1 + random.nextDouble() * 4;
+            amount = 1 + random.nextDouble();
         }
         willStack.set(BMDataComponents.DEMON_WILL_AMOUNT, amount);
 
@@ -116,10 +116,12 @@ public class CommonEventHandler {
         }
         EnumWillType type = stack.getOrDefault(BMDataComponents.DEMON_WILL_TYPE, EnumWillType.RAW);
         double amount = stack.getOrDefault(BMDataComponents.DEMON_WILL_AMOUNT, 0D);
+        if (amount <= 0) {
+            return;
+        }
         NonNullList<ItemStack> inv = InventoryHelper.getGemOrder(event.getPlayer());
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack gemStack = inv.get(i);
+        for (ItemStack gemStack : inv) {
             if (gemStack.is(BMTags.Items.TARTARIC_GEM)) {
                 IWillHandler gemHandler = gemStack.getCapability(BMCaps.ITEM_WILL_HANDLER);
                 if (gemHandler != null) {

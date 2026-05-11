@@ -24,5 +24,6 @@ public class BMDataMapProvider extends DataMapProvider {
         ImperfectRitualData.dataMap(this::builder);
         CrucibleData.bootstrap(this::builder);
         InfusionData.bootstrap(this::builder);
+        SentientData.bootstrap(this::builder);
     }
 }

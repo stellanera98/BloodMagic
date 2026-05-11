@@ -47,6 +47,14 @@ public class BMLanguageProvider extends LanguageProvider {
         addTooltip("current_owner", "Current Owner: %s");
         addTooltip("no_owner", "Not bound yet");
 
+        // Sentient Info
+        addTooltip("sentient.gem", "Drawing Will from: ");
+
+        addTooltip("sentient.will", "Using %s %s (%s) imbuing Weapon with:");
+
+        // Sentient Weapons
+        add(BMItems.SENTIENT_SWORD.get(), "Sentient Sword");
+
         add(BMBlocks.BLOOD_ALTAR, "Blood Altar");
         add(BMItems.SACRIFICIAL_DAGGER.get(), "Sacrificial Dagger");
 
@@ -195,6 +203,7 @@ public class BMLanguageProvider extends LanguageProvider {
             addTooltip("current_type." + type.getSerializedName(), String.format("Contains: %s Will", type.toCapitalized()));
             add(BMItems.WILL_ROUTING_WAND.get().getDescriptionId() + "." + type.getSerializedName(), "Routing Wand (" + type.toCapitalized() + ")");
             add(BMItems.MANIFESTED_WILL.get().getDescriptionId() + "." + type.getSerializedName(), "Manifested " + type.toCapitalized() + " Will");
+            add("will.bloodmagic." + type.getSerializedName(), type.toCapitalized() + " Will");
         }
 
         addTooltip("routing.link.success", "Successfully linked to %s");

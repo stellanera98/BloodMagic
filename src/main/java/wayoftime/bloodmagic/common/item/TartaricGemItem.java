@@ -46,7 +46,7 @@ public class TartaricGemItem extends Item {
         IWillHandler blockHandler = level.getCapability(BMCaps.BLOCK_WILL_HANDLER, pos);
         IWillHandler gemHandler = gem.getCapability(BMCaps.ITEM_WILL_HANDLER);
         if (blockHandler == null || gemHandler == null) {
-            return InteractionResult.FAIL;
+            return InteractionResult.PASS;
         }
         Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
         WillStack gemWill = gemHandler.getWillStack();
@@ -72,10 +72,10 @@ public class TartaricGemItem extends Item {
         Double max = gem.getItemHolder().getData(BMDataMaps.TARTARIC_GEM_MAX_AMOUNTS);
         double limit = max - amount; // NPE deserved for not having a max set for TartaricGemItem
         for (int i = 0; i < inv.size(); i++) {
-            if (usedHand == InteractionHand.MAIN_HAND && i == player.getInventory().selected) {
+            if (usedHand == InteractionHand.MAIN_HAND && i == player.getInventory().selected + 1) {
                 continue;
             }
-            if (usedHand == InteractionHand.OFF_HAND && i == 9) {
+            if (usedHand == InteractionHand.OFF_HAND && i == 0) {
                 continue;
             }
 

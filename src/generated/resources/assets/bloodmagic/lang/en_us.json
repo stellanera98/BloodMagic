@@ -115,6 +115,7 @@
   "item.bloodmagic.manifested_will.steadfast": "Manifested Steadfast Will",
   "item.bloodmagic.manifested_will.vengeful": "Manifested Vengeful Will",
   "item.bloodmagic.sacrificial_dagger": "Sacrificial Dagger",
+  "item.bloodmagic.sentient_sword": "Sentient Sword",
   "item.bloodmagic.sigil.divination": "Divination Sigil",
   "item.bloodmagic.sigil.invalid": "INVALID - NO TYPE",
   "item.bloodmagic.sigil.lava": "Lava Sigil",
@@ -243,6 +244,8 @@
   "tooltip.bloodmagic.routing.will.vengeful.on": "Now using with Vengeful Will",
   "tooltip.bloodmagic.safe_for_decoration": "Safe for Decoration",
   "tooltip.bloodmagic.scrap": "Contained Upgrade Points: %s",
+  "tooltip.bloodmagic.sentient.gem": "Drawing Will from: ",
+  "tooltip.bloodmagic.sentient.will": "Using %s %s (%s) imbuing Weapon with:",
   "tooltip.bloodmagic.sigil.activated": "Activated",
   "tooltip.bloodmagic.sigil.deactivated": "Deactivated",
   "tooltip.bloodmagic.sigil.divination": "Peer into the soul",
@@ -260,5 +263,10 @@
   "tooltip.bloodmagic.will": "Will Quality: %s",
   "trainer.bloodmagic.allow_others": "Allow Others",
   "trainer.bloodmagic.deny_others": "Deny Others",
-  "trainer.bloodmagic.save": "Save"
+  "trainer.bloodmagic.save": "Save",
+  "will.bloodmagic.corrosive": "Corrosive Will",
+  "will.bloodmagic.destructive": "Destructive Will",
+  "will.bloodmagic.raw": "Raw Will",
+  "will.bloodmagic.steadfast": "Steadfast Will",
+  "will.bloodmagic.vengeful": "Vengeful Will"
 }

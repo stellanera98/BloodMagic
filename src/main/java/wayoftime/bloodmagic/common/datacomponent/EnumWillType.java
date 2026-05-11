@@ -2,6 +2,8 @@ package wayoftime.bloodmagic.common.datacomponent;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
@@ -30,6 +32,20 @@ public enum EnumWillType implements StringRepresentable {
 
     public static EnumWillType[] types() {
         return new EnumWillType[] {RAW, CORROSIVE, DESTRUCTIVE, STEADFAST, VENGEFUL};
+    }
+
+    public Component asComponent() {
+        return asComponent(this);
+    }
+
+    public static Component asComponent(EnumWillType type) {
+        return switch (type) {
+            case RAW -> Component.translatable("will.bloodmagic.raw").withStyle(ChatFormatting.AQUA);
+            case CORROSIVE -> Component.translatable("will.bloodmagic.corrosive").withStyle(ChatFormatting.GREEN);
+            case DESTRUCTIVE -> Component.translatable("will.bloodmagic.destructive").withStyle(ChatFormatting.YELLOW);
+            case STEADFAST -> Component.translatable("will.bloodmagic.steadfast").withStyle(ChatFormatting.BLUE);
+            case VENGEFUL -> Component.translatable("will.bloodmagic.vengeful").withStyle(ChatFormatting.RED);
+        };
     }
 
     @Override

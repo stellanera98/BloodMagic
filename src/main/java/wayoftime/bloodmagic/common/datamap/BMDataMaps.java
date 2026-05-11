@@ -2,7 +2,6 @@ package wayoftime.bloodmagic.common.datamap;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,6 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.blockentity.InfuserTile;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 
 import java.util.List;
@@ -75,6 +73,7 @@ public class BMDataMaps {
         event.register(BLOOD_ORB_STATS);
         event.register(BLOOD_RUNES);
         event.register(LIVING_ARMOUR_DATA);
+        event.register(SENTIENT_STATS);
 
         event.register(IMPERFECT_RITUAL_CATALYST);
         event.register(DEMON_CRUCIBLE);
